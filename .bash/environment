@@ -8,7 +8,7 @@ shopt -s autocd
 set -o vi
   
 GEM_BIN="$HOME/.gem/ruby/1.9.1/bin"
-[-d $GEM_BIN ] && PATH="$PATH:$GEM_BIN"
+[ -d $GEM_BIN ] && PATH="$PATH:$GEM_BIN"
 
 CABAL_BIN="$HOME/.cabal/bin"
 [ -d $CABAL_BIN ] && PATH="$PATH:$CABAL_BIN"
