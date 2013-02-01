@@ -1,0 +1,11 @@
+highlight StatusLine          height: 22px; font-family: envy code r; font-size 10pt;
+highlight StatusLineNormal    color: #839496; background: #fdf6e3;
+highlight StatusLineSecure    color: #859900; background: #fdf6e3;
+highlight StatusLineExtended  color: #d33682; background: #fdf6e3;
+highlight StatusLineBroken    color: #dc322f; background: #fdf6e3;
+
+highlight CompTitle           color: #839496; font-weight: bold;
+highlight CompTitleSep        height: 1px;  background: #fdf6e3; 
+highlight URL                 color: #003440; background: inherit;
+
+" vim:syntax=vim

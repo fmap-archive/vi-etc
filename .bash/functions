@@ -1,0 +1,137 @@
+# Kernel {{{
+
+function loop()
+{ # Loop a given action $1 times.
+  local max=$1; shift
+  for ((i=0; i<$max; ++i)); do
+    "$@"
+  done
+}
+
+# }}}
+# String {{{
+
+function len()
+{ # Calculate the length of a string.
+  echo -n "$*" | wc -c
+}
+
+# }}}
+# File {{{
+
+function cd()
+{ # Modifications to the behaviour of 'cd'.
+  #
+  # Print a listing of files when entering a new directory if it contains less
+  # than ten (non-hidden) files.
+
+  builtin cd "$@" && FILE_COUNT="$(wc -l <(ls) | awk '{ print $1 }')"
+  [[ "$FILE_COUNT" -lt 10 ]] && ls --color
+}
+
+function mkcd()
+{ # Make a directory and move into it.
+  mkdir "$@" && cd "$@"
+}
+
+function file_change()
+{ # Print the effects of file changes.
+  "$@"
+  shift
+  for FILE in "$@" ; do
+    [[ -f "${FILE}" ]] && command ls -lah "${FILE}"
+  done
+}
+
+for COMMAND in {mv,ln,chmod,chown,touch}; do
+  eval "function $COMMAND()
+  { # Redefine targeted utilities to print the effects of their file changes.
+    file_change command $COMMAND "\"\$@\""
+  }"
+done
+
+function rm()
+{ # Modifications to the behaviour of 'rm'.
+
+  # Avoid accidental deletion of files with a '.trash' directory.
+	TRASH="$HOME/.trash/$(date +%F)"
+	[[ ! -d ${TRASH} ]] && mkdir -p "${TRASH}"
+	[[ ! -d ${TRASH} ]] && { echo "Unable to mkdir '${TRASH}'."; return 1; }
+	for FILE in $*; do
+		[[ -e $FILE ]] && mv $FILE ${TRASH}/.
+	done
+}
+
+function rrm()
+{ # Really delete files.
+  command rm "$@"
+}
+
+# }}}
+# Terminal {{{
+
+function update_title()
+{ # Update X window title at runtime.
+  case $TERM in
+    rxvt*|screen*)
+      echo -ne "\033]0;${*}\007" ;;
+  esac
+}
+
+# }}}
+# Shell {{{
+
+function cwd
+{ # Print the name of the current working directory.
+  basename "$PWD"
+}
+
+function is_git_repo?
+{ # Evaluate if we're in a git repository.
+  [[ -d ".git" ]] && return 0
+}
+
+function title_pwd
+{ # Print a truncated version of our absolute path.
+  [[ $PWD == $HOME ]] || echo -n '~'
+  echo -n "${PWD/#$HOME/}"
+}
+
+function title_git_branch
+{ # If we're in a git repository, print the name of the current branch.
+  if is_git_repo?; then
+    local branch="$(grep '\*' <(git branch) | awk '{ print $2 }')"
+    echo -n " [$branch]"
+  fi
+}
+
+function title_git_changes
+{ # If we're in a git repository print the number of currently uncommitted files (if any).
+  if is_git_repo?; then
+    local changes=$(git status -s | wc -l)
+    [ $changes != "0" ] && echo -n " [${changes} changes]"
+  fi
+}
+
+function set_window_title
+{ # Value of X window title
+  update_title "$(title_pwd)$(title_git_branch)$(title_git_changes)"
+}
+
+function PS1
+{ # Value of primary prompt.
+  echo -n ""
+}
+
+function PS2
+{ # Value of secondary prompt.
+  [[ $(basename $PWD) == $USER ]] \
+    && local chars=1              \
+    || local chars=$(len `cwd`)
+  let chars=chars+$(len `PS1`)
+  loop $chars echo -n ' '
+}
+
+# }}}
+
+# vim:ft=sh:foldmethod=marker:foldmarker={{{,}}}:

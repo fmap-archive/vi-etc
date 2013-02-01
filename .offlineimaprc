@@ -1,0 +1,32 @@
+[general]
+ui       = ttyui
+accounts = vikramverma
+
+[Account vikramverma]
+localrepository  = vikramverma-local
+remoterepository = vikramverma-remote
+maxsyncaccounts  = 3
+maxconnections   = 3
+
+[Repository vikramverma-local]
+type         = Maildir
+localfolders = ~/var/mail/vikramverma
+nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                            }.get(folder, folder)
+
+[Repository vikramverma-remote]
+type             = Gmail
+remoteuser       = me@vikramverma.com
+remotepassfile   = ~/.security/offlineimap/vikramverma.pass
+real_delete = no
+nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                            }.get(folder, folder)
+cert_fingerprint = 6d1b5b5ee0180ab493b71d3b94534b5ab937d042
+
+# vim: ft=cfg

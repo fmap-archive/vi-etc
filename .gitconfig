@@ -1,0 +1,37 @@
+[user]
+	name  = Vikram Verma
+	email = hey+code@vikramverma.com
+
+[core]
+	editor = /usr/bin/urxvtc -name scratchpad -e vim
+	pager  = less
+
+[sendemail]
+  smtpserver = /usr/bin/msmtp
+
+[branch]
+	autosetupmerge = true
+
+[apply]
+	whitespace = fix
+
+[alias]
+	br      = branch
+	ch      = checkout HEAD
+	ci      = commit
+	co      = checkout
+	df      = diff --color-words
+	ds      = diff --staged
+	dc      = diff --cached
+	lg      = log --pretty --oneline --abbrev-commit
+	ly      = log --pretty --oneline --abbrev-commit --since=yesterday
+	med     = "!git-med"
+	out     = "!git-out"
+	st      = status -sb
+	tree    = log --graph --pretty  --format='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+	undo    = checkout --
+	wc      = whatchanged
+	pom     = push origin master
+
+[color]
+	ui = auto 

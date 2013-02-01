@@ -1,0 +1,20 @@
+URxvt*buffered: true
+URxvt*cursorBlink: false
+URxvt*cursorUnderline: true
+
+URxvt*scrollBar: false
+
+URxvt*font:xft:envy code r:pixelsize=13:style=Regular
+URxvt*boldFont:xft:envy code r:pixelsize=13:style=Bold
+URxvt*italicFont:xft:envy code r:pixelsize=13:style=Italic
+
+#include "/home/irving/.colours/solarized.Xresources"
+
+URxvt*urgentOnBell: true
+
+URxvt*perl-lib:      /usr/lib/urxvt/perl/
+URxvt*perl-ext:      default,url-select,clipboard,select
+URxvt*keysym.Mod4-u: perl:url-select:select_next
+URxvt*keysym.Mod4-v: perl:clipboard:paste
+URxvt*urlLauncher:   /usr/local/bin/surf
+URxvt*underlineURLs: true

@@ -1,0 +1,48 @@
+# Shell Options {{{
+
+# Command History
+export HISTSIZE=
+export HISTFILE="$HOME/.bash/history"
+shopt -s histappend
+shopt -s autocd
+set -o vi
+  
+GEM_BIN="$HOME/.gem/ruby/1.9.1/bin"
+[-d $GEM_BIN ] && PATH="$PATH:$GEM_BIN"
+
+CABAL_BIN="$HOME/.cabal/bin"
+[ -d $CABAL_BIN ] && PATH="$PATH:$CABAL_BIN"
+
+
+# }}}
+# Utilities {{{
+
+export EDITOR="vim"
+export VISUAL="vim"
+export PAGER="less"
+
+# If I'm not in X, use the `elinks` browser.
+if [[ -z "$DISPLAY" ]]; then
+  export BROWSER="elinks"
+else
+  export BROWSER="surf"
+fi
+
+# }}}
+# Colour Definitions {{{
+
+# Colours for `grep`
+export GREP_OPTIONS=""
+
+# Colours for `man`
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;38;5;74m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[38;5;246m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[04;38;5;146m'
+
+#}}}
+
+# vim:ft=sh

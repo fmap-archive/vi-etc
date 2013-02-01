@@ -1,0 +1,6 @@
+default_color = "-1";
+info_eol = "false";
+abstracts = { sb_background = "%n%w"; };
+formats = {
+  "fe-common/core" = { pubmsg = "{pubmsgnick $2 {pubnick \00310$0}}$1"; };
+};

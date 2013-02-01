@@ -1,0 +1,104 @@
+#               .--~~,__
+#  :-....,-------`~~'._.'           Author:     Vikram Verma
+#   `-,,,  ,_      ;'~U'            Modified:   25 December 2011
+#    _,-' ,'`-__; '--.
+#   (_/'~~      ''''(;              vim:foldmethod=marker:foldmarker={{{,}}}
+
+# Vikram Verma {{{
+
+set realname = "Vikram Verma"
+set signature = "~/.mutt/signature|"
+
+# }}}
+# Incoming Mail - OfflineIMAP {{{
+
+set mbox_type = Maildir
+set folder    = $HOME/var/mail
+set postponed = "+vikramverma/[Gmail].Drafts/"
+set spoolfile = "+vikramverma/INBOX"
+set check_new
+
+mailboxes +vikramverma/inbox  +vikramverma/all_mail 
+mailboxes +vikramverma/drafts +vikramverma/flagged 
+mailboxes +vikramverma/sent   +vikramverma/trash 
+mailboxes +vikramverma/spam   +vikramverma/lists 
+
+# }}}
+# Outgoing Mail - MSMTP {{{
+
+set sendmail = /usr/bin/msmtp
+unset record
+
+set hostname="vikramverma.com"
+set use_domain=yes
+
+my_hdr X-URL: http://vikramverma.com
+my_hdr X-Alignment: Chaotic Neutral
+my_hdr Cc: Vikram Verma <me@vikramverma.com> # :X
+
+set from = "me@vikramverma.com"
+
+# Pretty Good Privacy
+source ~/.mutt/gpg.rc
+set pgp_autosign
+
+# }}}
+# Index View {{{
+
+set sort=threads
+set sort_aux=reverse-last-date-received
+set index_format  = "%3C| %-21.20n %s%* %Z| %d"
+set date_format   = "%Y-%m-%d"
+
+# }}}
+# Pager View {{{
+
+set pager = "builtin"
+set pager_index_lines = 9
+set pager_context = 5
+unset markers
+
+ignore *
+unignore To From Cc Date X-RSS-URL
+unignore X-Alignment # Let's see if this catches on.
+
+alternative_order text/plain text/html
+
+# }}}
+# File/Alias View {{{
+
+set sort_browser = reverse-date
+set folder_format = "%3C| %u:%g [%N] %f %*. %t %4s %F"
+set alias_format  = "%4n %t %-20a %r"
+
+# }}}
+# Status Bar {{{
+
+set status_format = "%f%> %?p?%p drafts?"
+unset help
+
+# }}}
+# Editor {{{
+
+set tmpdir = $HOME/.mutt/tmp
+set editor = "vim"
+set edit_headers
+set include
+
+# }}}
+# Colour {{{
+
+source $HOME/.mutt/colours/solarized.mutt
+
+# }}}
+# Notifications {{{ 
+
+set beep_new
+
+# }}}
+# Contacts {{{
+
+set alias_file = $HOME/.mutt/aliases
+source $alias_file
+
+# }}}

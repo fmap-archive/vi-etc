@@ -1,0 +1,171 @@
+call pathogen#infect()
+
+" Section: Options {{{
+
+" Environment
+set nocompatible
+set shell=bash
+
+" Visual
+set ruler
+set rnu
+set showmode
+set nowrap
+set title
+set ls=2
+
+if &t_Co >= 256 || has("gui_running")
+  colorscheme solarized
+  highlight Folded term=bold cterm=bold
+  set cursorline
+endif
+
+if has("gui_running")
+  set background=light
+else
+  set background=dark
+endif
+
+if &t_Co > 2 || has("gui_running")
+  syntax enable
+endif
+
+" Title
+if has('title') && (has('gui_running') || &title)
+  set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}\ 
+  set titlestring+=%{fugitive#statusline()}
+endif
+
+if has('gui_running')
+  set guifont=Envy\ Code\ R\ 10
+  set guicursor+=a:blinkon0
+  set guioptions=
+endif
+
+" Indentation
+set autoindent
+set copyindent
+set tabstop=2
+set softtabstop=2
+set shiftwidth=2
+set expandtab
+set formatoptions=t1
+
+" Backups
+set backup
+set backupdir=~/.vim/backup
+set writebackup
+
+" Window Splitting
+set splitbelow
+set splitright
+
+" Code Folding
+set foldenable
+set foldmethod=marker
+set foldmarker={{{,}}}
+set fillchars=
+set foldcolumn=0
+
+" Insert Behaviours
+set backspace=start
+
+" Document Navigation/Search
+set incsearch
+
+" Buffer Navigation Behaviours
+set autowrite
+set hidden
+if has("autocmd")
+  " Restore cursor position after reopening files.
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g`\"" | endif
+endif
+
+" Errors
+set noerrorbells
+set visualbell t_vb=
+if has("autocmd")
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+
+" FileType
+filetype plugin on
+set wildignore='.git'
+if has("autocmd")
+  autocmd FileType * if exists("+omnifunc") && &omnifunc == "" | setlocal omnifunc=syntaxcomplete#Complete | endif
+  autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
+endif
+
+" }}}
+" Section: Commands {{{
+
+" Toggle the QuickFix Window.
+command -bang -nargs=? QFix call QFixToggle(<bang>0)
+function! QFixToggle(forced)
+  if exists("g:qfix_win") && a:forced == 0
+    cclose
+    unlet g:qfix_win
+  else
+    copen 10
+    let g:qfix_win = bufnr("$")
+  endif
+endfunction
+
+function InsertTime()
+  :r! date "+\%F \%T \%z"
+endfunction
+
+" }}}
+" Section: Mappings {{{
+
+" Command Triggers
+let mapleader=","
+map ;  :
+
+
+" File Navigation
+nnoremap <leader>m  /TODO<CR>
+nnoremap <leader>x  /TODO<CR>
+nnoremap <Space>    Lz<CR>
+
+" Buffer Navigation
+nnoremap <leader>b :ls<CR>:b<space>
+nnoremap <leader>d :ls<CR>:bdelete<space>
+
+" Window/Split Navigation
+nmap <C-h> <C-w>h
+nmap <C-j> <C-w>j
+nmap <C-k> <C-w>k
+nmap <C-l> <C-w>l
+
+" Search
+cmap g!! vimgrep
+nnoremap <leader>f :find<space>
+
+" Block Commenting
+noremap <leader># :s/^/#/<CR>
+noremap <leader>/ :s`^`//`<CR>
+noremap <leader>! :s/^/!/<CR>
+noremap <leader>- :s/^/--/<CR>
+noremap <leader>" :s/^/"/<CR>
+noremap <leader>' :s/^/'''/<CR>
+
+" Mode Toggling
+nmap <silent><leader>l :set rnu!<CR>
+nmap <silent><leader>p :set paste!<CR>
+
+" User Functions
+nmap <silent><leader>w :call StripWhitespace()<CR>
+nmap <silent><leader>q :QFix()<CR>
+
+" Plugins
+map <silent><leader>n :NERDTreeToggle<CR>
+
+" Miscellaneous
+nmap <silent><leader>s :shell<CR>
+nmap <Leader>m :make<CR>
+cmap w!! w !sudo tee % >/dev/null
+noremap <leader>w :%s/ \+$//ge<CR>
+map <Leader>ev :vs $MYVIMRC<CR>
+
+" }}}
