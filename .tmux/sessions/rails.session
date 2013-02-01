@@ -1,9 +1,0 @@
-neww -nshell -t 2
-kill-pane -t 1
-neww -neditor -t 1 'vim'
-neww -nconsole -t 3 'rails console --debugger'
-neww -nserver -t 4 'rails server -p `nap`'
-neww -nlog -t 5 'tail -f ./log/development.log'
-splitw -h -p 50 'tail -f ./log/test.log'
-
-selectw -t 1
