@@ -3,7 +3,7 @@
 	email = hey+code@vikramverma.com
 
 [core]
-	editor = /usr/bin/urxvtc -name scratchpad -e vim
+	editor = /usr/bin/urxvt -name scratchpad -e vim
 	pager  = less
 
 [sendemail]
