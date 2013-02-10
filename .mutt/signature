@@ -10,4 +10,5 @@ shuf -n1 <<BOOM! | sed 's/^ *//' | par w72
   When a gift is deserved, it is not a gift but a payment.
   Intuition of truth may not Relish soe much as Truth that is hunted downe.
   To be apt in quotation is a splendid and dangerous gift. Splendid, because it ornaments a man's speech with other men's jewels; dangerous, for the same reason.
+  All rituals have a sacrifice. The default one is time.
 BOOM!
