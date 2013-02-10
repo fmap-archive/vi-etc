@@ -217,7 +217,6 @@ keys' c = mkKeymap c $
     scrutor = S.searchEngine "scrutor" "http://scrutor.aineko/?q="
     scratchpad = (namedScratchpadAction scratchpads)
     restart = "xmonad --recompile &&"
-           ++ "kgrep() { for pid in $(pgrep \"$1\"); do kill -9 $pid; done } &&"
            ++ "kgrep status.sh &&"
            ++ "kgrep dzen &&"
            ++ "xmonad --restart"
