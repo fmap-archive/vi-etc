@@ -14,9 +14,19 @@ servers = (
     address = "naos.foonetic.net";
     port = "443";
     use_ssl = "yes";
+    ssl_verify = "no";
     autoconnect = "yes";
     skip_motd = "on";
 
+  },
+  {
+    chatnet = "oftc";
+    address = "irc.oftc.net";
+    port = "6697";
+    use_ssl = "yes";
+    ssl_verify = "yes";
+    autoconnect = "yes";
+    skip_motd = "on";
   },
 );
 
@@ -32,21 +42,26 @@ chatnets = {
     # Foonetic authentication is handled by password.pl:
     #   - `/password set foonetic vikramverma hunter2`
     #   - `/password save`
-    type = "IRC";
-    real_name = "WashIrving";
-    user_name = "WashIrving";
-    nick = "WashIrving";
     autosendcmd = "/password send; wait 2000";
+    type = "IRC";
   };
+  oftc = {
+    # OFTC NickServ is 'identify <pw> <user>' rather than 'identify <user> <pw>', 
+    # `password.pl` doesn't do that yet. So manual auth for now.
+    type = "IRC";
+  }
 };
 
 channels = (
-  { name = "#phlegethos"; chatnet = "foonetic"; autojoin = "No"; },
   { name = "#lesswrong"; chatnet = "freenode"; autojoin = "Yes"; },
   { name = "##lwmath"; chatnet = "freenode"; autojoin = "Yes"; },
   { name = "#hackerspacesg"; chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#haskell"; chatnet = "freenode"; autojoin = "No"; },
-  { name = "#haskell-blah"; chatnet = "freenode"; autojoin = "No"; }
+  { name = "#haskell"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#haskell-blah"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#xmonad"; chatnet = "freenode"; autojoin = "Yes"; }
+  { name = "#FaiD3.0"; chatnet = "foonetic"; autojoin = "Yes"; },
+  { name = "#xkcd-q"; chatnet = "foonetic"; autojoin = "Yes"; },
+  { name = "#suckless"; chatnet = "oftc"; autojoin = "Yes"; }
 );
 
 aliases = {
