@@ -28,6 +28,15 @@ servers = (
     autoconnect = "yes";
     skip_motd = "on";
   },
+  {
+    chatnet = "rizon";
+    address = "irc.rizon.net";
+    port = "6697";
+    use_ssl = "yes";
+    ssl_verify = "no";
+    autoconnect = "yes";
+    skip_motd = "on";
+  },
 );
 
 chatnets = {
@@ -58,10 +67,10 @@ channels = (
   { name = "#hackerspacesg"; chatnet = "freenode"; autojoin = "Yes"; },
   { name = "#haskell"; chatnet = "freenode"; autojoin = "Yes"; },
   { name = "#haskell-blah"; chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#xmonad"; chatnet = "freenode"; autojoin = "Yes"; }
-  { name = "#FaiD3.0"; chatnet = "foonetic"; autojoin = "Yes"; },
+  { name = "#ruby-lang"; chatnet = "freenode"; autojoin = "Yes"; },
   { name = "#xkcd-q"; chatnet = "foonetic"; autojoin = "Yes"; },
-  { name = "#suckless"; chatnet = "oftc"; autojoin = "Yes"; }
+  { name = "#suckless"; chatnet = "oftc"; autojoin = "Yes"; },
+  { name = "#reaction"; chatnet = "rizon"; autojoin = "Yes"; }
 );
 
 aliases = {
