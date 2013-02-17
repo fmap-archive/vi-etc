@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-shuf -n1 <<BOOM! | sed 's/^ *//' | par w72
+wrap() {
+  echo "${1}$(cat -)${1}"
+}
+
+shuf -n1 <<BOOM! | sed 's/^ *//' | wrap '"' | par w72
   Data! Data! Data! I cannot make bricks without clay!
   One must give value to their existence by behaving as if ones very existence were a work of art.
   Nothing behaves like mathematics, it just resembles it.
   By keenly confronting the enigmas that surround us, and by considering and analyzing the observations that I have made, I ended up in the domain of mathematics.
   Where no paths exist, a man strays only when he misses his destination. There is no crime, no transgression, no sin save foolishness or incompetence, and no obscenity save the tyranny of custom.
   VICTORY FOR THE FORCES OF DEMOCRATIC FREEDOM!
-  When a gift is deserved, it is not a gift but a payment.
   Intuition of truth may not Relish soe much as Truth that is hunted downe.
-  To be apt in quotation is a splendid and dangerous gift. Splendid, because it ornaments a man's speech with other men's jewels; dangerous, for the same reason.
   All rituals have a sacrifice. The default one is time.
+  The special function of scientific explanation is [..] to turn the unexpected, as far as possible, into the expected.
+  Truth is much too complicated to allow anything but approximations.
+  Intuition only works in situations where neurology and evolution has pre-equipped us with a good set of basic-level categories. That works for dealing with other humans, and for throwing things, and for a bunch of other things that do not, unfortunately, include constructing viable philosophies.
 BOOM!
