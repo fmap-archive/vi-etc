@@ -74,10 +74,12 @@ channels = (
 );
 
 aliases = {
-  tp = "topic $C $* | $topic";
-  w = "window";
-  q = "query";
-  say = "msg *";
+  tp       = "topic $C $* | $topic";
+  w        = "window";
+  q        = "query";
+  say      = "msg *";
+  shitlist = "/notice $C $0 added to $N's shitlist; /trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
+  unshit   = "/notice $C $0 removed from $N's shitlist; /trigger del $0";
 };
 
 statusbar = {
@@ -187,7 +189,6 @@ settings = {
 };
 ignores = (
   { level = "JOINS PARTS QUITS CTCPS"; },
-  { mask = "kiba"; level = "ALL"; }
 );
 
 logs = { };
