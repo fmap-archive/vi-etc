@@ -123,13 +123,13 @@ manageHook' = (composeAll . concat $
 
 scratchpads :: [NamedScratchpad]
 scratchpads = concat $
-  [ [NS "dvorak"     (keymap   "dvorak.gif") (resource =? "feh")      doCenterFloat]
-  , [NS "scratchpad" (terminal "scratchpad") (resource =? "scratchpad")   doSTermLayout]
-  , [NS "downloader" (terminal "downloader") (resource =? "downloader")   doSTermLayout]
+  [ [NS "shell" (terminal "shell" "bash") (resource =? "shell") doSTermLayout ]
+  , [NS "ghci"  (terminal "ghci" "ghci")  (resource =? "ghci")  doSTermLayout ]
+  , [NS "htop"  (terminal "htop" "htop")  (resource =? "htop")  doSTermLayout ]
+  , [NS "dl"    (terminal "dl" "false")   (resource =? "dl")    doSTermLayout ]
   ]
   where 
-    keymap file   = "feh " ++ "~/usr/share/media/images/keymaps/" ++ file
-    terminal name = terminal' ++ " -name " ++ name
+    terminal name cmd = terminal' ++ " -name " ++ name ++ " -e " ++ cmd
     doSTermLayout = customFloating $ W.RationalRect left top width height
       where
         height  = 2/4
@@ -194,7 +194,10 @@ keys' c = mkKeymap c $
   , ( "M-p",           shellPrompt solarizedXPConfig)
   , ( "M-w",           windowPromptGoto solarizedXPConfig)
   , ( "M-t",           withFocused $ windows . W.sink)
-  , ( "M-S-p",         scratchpad "scratchpad")
+  , ( "M-S-p",         toggleScratchpad "shell")
+  , ( "M-S-i",         toggleScratchpad "ghci")
+  , ( "M-S-u",         toggleScratchpad "dl")
+  , ( "M-S-s",         toggleScratchpad "htop")
   , ( "M-S-c",         kill1) -- s/1// to kill in all workspaces
   , ( "M-m",           withFocused minimizeWindow)
   , ( "M-S-m",         sendMessage RestoreNextMinimizedWin)
@@ -215,8 +218,7 @@ keys' c = mkKeymap c $
   ]
   where
     scrutor = S.searchEngine "scrutor" "http://scrutor.aineko/?q="
-    scratchpad = (namedScratchpadAction scratchpads)
+    toggleScratchpad = (namedScratchpadAction scratchpads)
     restart = "xmonad --recompile &&"
-           ++ "kgrep status.sh &&"
-           ++ "kgrep dzen &&"
+           ++ "killall dzen2 && "
            ++ "xmonad --restart"
