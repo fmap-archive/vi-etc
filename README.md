@@ -5,7 +5,7 @@ host (*aineko*.)
 
 ## Install
 
-  - `git clone --recurse-submodules git://vikramverma.com/dotfiles.git ~/etc`
+  - `git clone --recurse-submodules git://vikramverma.com/vi-etc.git ~/etc`
   - `cd ~/etc && make install`
 
 ## License
