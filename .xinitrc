@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-battlestation "lap" # assumption
 xrdb -merge .Xdefaults                                      # Load Xdefaults
 xsetroot -cursor_name left_ptr                              # Set cursor style
 urxvtd -q -f -o &                                           # Initialise URxvt daemon
@@ -8,6 +7,7 @@ unclutter -root -idle 1 &                                   # Hide cursor after 
 xsetroot -solid '#fdf6e3'                                   # Solid background
 xset -b &
 xautolock -time 15 -locker autolock &
+battlestation "lap" # assumption
 
 echo > ~/.xmonad/history
 
