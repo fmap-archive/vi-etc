@@ -6,8 +6,9 @@ import Data.List
 import qualified Data.Map
 import Data.Ratio
 import XMonad
-import XMonad.Actions.CopyWindow
 import qualified XMonad.Actions.Search as S
+import XMonad.Actions.CopyWindow
+import XMonad.Actions.CycleWS
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageDocks
@@ -123,13 +124,15 @@ manageHook' = (composeAll . concat $
 
 scratchpads :: [NamedScratchpad]
 scratchpads = concat $
-  [ [NS "shell" (terminal "shell" "bash") (resource =? "shell") doSTermLayout ]
-  , [NS "ghci"  (terminal "ghci" "ghci")  (resource =? "ghci")  doSTermLayout ]
-  , [NS "htop"  (terminal "htop" "htop")  (resource =? "htop")  doSTermLayout ]
-  , [NS "dl"    (terminal "dl" "false")   (resource =? "dl")    doSTermLayout ]
+  [ [NS "shell" (terminal "shell" "bash")       (resource =? "shell") doSTermLayout ]
+  , [NS "ghci"  (terminal "ghci" "ghci")        (resource =? "ghci")  doSTermLayout ]
+  , [NS "htop"  (terminal "htop" "htop")        (resource =? "htop")  doSTermLayout ]
+  , [NS "notes" (terminal "notes" noteCommand)  (resource =? "notes") doSTermLayout ]
+  , [NS "dl"    (terminal "dl" "false")         (resource =? "dl")    doSTermLayout ]
   ]
   where 
     terminal name cmd = terminal' ++ " -name " ++ name ++ " -e " ++ cmd
+    noteCommand = "vim -c 'cd ~/root/notes' ~/root/notes/scratchpad.txt"
     doSTermLayout = customFloating $ W.RationalRect left top width height
       where
         height  = 2/4
@@ -185,6 +188,7 @@ logHook' bar = dynamicLogWithPP $ defaultPP
 keys' c = mkKeymap c $
   [ ( "M-S-l",         spawn "slock")
   , ( "M-<Return>",    windows W.swapMaster)
+  , ( "M-<Tab>",       toggleWS' ["NSP"])
   , ( "M-,",           sendMessage (IncMasterN 1))
   , ( "M-.",           sendMessage (IncMasterN (-1)))
   , ( "M-S-<Return>",  spawn terminal')
@@ -198,6 +202,7 @@ keys' c = mkKeymap c $
   , ( "M-S-i",         toggleScratchpad "ghci")
   , ( "M-S-u",         toggleScratchpad "dl")
   , ( "M-S-s",         toggleScratchpad "htop")
+  , ( "M-S-e",         toggleScratchpad "notes")
   , ( "M-S-c",         kill1) -- s/1// to kill in all workspaces
   , ( "M-m",           withFocused minimizeWindow)
   , ( "M-S-m",         sendMessage RestoreNextMinimizedWin)
