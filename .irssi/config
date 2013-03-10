@@ -19,18 +19,6 @@ chatnets = {
     autosendcmd = "/password send; wait 2000";
     type = "IRC";
   };
-  foonetic = {
-    # Foonetic authentication is handled by password.pl:
-    #   - `/password set foonetic vikramverma hunter2`
-    #   - `/password save`
-    autosendcmd = "/password send; wait 2000";
-    type = "IRC";
-  };
-  oftc = {
-    # OFTC NickServ is 'identify <pw> <user>' rather than 'identify <user> <pw>', 
-    # `password.pl` doesn't do that yet. So manual auth for now.
-    type = "IRC";
-  }
 };
 
 channels = (
