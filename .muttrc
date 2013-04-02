@@ -15,13 +15,13 @@ set signature = "~/.mutt/signature|"
 set mbox_type = Maildir
 set folder    = $HOME/var/mail
 set postponed = "+vikramverma/[Gmail].Drafts/"
-set spoolfile = "+vikramverma/INBOX"
+set spoolfile = "+vikramverma/inbox"
 set check_new
 
-mailboxes +vikramverma/inbox  +vikramverma/all_mail 
-mailboxes +vikramverma/drafts +vikramverma/flagged 
+mailboxes +vikramverma/inbox  +vikramverma/archive
+mailboxes +vikramverma/drafts 
 mailboxes +vikramverma/sent   +vikramverma/trash 
-mailboxes +vikramverma/spam   +vikramverma/lists 
+mailboxes +vikramverma/spam   +vikramverma/Lists 
 
 # }}}
 # Outgoing Mail - MSMTP {{{

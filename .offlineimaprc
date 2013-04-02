@@ -15,6 +15,7 @@ nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
                             'flagged': '[Gmail]/Starred',
                             'trash':   '[Gmail]/Trash',
                             'archive': '[Gmail]/All Mail',
+                            'inbox': 'INBOX',
                             }.get(folder, folder)
 
 [Repository vikramverma-remote]
@@ -26,6 +27,7 @@ nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/Starred':   'flagged',
                             '[Gmail]/Trash':     'trash',
                             '[Gmail]/All Mail':  'archive',
+                            'INBOX': 'inbox',
                             }.get(folder, folder)
 cert_fingerprint = 6d1b5b5ee0180ab493b71d3b94534b5ab937d042
 
