@@ -57,17 +57,18 @@ main = do
 terminal' = "urxvtc" :: String
 browser'  = "surf"   :: String
 
-workspaces' = map (show . (\(a,_) -> a)) $
-  [ (1, "code and prose")
-  , (2, "web browsing")
-  , (3, "irc and mail")
-  , (4, "documents: books, papers, whatever")
-  , (5, "spaced-repetition")
-  , (6, "well, I'm learning to touch-type")
-  , (7, "n-back")
-  , (8, "free")
-  , (9, "music")
-  ] 
+workspaces' = map (\(n,w) -> foldr (++) "" [show n,":",w]) $
+  [ (1, "wrk")
+  , (2, "www")
+  , (3, "com")
+  , (4, "doc")
+  , (5, "srs")
+  , (6, "dnb")
+  , (7, "mu")
+  , (8, "?")
+  , (9, "?")
+  ] where
+  merge = concat . transpose
 
 (displayW,_) = getDisplayDimensions
 
@@ -100,13 +101,12 @@ manageHook' = (composeAll . concat $
   , [titleStarts  "Gnuplot"       --> doCenterFloat   ]
   , [iconHas      "gplt"          --> doCenterFloat   ]
   , [className =? "Xmessage"      --> doResizeFloat   ]
-  , [className =? "Surf"          --> doShift "2"     ]
-  , [titleStarts  "irssi"         --> doShift "3"     ]
-  , [titleStarts  "mutt"          --> doShift "3"     ]
-  , [className =? "Okular"        --> doShift "4"     ]
-  , [className =? "Mnemosyne"     --> doShift "5"     ]
-  , [className =? "Amphetype"     --> doShift "6"     ]
-  , [titleStarts "Brain Workshop" --> doShift "7"     ]
+  , [className =? "Surf"          --> doShift "2:www" ]
+  , [titleStarts  "irssi"         --> doShift "3:com" ]
+  , [titleStarts  "mutt"          --> doShift "3:com" ]
+  , [className =? "Okular"        --> doShift "4:doc" ]
+  , [className =? "Mnemosyne"     --> doShift "5:srs" ]
+  , [titleStarts "Brain Workshop" --> doShift "6:dnb" ]
   , [titleStarts "Brain Workshop" --> doTile          ]
   ]) <+> namedScratchpadManageHook scratchpads
   where
@@ -153,10 +153,9 @@ layoutHook' = fullscreenFull                     $
               minimize                           $
               boringWindows                      $
               smartBorders                       $
-              onWorkspace "2" tabLayout          $
-              onWorkspace "3" mailLayout         $
-              onWorkspace "4" tabLayout          $
-              onWorkspace "5" (Full)             $
+              onWorkspace "2:www" tabLayout      $
+              onWorkspace "3:com" mailLayout     $
+              onWorkspace "4:doc" tabLayout      $
               defaultLayout
   where
     defaultLayout = (Full ||| Tall 1 0.05 tau)

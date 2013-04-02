@@ -28,3 +28,6 @@
 [submodule ".vim/bundle/nginx"]
 	path = .vim/bundle/nginx
 	url = https://github.com/vim-scripts/nginx.vim.git
+[submodule ".vim/bundle/cute-haskell"]
+	path = .vim/bundle/cute-haskell
+	url = git://vikramverma.com/cute-haskell.vim.git
