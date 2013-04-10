@@ -13,15 +13,15 @@ set signature = "~/.mutt/signature|"
 # Incoming Mail - OfflineIMAP {{{
 
 set mbox_type = Maildir
-set folder    = $HOME/var/mail
-set postponed = "+vikramverma/[Gmail].Drafts/"
-set spoolfile = "+vikramverma/inbox"
+set folder    = $HOME/var/mail/vikramverma
+set postponed = "+[Gmail].Drafts/"
+set spoolfile = "+inbox"
 set check_new
 
-mailboxes +vikramverma/inbox  +vikramverma/archive
-mailboxes +vikramverma/drafts 
-mailboxes +vikramverma/sent   +vikramverma/trash 
-mailboxes +vikramverma/spam   +vikramverma/Lists 
+mailboxes +inbox  +archive
+mailboxes +drafts 
+mailboxes +sent   +trash 
+mailboxes +spam   +Lists 
 
 # }}}
 # Outgoing Mail - MSMTP {{{
@@ -47,8 +47,15 @@ set pgp_autosign
 
 set sort=threads
 set sort_aux=reverse-last-date-received
-set index_format  = "%3C| %-21.20n %s%* %Z| %d"
+set index_format  = "%3C | %-21.20n %s%* %S | %d"
 set date_format   = "%Y-%m-%d"
+
+lists selfspark@googlegroups.com
+lists nushackers@googlegroups.com
+lists hackerspacesg@googlegroups.com
+lists openfrog@googlegroups.com
+
+set nomark_old
 
 # }}}
 # Pager View {{{
@@ -68,13 +75,13 @@ alternative_order text/plain text/html
 # File/Alias View {{{
 
 set sort_browser = reverse-date
-set folder_format = "%3C| %u:%g [%N] %f %*. %t %4s %F"
+set folder_format = "%3C| [%N] %f"
 set alias_format  = "%4n %t %-20a %r"
 
 # }}}
 # Status Bar {{{
 
-set status_format = "%f%> %?p?%p drafts?"
+set status_format = "%f(%n)%> %?p?drafts(%p)?"
 unset help
 
 # }}}
