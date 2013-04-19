@@ -24,8 +24,6 @@ import XMonad.Layout.Tabbed
 import XMonad.Prompt
 import XMonad.Prompt.Window
 import XMonad.Prompt.Shell
-import System.Posix.Unistd
-import System.Posix.User
 import XMonad.Util.EZConfig
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
@@ -37,7 +35,6 @@ import Util.Display
 main :: IO ()
 main = do
   bar      <- spawnPipe wsBar
-  hostname <- fmap nodeName getSystemID
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
     {  terminal           = terminal'
     ,  workspaces         = workspaces'
@@ -50,7 +47,7 @@ main = do
     ,  startupHook        = startupHook'
     ,  logHook            = logHook' bar
     ,  focusFollowsMouse  = False
-    ,  modMask            = if (hostname == "aineko") then mod4Mask else mod1Mask
+    ,  modMask            = mod4Mask
     ,  keys               = keys'
     }
 
@@ -67,8 +64,7 @@ workspaces' = map (\(n,w) -> foldr (++) "" [show n,":",w]) $
   , (7, "mu")
   , (8, "?")
   , (9, "?")
-  ] where
-  merge = concat . transpose
+  ] 
 
 (displayW,_) = getDisplayDimensions
 
@@ -105,6 +101,7 @@ manageHook' = (composeAll . concat $
   , [titleStarts  "irssi"         --> doShift "3:com" ]
   , [titleStarts  "mutt"          --> doShift "3:com" ]
   , [className =? "Okular"        --> doShift "4:doc" ]
+  , [className =? "FBReader"      --> doShift "4:doc" ]
   , [className =? "Mnemosyne"     --> doShift "5:srs" ]
   , [titleStarts "Brain Workshop" --> doShift "6:dnb" ]
   , [titleStarts "Brain Workshop" --> doTile          ]
