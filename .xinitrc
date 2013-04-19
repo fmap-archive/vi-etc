@@ -6,7 +6,6 @@ urxvtd -q -f -o &                                           # Initialise URxvt d
 unclutter -root -idle 1 &                                   # Hide cursor after a second of inactivity.
 xsetroot -solid '#fdf6e3'                                   # Solid background
 xset -b &
-xautolock -time 15 -locker autolock &
 xcompmgr &
 battlestation "lap" # assumption
 
