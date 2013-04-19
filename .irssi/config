@@ -139,7 +139,11 @@ settings = {
     autolog = "yes";
     beep_msg_level = "MSGS HILIGHT";
   };
-  "perl/core/scripts" = { title_string = "irssi: $T$winname"; };
+  "perl/core/scripts" = {
+    title_string = "irssi: $T$winname";
+    autoaway = "600";
+    away_reason = "'(auto)away'";
+  };
 };
 ignores = (
   { level = "JOINS PARTS QUITS CTCPS"; },
