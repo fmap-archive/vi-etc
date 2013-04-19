@@ -79,6 +79,9 @@ set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --l
 
 # OK, here's a version which uses gnupg's message catalog:
 # set pgp_good_sign="`gettext -d gnupg -s 'Good signature from "' | tr -d '"'`"
-
 # This version uses --status-fd messages
 set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
+
+set pgp_replysignencrypted
+
+# vim:set ft=muttrc:

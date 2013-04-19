@@ -63,6 +63,7 @@ set nomark_old
 set pager = "builtin"
 set pager_index_lines = 9
 set pager_context = 5
+set pager_format=%s
 unset markers
 
 ignore *
@@ -109,3 +110,5 @@ set alias_file = $HOME/.mutt/aliases
 source $alias_file
 
 # }}}
+
+set fast_reply
