@@ -5,6 +5,7 @@
 [core]
 	editor = /usr/bin/urxvt -name scratchpad -e vim
 	pager  = less
+	excludesfile = /home/irving/.gitignore
 
 [sendemail]
   smtpserver = /usr/bin/msmtp
