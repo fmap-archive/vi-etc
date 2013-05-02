@@ -7,7 +7,6 @@
 # Vikram Verma {{{
 
 set realname = "Vikram Verma"
-set signature = "~/.mutt/signature|"
 
 # }}}
 # Incoming Mail - OfflineIMAP {{{
