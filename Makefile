@@ -2,7 +2,6 @@ all: install
 
 install:
 	rsync --exclude ".git" \
-				--exclude ".gitignore" \
 				--exclude ".gitmodules" \
 				--exclude "README.md" \
 				--exclude "README.pdf"\
