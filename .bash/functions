@@ -11,6 +11,11 @@ function loop()
 # }}}
 # String {{{
 
+function wc() 
+{ # BSD madness.
+  /usr/bin/wc "$@" | sed 's/^ *//'
+}
+
 function len()
 { # Calculate the length of a string.
   echo -n "$*" | wc -c
@@ -88,13 +93,12 @@ function cwd
 
 function is_git_repo?
 { # Evaluate if we're in a git repository.
-  [[ -d ".git" ]] && return 0
+  git status &>/dev/null
 }
 
 function title_pwd
 { # Print a truncated version of our absolute path.
-  [[ $PWD == $HOME ]] || echo -n '~'
-  echo -n "${PWD/#$HOME/}"
+  pwd | sed "s'$HOME'~'" | tr -d '\n'
 }
 
 function title_git_branch
@@ -109,7 +113,10 @@ function title_git_changes
 { # If we're in a git repository print the number of currently uncommitted files (if any).
   if is_git_repo?; then
     local changes=$(git status -s | wc -l)
-    [ $changes != "0" ] && echo -n " [${changes} changes]"
+    if [ $changes != "0" ]; then
+      [ $changes -gt 1 ] && s="s"
+      echo -n "[${changes} change$s]"
+    fi
   fi
 }
 
@@ -118,18 +125,26 @@ function set_window_title
   update_title "$(title_pwd)$(title_git_branch)$(title_git_changes)"
 }
 
+function prompt_delim
+{ [[ $UID == 0 ]] && p="#" || p="%"
+  echo -n $p
+}
+
 function PS1
 { # Value of primary prompt.
-  echo -n ""
+  [[ ! -n "$DISPLAY" ]] && echo -n '\W'
+  prompt_delim
 }
 
 function PS2
 { # Value of secondary prompt.
-  [[ $(basename $PWD) == $USER ]] \
-    && local chars=1              \
-    || local chars=$(len `cwd`)
-  let chars=chars+$(len `PS1`)
-  loop $chars echo -n ' '
+  if [[ -n "$DISPLAY" ]]; then
+    prompt_delim
+  else
+    length="$(cwd | sed "s'vi'~'" | wc -c)"
+    loop $(($length-1)) echo -n ' '
+    prompt_delim
+  fi
 }
 
 # }}}

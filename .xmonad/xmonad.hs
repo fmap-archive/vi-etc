@@ -1,14 +1,14 @@
--- TODO:
--- workspace-scoped window selector prompt?
--- dzen handler library?
-
 import Data.List
+import Data.Char
 import qualified Data.Map
 import Data.Ratio
+import Data.Monoid
+
 import XMonad
 import qualified XMonad.Actions.Search as S
 import XMonad.Actions.CopyWindow
 import XMonad.Actions.CycleWS
+import XMonad.Actions.WindowGo
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.ManageDocks
@@ -29,16 +29,20 @@ import XMonad.Util.NamedScratchpad
 import XMonad.Util.Run
 import XMonad.Util.SpawnOnce
 import qualified XMonad.StackSet as W
+
 import Themes.Solarized
 import Util.Display
+import Util.Dzen2
+import Util.XFT
+import qualified Prompt.Keymap.CtrlP as Keymap
 
 main :: IO ()
 main = do
-  bar      <- spawnPipe wsBar
+  bar <- spawnPipe wsBar
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
     {  terminal           = terminal'
     ,  workspaces         = workspaces'
-    ,  borderWidth        = 1
+    ,  borderWidth        = 4
     ,  normalBorderColor  = base02
     ,  focusedBorderColor = base01
     ,  manageHook         = manageHook'
@@ -54,119 +58,161 @@ main = do
 terminal' = "urxvtc" :: String
 browser'  = "surf"   :: String
 
-workspaces' = map (\(n,w) -> foldr (++) "" [show n,":",w]) $
-  [ (1, "wrk")
-  , (2, "www")
-  , (3, "com")
-  , (4, "doc")
-  , (5, "srs")
-  , (6, "dnb")
-  , (7, "mu")
-  , (8, "?")
-  , (9, "?")
+workspaces' :: [String]
+workspaces' = map (\(n,w) -> mconcat [show n,":",w]) $
+  [ (1, "root")
+  , (2, "work")
+  , (3, "www" )
+  , (4, "mail")
+  , (5, "doc" )
+  , (6, "srs" )
+  , (7, "?"   )
+  , (8, "?"   )
+  , (9, "im"  )
+  , (0, "mu"  )
   ] 
 
-(displayW,_) = getDisplayDimensions
+findWS :: String -> String
+findWS = maybe "NSP" id . flip find workspaces' . isSuffixOf
+
+displayIndex :: Int
+displayIndex = 1
+
+(displayW,_) = getDisplayDimensions index
+  where index = pred displayIndex
 
 wsSplitDimensions x = (f x, g x)
-  where f = (round . (0.6*) . fromInteger)
-        g = (round . (0.4*) . fromInteger)
+  where f = round . (0.6*) . fromIntegral
+        g = round . (0.4*) . fromIntegral
 
-dzenStyle = " -fn 'Envy Code R:medium:pixelsize=13'" 
-         ++ " -bg '" ++ base03 
-         ++ "' -fg '" ++ base00 
-         ++ "' -e 'onstart=lower'" 
+font' :: String
+font' = show XFTSpecification 
+  { family = "LetterGothicMono" 
+  , style  = Just "Light" 
+  , size   = Just 16
+  }
 
-wsBar  = "dzen2 -p -ta l -x " ++ index ++ " -w " ++ width ++  " -h " ++ height ++ dzenStyle
-  where (width',_)     = wsSplitDimensions displayW
-        [height,index] = map show [22,0]
-        width          = show width'
+dzenStyle :: Dzen2Config
+dzenStyle = solarizedDzenConfig
+  { fn = Just font'
+  , e  = Just [onStartLower]
+  } where onStartLower = Event "onstart" [Action "lower" []]
 
-stBar  = "dzen2 -p -ta r -x " ++ index ++ " -w " ++ width ++  " -h " ++ height ++ dzenStyle
-  where (_,width')     = wsSplitDimensions displayW
-        [height,index] = map show [22, displayW - width']
-        width          = show width'
+wsBar :: String
+wsBar = dzen2Config $ dzenStyle
+  { p  = Right Nothing
+  , ta = Just LeftA
+  , x  = Just index
+  , w  = Just width
+  , h  = Just height
+  , xs = Just displayIndex
+  } where (width,_) = wsSplitDimensions displayW
+          height = 35
+          index = 0
+
+stBar :: String
+stBar = dzen2Config $ dzenStyle
+  { p = Right Nothing
+  , ta = Just RightA
+  , x = Just index
+  , w = Just width
+  , h = Just height
+  , xs = Just displayIndex
+  } where (_,width) = wsSplitDimensions displayW
+          height = 35
+          index = displayW - width
 
 manageHook' :: ManageHook
 manageHook' = (composeAll . concat $
-  [ [fullscreenManageHook                             ]
-  , [isFullscreen                 --> doFullFloat     ]
-  , [isDialog                     --> doCenterFloat   ]
-  , [className =? "feh"           --> doCenterFloat   ]
-  , [className =? "MPlayer"       --> doCenterFloat   ]
-  , [titleStarts  "Gnuplot"       --> doCenterFloat   ]
-  , [iconHas      "gplt"          --> doCenterFloat   ]
-  , [className =? "Xmessage"      --> doResizeFloat   ]
-  , [className =? "Surf"          --> doShift "2:www" ]
-  , [titleStarts  "irssi"         --> doShift "3:com" ]
-  , [titleStarts  "mutt"          --> doShift "3:com" ]
-  , [className =? "Okular"        --> doShift "4:doc" ]
-  , [className =? "FBReader"      --> doShift "4:doc" ]
-  , [className =? "Mnemosyne"     --> doShift "5:srs" ]
-  , [titleStarts "Brain Workshop" --> doShift "6:dnb" ]
-  , [titleStarts "Brain Workshop" --> doTile          ]
+  [ [fullscreenManageHook                                     ]
+  , [isFullscreen                 --> doFullFloat             ]
+  , [isDialog                     --> doCenterFloat           ]
+  , [className =? "feh"           --> doCenterFloat           ]
+  , [className =? "MPlayer"       --> doCenterFloat           ]
+  , [titleStarts  "Gnuplot"       --> doCenterFloat           ]
+  , [iconHas      "gplt"          --> doCenterFloat           ]
+  , [className =? "Xmessage"      --> doResizeFloat           ]
+  , [className =? "Surf"          --> doShift (findWS "www")  ]
+  , [titleStarts  "irssi"         --> doShift (findWS "im")   ]
+  , [titleStarts  "mutt"          --> doShift (findWS "mail") ]
+  , [className =? "Okular"        --> doShift (findWS "doc")  ]
+  , [className =? "Zathura"       --> doShift (findWS "doc")  ]
+  , [className =? "FBReader"      --> doShift (findWS "doc")  ]
+  , [className =? "Mnemosyne"     --> doShift (findWS "srs")  ]
+  , [titleStarts  "load_ssh_keys" --> doSTermLayout           ]
   ]) <+> namedScratchpadManageHook scratchpads
-  where
-    name           =  stringProperty "WM_NAME"      :: Query String
-    icon           =  stringProperty "WM_ICON_NAME" :: Query String
-    titleStarts x  =  fmap (x `isPrefixOf`) title
-    iconHas  x     =  fmap (x ==) icon
-    doResizeFloat  =  customFloating $ W.RationalRect left top width height
-      where
-        height  = 2/4
+  where name           =  stringProperty "WM_NAME"      :: Query String
+        icon           =  stringProperty "WM_ICON_NAME" :: Query String
+        iconHas  x     =  fmap (x ==) icon
+        doTile = ask >>= doF . W.sink
+        
+doResizeFloat  =  customFloating $ W.RationalRect left top width height
+  where height  = 2/4
         width   = 2/3
         left    = (/2) $ (1-) width
         top     = (/2) $ (1-) height
-    doTile = ask >>= doF . W.sink
+        
+titleStarts x  = fmap (x `isPrefixOf`) title
 
 scratchpads :: [NamedScratchpad]
-scratchpads = concat $
-  [ [NS "shell" (terminal "shell" "bash")       (resource =? "shell") doSTermLayout ]
-  , [NS "ghci"  (terminal "ghci" "ghci")        (resource =? "ghci")  doSTermLayout ]
-  , [NS "htop"  (terminal "htop" "htop")        (resource =? "htop")  doSTermLayout ]
-  , [NS "notes" (terminal "notes" noteCommand)  (resource =? "notes") doSTermLayout ]
-  , [NS "dl"    (terminal "dl" "false")         (resource =? "dl")    doSTermLayout ]
-  ]
-  where 
-    terminal name cmd = terminal' ++ " -name " ++ name ++ " -e " ++ cmd
-    noteCommand = "vim -c 'cd ~/root/notes' ~/root/notes/scratchpad.txt"
-    doSTermLayout = customFloating $ W.RationalRect left top width height
-      where
-        height  = 2/4
-        width   = 2/3
+scratchpads = concat $ 
+  [ [ nst "shell" "bash"      ]
+  , [ nst "ghci" "ghci -v0"   ]
+  , [ nst "js" "js17"         ]
+  , [ nst "ruby" "irb"        ]
+  , [ nst "htop" "htop"       ]
+  , [ nst "notes" noteCommand ]
+  , [ nst "dl" "false"        ]
+  ] where nst name cmd = NS name (newTerm name cmd) (resource =? name) doSTermLayout
+          noteCommand = "vim -c 'cd ~/root/notes' ~/root/notes/scratchpad.txt"
+
+newTerm :: String -> String -> String
+newTerm title cmd = terminal' ++ " -T " ++ title ++ " -name " ++ title ++ " -e " ++ cmd
+
+doSTermLayout = customFloating $ W.RationalRect left top width height
+  where height  = 3/5
+        width   = 4/5
         left    = (/2) $ (1-) width
         top     = (/2) $ (1-) height
 
-startupHook' :: X()
+startupHook' :: X ()
 startupHook' = do
-  spawn ("~/.xmonad/bin/status.sh | " ++ stBar)
+  spawn $ "bash -c ~/.xmonad/scripts/status.sh | " ++ stBar
+  spawn $ newTerm "load_ssh_keys" "load_ssh_keys"
+  (newTerm "mutt" "mutt") `runIfNot` (title =? "mutt")
+  "mnemosyne" `runIfNot` (className =? "Mnemosyne")
+  ("ssh-wait && net-wait &&"++newTerm "irssi" "ssh tau -t tmux a") `shIfNot` titleStarts "irssi"
   setWMName "LG3D"
+
+runIfNot :: String -> Query Bool -> X ()
+runIfNot cmd qry = ifWindow qry idHook $ spawn cmd
+
+shIfNot :: String -> Query Bool -> X ()
+shIfNot cmd qry = ifWindow qry idHook $ spawn $ sh cmd
+  where sh x = "sh -c '"<>x<>"'"
 
 eventHook' = fullscreenEventHook <+> minimizeEventHook
 
-layoutHook' = fullscreenFull                     $
-              fullscreenFloat                    $
-              avoidStruts                        $
-              minimize                           $
-              boringWindows                      $
-              smartBorders                       $
-              onWorkspace "2:www" tabLayout      $
-              onWorkspace "3:com" mailLayout     $
-              onWorkspace "4:doc" tabLayout      $
+layoutHook' = fullscreenFull                         $
+              fullscreenFloat                        $
+              avoidStruts                            $
+              minimize                               $
+              boringWindows                          $
+              smartBorders                           $
+              onWorkspace (findWS "www") tabLayout   $
+              onWorkspace (findWS "doc") tabLayout   $
               defaultLayout
   where
-    defaultLayout = (Full ||| Tall 1 0.05 tau)
-    tau           = toRational $ (2/) $ succ $ sqrt 5
-    mailLayout    = (Tall 1 0.05 0.7)
-    webLayout     = (Full ||| (Mirror $ mailLayout))
-    tabLayout     = (tabbed shrinkText solarizedTheme)
+    defaultLayout = Full ||| Tall 1 0.05 tau
+    tau           = toRational . (2/) . succ . sqrt $ 5
+    tabLayout     = tabbed shrinkText theme
 
 logHook' bar = dynamicLogWithPP $ defaultPP
   { ppOutput          = hPutStrLn bar
-  , ppCurrent         = wrap [' '] []
+  , ppCurrent         = (:) ' '
   , ppVisible         = const []
   , ppHidden          = const []
-  , ppUrgent          = dzenColor "#dc322f" [] . wrap [' '] []
+  , ppUrgent          = dzenColor "#dc322f" ""
   , ppSep             = []
   , ppTitle           = pad
   , ppLayout          = dzenColor base01 [] . 
@@ -177,28 +223,29 @@ logHook' bar = dynamicLogWithPP $ defaultPP
                             otherwise                  -> x
                           )
   }
-  where
-      dzenXBM xbm = wrap " ^i(" ")" $ xbmPath xbm
-      xbmPath     = (++) "/home/irving/.xmonad/icons/"
+  where dzenXBM xbm = wrap " ^i(" ")" $ xbmPath xbm
+        xbmPath     = (++) "/home/vi/.xmonad/icons/"
 
 keys' c = mkKeymap c $
   [ ( "M-S-l",         spawn "slock")
   , ( "M-<Return>",    windows W.swapMaster)
   , ( "M-<Tab>",       toggleWS' ["NSP"])
-  , ( "M-,",           sendMessage (IncMasterN 1))
-  , ( "M-.",           sendMessage (IncMasterN (-1)))
+  , ( "M-,",           sendMessage $ IncMasterN 1)
+  , ( "M-.",           sendMessage $ IncMasterN (-1))
   , ( "M-S-<Return>",  spawn terminal')
   , ( "M-b",           sendMessage ToggleStruts)
-  , ( "M-o",           S.promptSearchBrowser solarizedXPConfig browser' scrutor)
+  , ( "M-o",           S.promptSearchBrowser promptConfig browser' scrutor)
   , ( "M-S-o",         S.selectSearchBrowser browser' scrutor)
-  , ( "M-p",           shellPrompt solarizedXPConfig)
-  , ( "M-w",           windowPromptGoto solarizedXPConfig)
+  , ( "M-p",           shellPrompt promptConfig)
+  , ( "M-<Space>",     windowPromptGoto noTabPromptConfig)
   , ( "M-t",           withFocused $ windows . W.sink)
   , ( "M-S-p",         toggleScratchpad "shell")
   , ( "M-S-i",         toggleScratchpad "ghci")
   , ( "M-S-u",         toggleScratchpad "dl")
   , ( "M-S-s",         toggleScratchpad "htop")
-  , ( "M-S-e",         toggleScratchpad "notes")
+  , ( "M-S-n",         toggleScratchpad "notes")
+  , ( "M-r",           toggleScratchpad "ruby")
+  , ( "M-n",           toggleScratchpad "js")
   , ( "M-S-c",         kill1) -- s/1// to kill in all workspaces
   , ( "M-m",           withFocused minimizeWindow)
   , ( "M-S-m",         sendMessage RestoreNextMinimizedWin)
@@ -207,19 +254,45 @@ keys' c = mkKeymap c $
   , ( "M-S-j",         windows W.swapDown)
   , ( "M-S-k",         windows W.swapUp)
   , ( "M-q",           spawn restart)
+  , ( "<F3>",          sendMessage NextLayout)
+  , ( "M-h",           sendMessage Shrink)
+  , ( "M-l",           sendMessage Expand)
   ] ++ -- Function Keys
-  [ ("<XF86AudioPlay>",         spawn "mpc toggle")
-  , ("<XF86AudioPrev>",         spawn "mpc prev")
-  , ("<XF86AudioNext>",         spawn "mpc next")
-  , ("<XF86TouchpadToggle>",    spawn "togglemouse")
-  , ("<Print>",                 spawn "scrot '%s.png' -e 'mv $f ~/usr/share/scrot/'")
-  ] ++
-  [ (m++k, windows $ f w) | (w, k) <- zip (XMonad.workspaces c) (map show [1..9])
-                          , (m, f) <- [("M-", W.greedyView), ("M-S-", W.shift), ("M-S-C-", copy)]
+  [ (m++k, windows $ f w) 
+        | (w, k) <- zip (XMonad.workspaces c) $ map show $ [1..9]++[0]
+        , (m, f) <- [("M-", W.greedyView), ("M-S-", W.shift), ("M-S-C-", copy)]
+  ] ++ 
+  [ (m++k, screenWorkspace s >>= flip whenJust (windows . f))
+        | (k, s) <- zip ["w","e"] [0..] -- More displays? Describe more keys
+        , (f, m) <- [(W.view, "M-"), (W.shift, "M-S-")]
   ]
   where
+    --scrutor = S.searchEngine "ddg" "https://duckduckgo.com/?kp=-1&kz=-1&kf=-1&kg=p&ks=m&kw=s&km=l&ku=1&ko=-1&k4=-1&ke=-1&kk=s&kr=-1&kq=-1&k1=-1&kx=r&q="
     scrutor = S.searchEngine "scrutor" "http://scrutor.aineko/?q="
     toggleScratchpad = (namedScratchpadAction scratchpads)
     restart = "xmonad --recompile &&"
            ++ "killall dzen2 && "
            ++ "xmonad --restart"
+
+theme :: Theme
+theme = solarizedTheme
+  { fontName = "xft:"++font'
+  , decoHeight = 35
+  }
+
+promptConfig :: XPConfig
+promptConfig = solarizedXPConfig
+  { height        = 35
+  , font          = "xft:"++font'
+  , historyFilter = nub
+  , position      = Top
+  , showCompletionOnTab = True
+  , promptBorderWidth = 0
+  , searchPredicate = isInfixOf
+  , promptKeymap    = Keymap.ctrlP
+  }
+
+noTabPromptConfig = promptConfig
+  { showCompletionOnTab = False
+  --, historyFilter = (filter (not.("NSP"`isInfixOf`)).nub)
+  }

@@ -3,3 +3,4 @@ let NERDTreeMinimalUI=1                      " Disables display of the 'Bookmark
 let NERDTreeIgnore=['\.swp$','\~.$','\.pdf', '\.hi','\.o']    
                                              " Ignore matching files.
 let NERDTreeDirArrows=0                      " Replace the netrw autocommands for exploring local directories.
+let NERDTreeWinSize=20

@@ -1,7 +1,6 @@
 fs="yes"
-osdlevel="3"
+vo="xv"
+af="scaletempo"
 alang="jpn,en,es"
 slang="en,es,jpn"
-subfont-text-scale="2"
-subfont-osd-scale="2"
-stop-xscreensaver="yes"
+input= file=/home/vi/.mplayer/fifo

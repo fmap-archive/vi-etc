@@ -5,17 +5,19 @@ URxvt*loginShell: true
 
 URxvt*scrollBar: false
 
-URxvt*font:xft:envy code r:pixelsize=13:style=Regular
-URxvt*boldFont:xft:envy code r:pixelsize=13:style=Bold
-URxvt*italicFont:xft:envy code r:pixelsize=13:style=Italic
+URxvt*font:xft:LetterGothicMono:size=16:style=Light,9x15
+URxvt*boldFont:xft:LetterGothicMono:size=16:style=LightBold,9x15
+URxvt*italicFont:xft:LetterGothicMono:size=16:style=LightItalic,9x15
 
-#include "/home/irving/.colours/solarized.Xresources"
+#include "/home/vi/.rxvt/colours/solarized.Xresources"
 
 URxvt*urgentOnBell: true
 
-URxvt*perl-lib:      /usr/lib/urxvt/perl/
-URxvt*perl-ext:      default,url-select,clipboard,select
+URxvt*perl-lib:      /home/vi/.rxvt/scripts/
+URxvt*perl-ext:      default,url-select,clipboard,select,fontsize
 URxvt*keysym.Mod4-u: perl:url-select:select_next
 URxvt*keysym.Mod4-v: perl:clipboard:paste
+URxvt*keysym.Mod4-plus: perl:fontsize:decrease
+URxvt*keysym.Mod4-underscore: perl:fontsize:increase
 URxvt*urlLauncher:   /usr/local/bin/surf
 URxvt*underlineURLs: true

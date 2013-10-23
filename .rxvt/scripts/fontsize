@@ -1,0 +1,9 @@
+#! perl 
+
+sub increase {
+  system("/home/vi/bin/uf +1");
+}
+
+sub decrease {
+  system("/home/vi/bin/uf -1");
+}

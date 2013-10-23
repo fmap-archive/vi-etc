@@ -1,26 +1,26 @@
 #               .--~~,__
-#  :-....,-------`~~'._.'           Author:     Vikram Verma
-#   `-,,,  ,_      ;'~U'            Modified:   25 December 2011
+#  :-....,-------`~~'._.'         
+#   `-,,,  ,_      ;'~U'           
 #    _,-' ,'`-__; '--.
 #   (_/'~~      ''''(;              vim:foldmethod=marker:foldmarker={{{,}}}
 
-# Vikram Verma {{{
+# Account {{{
 
-set realname = "Vikram Verma"
+set envelope_from
+folder-hook vikramverma source ~/.mutt/accounts/vikramverma.com.rc
+folder-hook krake       source ~/.mutt/accounts/krake.io.rc
 
 # }}}
 # Incoming Mail - OfflineIMAP {{{
 
 set mbox_type = Maildir
-set folder    = $HOME/var/mail/vikramverma
-set postponed = "+[Gmail].Drafts/"
-set spoolfile = "+inbox"
+set folder    = $HOME/var/mail/
 set check_new
 
-mailboxes +inbox  +archive
-mailboxes +drafts 
-mailboxes +sent   +trash 
-mailboxes +spam   +Lists 
+set spoolfile = "+vikramverma/inbox"
+
+mailboxes +vikramverma/inbox  
+mailboxes +krake/inbox  
 
 # }}}
 # Outgoing Mail - MSMTP {{{
@@ -28,23 +28,18 @@ mailboxes +spam   +Lists
 set sendmail = /usr/bin/msmtp
 unset record
 
-set hostname="vikramverma.com"
+set hostname="gmail.com" # Everyone seems to use it. It's a bit sad.
 set use_domain=yes
+set signature="MEAN PEOPLE SUCK."
 
-my_hdr X-URL: http://vikramverma.com
-my_hdr X-Alignment: Chaotic Neutral
-my_hdr Cc: Vikram Verma <me@vikramverma.com> # :X
-
-set from = "me@vikramverma.com"
-
-# Pretty Good Privacy
 source ~/.mutt/gpg.rc
-set pgp_autosign
+source ~/.mutt/smime.rc
 
 # }}}
 # Index View {{{
 
 set sort=threads
+set ascii_chars
 set sort_aux=reverse-last-date-received
 set index_format  = "%3C | %-21.20n %s%* %S | %d"
 set date_format   = "%Y-%m-%d"
@@ -55,6 +50,7 @@ lists hackerspacesg@googlegroups.com
 lists openfrog@googlegroups.com
 
 set nomark_old
+set fast_reply
 
 # }}}
 # Pager View {{{
@@ -95,7 +91,7 @@ set include
 # }}}
 # Colour {{{
 
-source $HOME/.mutt/colours/solarized.mutt
+source ~/.mutt/colours/solarized.mutt
 
 # }}}
 # Notifications {{{ 
@@ -103,11 +99,9 @@ source $HOME/.mutt/colours/solarized.mutt
 set beep_new
 
 # }}}
-# Contacts {{{
+# People {{{
 
-set alias_file = $HOME/.mutt/aliases
+set alias_file = ~/.mutt/aliases
 source $alias_file
 
 # }}}
-
-set fast_reply

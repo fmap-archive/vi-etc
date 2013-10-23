@@ -31,13 +31,42 @@ if &t_Co > 2 || has("gui_running")
 endif
 
 " Title
+function! g:chomp(string)
+  return substitute(a:string, "\n*$", "", "")
+endfunction
+
+function! g:run(command)
+  return g:chomp(system(a:command))
+endfunction
+
+function! g:git(cmd)
+  let gd = b:git_dir
+  let wt = substitute(b:git_dir, ".git$", "", "")
+  let pr = "git --git-dir=" . gd . " --work-tree=" . wt . " "
+  return g:run(pr . a:cmd)
+endfunction
+
+function! g:git_title(...) 
+  if !exists('b:git_dir')
+    return ''
+  endif
+  let branch  = g:git("branch | awk '/*/ {print $2}'")
+  let changes = g:git("status -s | wc -l")
+  return "[" . branch . "][" . changes . " changes] "
+endfunction
+
+function! g:dir_title(...)
+  let dir = substitute(getcwd(),$HOME,'~','')
+  return dir . " "
+endfunction
+
 if has('title') && (has('gui_running') || &title)
-  set titlestring=%{substitute(getcwd(),\ $HOME,\ '~',\ '')}\ 
-  set titlestring+=%{fugitive#statusline()}
+  set titlestring=%{g:dir_title()}
+  set titlestring+=%{g:git_title()}
 endif
 
 if has('gui_running')
-  set guifont=Envy\ Code\ R\ 10
+  set guifont=LetterGothicMono\ Light\\,\ Light\ 13
   set guicursor+=a:blinkon0
   set guioptions=
 endif
@@ -96,6 +125,9 @@ if has("autocmd")
   autocmd FileType * if exists("+completefunc") && &completefunc == "" | setlocal completefunc=syntaxcomplete#Complete | endif
 endif
 
+set autowrite
+set autoread
+
 " }}}
 " Section: Commands {{{
 
@@ -111,9 +143,8 @@ function! QFixToggle(forced)
   endif
 endfunction
 
-function InsertTime()
-  :r! date "+\%F \%T \%z"
-endfunction
+command! RTime :r! date "+\%F \%T \%z"
+command! Paste :! curl -F 'sprunge=<-' http://sprunge.us <%
 
 " }}}
 " Section: Mappings {{{
@@ -132,11 +163,21 @@ nnoremap <Space>    Lz<CR>
 nnoremap <leader>b :ls<CR>:b<space>
 nnoremap <leader>d :ls<CR>:bdelete<space>
 
-" Window/Split Navigation
-nmap <C-h> <C-w>h
-nmap <C-j> <C-w>j
-nmap <C-k> <C-w>k
-nmap <C-l> <C-w>l
+"function! SplitRawr()
+"  echohl ErrorMsg | echo "NO SPLITS" | echohl None
+"endfunction
+"
+"" Don't Use Splits
+"cmap sp :call SplitRawr()<CR>
+"cmap vs :call SplitRawr()<CR>
+"
+" Reset
+"nmap <C-l> :!reset<CR><CR>
+
+nmap <C-l> <C-w><Right>
+nmap <C-h> <C-w><Left>
+nmap <C-j> <C-w><Down>
+nmap <C-k> <C-w><Up>
 
 " Search
 cmap g!! vimgrep

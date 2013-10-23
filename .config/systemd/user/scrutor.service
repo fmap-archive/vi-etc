@@ -1,0 +1,8 @@
+[Unit]
+Description=search engine
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/rackup /home/vi/root/code/scrutor/config.ru -p 1996
+[Install]
+WantedBy=scrutor.target

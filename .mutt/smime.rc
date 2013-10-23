@@ -1,0 +1,3 @@
+set smime_certificates="~/.smime/certificates"
+set smime_keys="~/.smime/keys"
+set smime_ca_location="/etc/ssl/certs/ca-certificates.crt"

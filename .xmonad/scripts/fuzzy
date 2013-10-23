@@ -8,9 +8,21 @@ class Fixnum
   end
 
   def to_hour_word
-    words = ['twelve', 'one', 'two', 'three', 'four', 
-             'five', 'six', 'seven', 'eight', 
-             'nine', 'ten', 'eleven', 'twelve']
+    words = {
+      00 => 'twelve',
+      1  => 'one',
+      2  => 'two',
+      3  => 'three',
+      4  => 'four',
+      5  => 'five',
+      6  => 'six',
+      7  => 'seven',
+      8  => 'eight',
+      9  => 'nine',
+      10 => 'ten',
+      11 => 'eleven',
+      12 => 'twelve',
+    }.values
     (self < words.length) ? words[self] : raise 
   end
 end

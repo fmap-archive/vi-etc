@@ -1,0 +1,357 @@
+#!/usr/bin/perl
+#an urxvt perl extension for keyboard selection via navigation keys
+#version 0.2
+
+my $rectangular = 0;
+my $selection_invalid = 0;
+
+sub row
+{
+	return $_[0];
+}
+
+sub col
+{
+	return $_[1];
+}
+
+sub has_selection
+{
+	my ($self) = @_;
+	my @beg = $self->selection_beg();
+	my @end = $self->selection_end();
+	return (col(@beg) != col(@end) || row(@beg) != row(@end));
+}
+
+sub diff
+{
+	my ($self, $row_a, $col_a, $row_b, $col_b) = @_;
+	return $col_a-$col_b + $self->ncol*($row_a-$row_b);
+}
+
+sub selection_beg_is_post
+{
+	my ($self) = @_;
+	my @mark = $self->selection_mark();
+	my @beg = $self->selection_beg();
+	my @end = $self->selection_end();
+	return (abs(diff($self, @mark, @beg)) < abs(diff($self, @mark, @end)));
+}
+
+sub selection_post
+{
+	my ($self) = @_;
+	if(selection_beg_is_post($self))
+	{
+		return $self->selection_beg();
+	}
+	else
+	{
+		return $self->selection_end();
+	}
+}
+
+sub selection_cursor
+{
+	my ($self) = @_;
+	if(selection_beg_is_post($self))
+	{
+		return $self->selection_end();
+	}
+	else
+	{
+		return $self->selection_beg();
+	}
+}
+
+sub debug_selection
+{
+	my ($self) = @_;
+	warn "selection: ", $self->selection;
+	my @mark = $self->selection_mark();
+	warn "mark: ", row(@mark), " ", col(@mark);
+	my @beg = $self->selection_beg();
+	warn "beg: ", row(@beg), " ", col(@beg);
+	my @end = $self->selection_end();
+	warn "end: ", row(@end), " ", col(@end);
+	warn "has_selection: ", has_selection($self), "\n\n";
+	()
+}
+
+sub add_offset
+{
+	my ($self, $row, $col, $offset) = @_;
+	my $destrow=$row;
+	my $destcol=$col+$offset;
+	if($destcol<0)
+	{
+		$destrow+=int(($destcol-($self->ncol-1))/$self->ncol);
+	}
+	else
+	{
+		$destrow+=int(($destcol)/$self->ncol);
+	}
+	$destcol=$destcol % $self->ncol;
+	($destrow, $destcol);
+}
+
+#in this function the convention is to view the selection as being a region dragged from the post to the cursor.
+#TODO: this doesn't work quite right w/ rectangular drags atm
+sub extend_selection
+{
+	my ($self, $by) = @_;
+	my @post=selection_post($self);
+	my @cursor=selection_cursor($self);
+	
+	my @dest=add_offset($self, @cursor, $by);
+	
+	$self->selection_mark(@post);
+	if(diff($self, @post, @dest) < 0)
+	{
+		$self->selection_beg(@post);
+		$self->selection_end(@dest);
+	}
+	else
+	{
+		$self->selection_beg(@dest);
+		$self->selection_end(@post);
+	}
+	
+	$self->selection_make(0, $rectangular);
+}
+
+sub clear_selection
+{
+	my ($self) = @_;
+	my ($row, $col) = $self->screen_cur();
+	$self->selection_clear();
+	$self->selection_mark($row, $col);
+	$self->selection_end($row, $col);
+	$self->selection_beg($row, $col);
+	$rectangular=0;
+}
+
+sub on_tt_write
+{
+	my ($self, $octets) = @_;
+	clear_selection($self);
+	$selection_invalid=1;
+	()
+}
+
+sub word_boundaries
+{
+	my ($self, @cursor) = @_;
+	my $res = $self->x_resource ("selection.word-pattern");
+	if(!$res)
+	{
+		$res = $self->x_resource ("selection.pattern-1");
+	}
+	if($res)
+	{
+		$res = $self->locale_decode($res);
+		$res = qr/$res/;
+	}
+	else
+	{
+		#$res = qr/\b((.\B)+.)\b/;
+		#$res = qr/([^ ]+)/;
+		$res = qr/\b(\w+)\b/;
+	}
+	my ($row, $col) = @cursor;
+	my $before = 0;
+	my $after = $self->ncol;
+	
+	my $line = $self->line ($row);
+	my $text = $line->t;
+	while($text =~ /$res/g)
+	{
+		if(($-[1] > $before) && ($-[1] < $col))
+		{
+			$before = $-[1];
+		}
+		if(($+[1] < $after) && ($+[1] > $col))
+		{
+			$after = $+[1];
+		}
+	}
+	return ($before-$col, $after-$col);
+}
+
+my $key_delete=65535;
+my $key_home=65360;
+my $key_end=65367;
+my $key_prior=65365;
+my $key_next=65366;
+my $key_right=65363;
+my $key_left=65361;
+my $key_up=65362;
+my $key_down=65364;
+
+my $key_escape=65307;
+my $key_shift=65505;
+my $key_enter=65293;
+
+sub on_key_press
+{
+	my ($self, $event, $keysym, $octets) = @_;
+	
+	my $extend = ($event->{state} & urxvt::ShiftMask);
+	my $word = ($event->{state} & urxvt::ControlMask);
+	
+	if($keysym == $key_escape && has_selection($self))
+	{
+		clear_selection($self);
+		return 1;
+	}
+	
+	if($keysym == $key_shift)
+	{
+		if($selection_invalid || !has_selection($self))
+		{
+			clear_selection($self);
+			$selection_invalid=0;
+			return 0;
+		}
+	}
+	
+	my @start = selection_cursor($self);
+	
+	my $handled = 0;
+	my $offset = 0;
+	if($keysym == $key_left)
+	{
+		if($word)
+		{
+			if(col(@start) == 0)
+			{
+				@start[0]--;
+				@start[1]=$self->ncol-1;
+				$offset=-1;
+			}
+			$offset += (word_boundaries($self, @start))[0];
+		}
+		else
+		{
+			$offset = -1;
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_right)
+	{
+		if($word)
+		{
+			if(col(@start) == $self->ncol)
+			{
+				@start[0]++;
+				@start[1]=0;
+				$offset=1;
+			}
+			$offset += (word_boundaries($self, @start))[1];
+		}
+		else
+		{
+			$offset = 1;
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_up)
+	{
+		if($word)
+		{
+			$offset = -$self->ncol-(col(@start) % $self->ncol);
+		}
+		else
+		{
+			$offset = -$self->ncol;
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_down)
+	{
+		if($word)
+		{
+			$offset = $self->ncol+(($self->ncol-col(@start)) % $self->ncol);
+		}
+		else
+		{
+			$offset = $self->ncol;
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_home)
+	{
+		if($word)
+		{
+			$offset = -(col(@start) + $self->ncol*(row(@start)-$self->top_row));
+		}
+		else
+		{
+			$offset = -col(@start);
+			if(row(@start) > row(selection_post($self)))
+			{
+				$offset += 1;
+			}
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_end)
+	{
+		if($word)
+		{
+			$offset = $self->ncol-col(@start) + $self->ncol*($self->nrow-row(@start));
+		}
+		else
+		{
+			$offset = $self->ncol-(col(@start)+1);
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_prior)
+	{
+		if($word)
+		{
+			$offset = -col(@start);
+		}
+		else
+		{
+			$offset = -$self->ncol*$self->nrow;
+		}
+		$handled=1;
+	}
+	elsif($keysym == $key_next)
+	{
+		if($word)
+		{
+			$offset = $self->ncol*$self->nrow;
+		}
+		else
+		{
+			$offset = $self->ncol-col(@start);
+		}
+		$handled=1;
+	}
+	
+	if($handled != 0)
+	{
+		if($extend)
+		{
+			extend_selection($self, $offset);
+			return 1;
+		}
+		else
+		{
+			clear_selection($self);
+		}
+	}
+	
+	()
+}
+
+sub on_button_press
+{
+	my ($self, $event) = @_;
+	$selection_invalid=0;
+	$rectangular = (($event->{state} & $self->ModMetaMask) == $self->ModMetaMask);
+	()
+}

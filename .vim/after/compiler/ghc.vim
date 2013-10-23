@@ -1,0 +1,1 @@
+set cmdheight=1

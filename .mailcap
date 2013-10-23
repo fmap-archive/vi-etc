@@ -1,7 +1,8 @@
+text/html; surf file://%s; test=test -n "$DISPLAY";
 text/html; links -html-numbered-links 1 -dump %s; copiousoutput;
-application/pdf; okular '%s'; test=test -n "$DISPLAY";
+application/pdf; zathura '%s'; test=test -n "$DISPLAY";
 application/pdf; pdftotext '%s' | less;
 application/x-mobipocket-ebook; FBReader '%s' | less;
 audio/*; mplayer '%s';
-video/*; mplayer '%s'; needsterminal; test -n "$DISPLAY";
+video/*; mplayer '%s'; needsterminal; test=test -n "$DISPLAY";
 image/*; feh -ZF '%s'; test=test -n "$DISPLAY";

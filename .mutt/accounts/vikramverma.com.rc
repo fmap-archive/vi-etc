@@ -1,0 +1,10 @@
+my_hdr X-URL: http://vikramverma.com
+my_hdr X-Alignment: Chaotic Neutral
+my_hdr Cc: Vikram Verma <me@vikramverma.com> # :X
+
+set realname = "Vikram Verma"
+set from = "me@vikramverma.com"
+
+set postponed = "+vikramverma/[Gmail].Drafts/"
+
+# vim:set ft=muttrc:

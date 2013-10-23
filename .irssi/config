@@ -8,7 +8,7 @@ servers = (
     ssl_capath = "/etc/ssl/certs";
     autoconnect = "yes";
     skip_motd = "on";
-  },
+  }
 );
 
 chatnets = {
@@ -16,42 +16,43 @@ chatnets = {
     # freenode authentication is handled by password.pl:
     #   - `/password set freenode vikramverma hunter2` 
     #   - `/password save`
-    autosendcmd = "/password send; wait 2000";
+    autosendcmd = "/password send; wait 2000; /q PatrickRobotham;";
     type = "IRC";
   };
 };
 
 channels = (
   { name = "#lesswrong"; chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "##lwmath"; chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#hackerspacesg"; chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "##crypto"; chatnet = "freenode"; autojoin = "Yes"; }
 );
 
 aliases = {
-  tp       = "topic $C $* | $topic";
-  w        = "window";
-  q        = "query";
-  say      = "msg *";
-  shitlist = "/notice $C $0 added to $N's shitlist; /trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
-  unshit   = "/notice $C $0 removed from $N's shitlist; /trigger del $0";
+  tp = "topic $C $* | $topic";
+  w = "window";
+  q = "query";
+  say = "msg *";
+  shit = "/me has added $0 to his shitlist; /trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
+  shits = "/trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
+  unshit = "/me has removed from $0 from his shitlist; /trigger del $0";
+  unshits = "/trigger del $0";
 };
 
 statusbar = {
   items = {
-    barstart = "";
-    barend = "";
+    barstart = "{sbstart}";
+    barend = "{sbend}";
 
-    topicbarstart = "";
-    topicbarend = "";
+    topicbarstart = "{topicsbstart}";
+    topicbarend = "{topicsbend}";
 
     time = "{sb $Z}";
-    user = "{sb $N}";
+    user = "{sb $P$N}";
 
     window = "{sb $winref:$tag/$itemname{sbmode $M}}";
     window_empty = "{sb $winref{sbservertag $tag}}";
     prompt = "{prompt $[.15]itemname}";
     prompt_empty = "{prompt $winname}";
-    topic = "";
+    topic = "$topic";
     topic_empty = "";
 
     lag = "{sb L: $0-}";
@@ -61,7 +62,7 @@ statusbar = {
 
   default = {
     window = {
-      disabled = "no";
+      disabled = "yes";
       type = "window";
       placement = "top";
       position = "1";
@@ -105,11 +106,11 @@ statusbar = {
     };
 
     topic = {
-      disabled = "yes";
+      disabled = "true";
       type = "root";
-      placement = "top";
+      placement = "bottom";
       position = "1";
-      visible = "active";
+      visible = "always";
       items = {
         topicbarstart = { priority = "100"; };
         topic = { };
@@ -124,7 +125,7 @@ settings = {
     real_name = "Qfwfq";
     user_name = "Qfwfq";
     nick = "Qfwfq";
-    server_reconnect_time = "5min";
+    server_reconnect_time = "1min";
     quit_message = "mailto:me@vikramverma.com";
   };
   "fe-text" = { actlist_sort = "refnum"; colors = "yes"; };
@@ -132,7 +133,7 @@ settings = {
     term_charset = "utf-8";
     theme = "vikramverma";
     timestamp_timeout = "1";
-    timestamps = "OFF";
+    timestamps = "ON";
     show_nickmode_empty = "no";
     show_names_on_join = "no";
     autolog_path = "~/var/log/irc/$tag/$0.log";
@@ -147,6 +148,9 @@ settings = {
 };
 ignores = (
   { level = "JOINS PARTS QUITS CTCPS"; },
+  { mask = "xiong"; level = "ALL"; },
+  { mask = "pookie"; level = "ALL"; },
+  { mask = "galileo"; level = "ALL"; }
 );
 
 logs = { };

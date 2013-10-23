@@ -13,6 +13,7 @@ GEM_BIN="$HOME/.gem/ruby/1.9.1/bin"
 CABAL_BIN="$HOME/.cabal/bin"
 [ -d $CABAL_BIN ] && PATH="$PATH:$CABAL_BIN"
 
+export NODE_PATH=/usr/lib/node_modules/:./node_modules
 
 # }}}
 # Utilities {{{
@@ -44,5 +45,7 @@ export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
 #}}}
+
+umask 0077
 
 # vim:ft=sh

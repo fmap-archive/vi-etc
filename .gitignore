@@ -5,3 +5,5 @@ Session.vim
 *~
 *.pdf
 *.pass
+*.hi
+*.o

@@ -1,6 +1,6 @@
 [general]
 ui       = ttyui
-accounts = vikramverma
+accounts = vikramverma, krake
 
 [Account vikramverma]
 localrepository  = vikramverma-local
@@ -30,5 +30,35 @@ nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             'INBOX': 'inbox',
                             }.get(folder, folder)
 sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
+[Account krake]
+localrepository  = krake-local
+remoterepository = krake-remote
+maxsyncaccounts  = 3
+maxconnections   = 3
+
+[Repository krake-local]
+type         = Maildir
+localfolders = ~/var/mail/krake
+nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                            'inbox': 'INBOX',
+                            }.get(folder, folder)
+
+[Repository krake-remote]
+type             = Gmail
+remoteuser       = vi@krake.io
+remotepassfile   = ~/.security/offlineimap/krake.pass
+real_delete = no
+nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                            'INBOX': 'inbox',
+                            }.get(folder, folder)
+sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+
 
 # vim: ft=cfg

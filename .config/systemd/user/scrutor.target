@@ -1,0 +1,4 @@
+[Unit]
+Description=search
+[Install]
+Alias=default.target

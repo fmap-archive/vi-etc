@@ -17,10 +17,10 @@ if [ -n "$PS1" ] ; then
 
   # Then set my preferred prompts..
 
-  PS1="\W$(PS1)\$ " # Command Prompt
-  PS2="$(PS2)\$ "   # Secondary Prompt
-  PS3="? "          # Select Prompt
-  PS4="+ "          # Debugging Prompt
+  PS1="$(PS1) "  # Command Prompt
+  PS2="$(PS2) "  # Secondary Prompt
+  PS3="? "       # Select Prompt
+  PS4="+ "       # Debugging Prompt
 
   # ..and the title, in being allowed to exist, should be informative.
 

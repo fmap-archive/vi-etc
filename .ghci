@@ -1,1 +1,5 @@
-:set prompt "λ: "
+:set prompt ">> "
+:set +t
+:set +s
+
+:m + Data.List

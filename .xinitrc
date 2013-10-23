@@ -1,14 +1,19 @@
 #!/usr/bin/env bash
 
-xrdb -merge .Xdefaults                                      # Load Xdefaults
-xsetroot -cursor_name left_ptr                              # Set cursor style
-urxvtd -q -f -o &                                           # Initialise URxvt daemon
-unclutter -root -idle 1 &                                   # Hide cursor after a second of inactivity.
-xsetroot -solid '#fdf6e3'                                   # Solid background
+/usr/lib/systemd/systemd --user &
+systemctl --user start scrutor
+systemctl --user start keep
+aziz --device display --brightness 300
+
+xrdb -merge .Xdefaults
+xsetroot -cursor_name left_ptr
+urxvtd -q -f -o &
+unclutter -root -idle 1 &
+xsetroot -solid '#fdf6e3'
 xset -b &
-xcompmgr &
-battlestation "lap" # assumption
+xcompmgr &                    
+redshift -l 1.3667:103.8 &
+pulseaudio &
+bs "lap" # That's _battlestation_
 
-echo > ~/.xmonad/history
-
-exec xmonad &>>"$HOME/.xmonad/logs/everything.log"          # Launch XMonad.
+ssh-agent xmonad &>>"$HOME/.xmonad/logs/everything.log"
