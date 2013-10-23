@@ -5,12 +5,11 @@ print() {
 }
 
 time::hm() {
-  #ruby "$HOME/.xmonad/scripts/fuzzy.rb"
   date '+%H:%M '
 }
   
 time::fuzzy()  {
-  ruby "$HOME/.xmonad/scripts/fuzzy.rb"
+  ~bin/clock/fuzzy
 }
 
 _time() {
