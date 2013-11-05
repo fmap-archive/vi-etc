@@ -8,22 +8,32 @@ servers = (
     ssl_capath = "/etc/ssl/certs";
     autoconnect = "yes";
     skip_motd = "on";
+  },{
+    chatnet = "foonetic";
+    address = "irc.foonetic.net";
+    port = "6697";
+    use_ssl = "yes";
+    ssl_verify = "no"; # self-signed
+    autoconnect = "yes";
+    skip_motd = "on";
   }
 );
 
 chatnets = {
   freenode = {
-    # freenode authentication is handled by password.pl:
-    #   - `/password set freenode vikramverma hunter2` 
-    #   - `/password save`
     autosendcmd = "/password send; wait 2000; /q PatrickRobotham;";
+    type = "IRC";
+  };
+  foonetic = {
+    autosendcmd = "/password send; wait 2000";
     type = "IRC";
   };
 };
 
 channels = (
-  { name = "#lesswrong"; chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "##crypto"; chatnet = "freenode"; autojoin = "Yes"; }
+  { name = "#lesswrong";  chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#haskell";    chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#phlegethos"; chatnet = "foonetic"; autojoin = "Yes"; }
 );
 
 aliases = {
