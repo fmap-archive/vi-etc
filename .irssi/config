@@ -37,14 +37,16 @@ channels = (
 );
 
 aliases = {
-  tp = "topic $C $* | $topic";
-  w = "window";
-  q = "query";
-  say = "msg *";
-  shit = "/me has added $0 to his shitlist; /trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
-  shits = "/trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
-  unshit = "/me has removed from $0 from his shitlist; /trigger del $0";
-  unshits = "/trigger del $0";
+  t      = "topic $C $topic | $*";
+  w      = "window";
+  q      = "query";
+  say    = "msg *";
+  s      = "quiet";
+  kb     = "kickban";
+  k      = "kick";
+  b      = "ban";
+  mute   = "/trigger add -name $0 -public -nocase -mask $0!*@* -regexp '^(.*)' -replace '...'";
+  unmute = "/trigger del $0";
 };
 
 statusbar = {
