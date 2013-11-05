@@ -4,6 +4,6 @@ set default-bg "#707070"
 set inputbar-bg "#fdf6e3"
 set inputbar-fg "#839496"
 set window-title-basename 
-set statusbar-padding 18
+set statusbar-padding 24
 set font "letter gothic mono light 16"
 set adjust-open width
