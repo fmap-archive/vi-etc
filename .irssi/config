@@ -31,9 +31,11 @@ chatnets = {
 };
 
 channels = (
-  { name = "#lesswrong";  chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#haskell";    chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#phlegethos"; chatnet = "foonetic"; autojoin = "Yes"; }
+  { name = "#lesswrong";      chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "##hplusroadmap";  chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "##megaharem";     chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#haskell";        chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#phlegethos";     chatnet = "foonetic"; autojoin = "Yes"; }
 );
 
 aliases = {
