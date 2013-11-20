@@ -2,6 +2,7 @@ call pathogen#infect()
 
 " Section: Options {{{
 
+
 " Environment
 set nocompatible
 set shell=bash
@@ -127,6 +128,9 @@ endif
 
 set autowrite
 set autoread
+
+set mouse=a
+set ffs=unix,dos,mac
 
 " }}}
 " Section: Commands {{{
