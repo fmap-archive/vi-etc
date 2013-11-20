@@ -2,4 +2,11 @@
 :set +t
 :set +s
 
-:m + Data.List
+import Data.List
+import Data.Char
+import qualified Data.Map as M
+import Data.Set
+import Data.Monoid
+import Control.Applicative
+import Control.Monad
+import Control.Lens
