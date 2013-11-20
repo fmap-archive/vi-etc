@@ -271,8 +271,7 @@ keys' c = mkKeymap c $
     scrutor = S.searchEngine "scrutor" "http://scrutor.aineko/?q="
     toggleScratchpad = (namedScratchpadAction scratchpads)
     restart = "xmonad --recompile &&"
-           ++ "killall dzen2 && "
-           ++ "xmonad --restart"
+           ++ "bs"
 
 theme :: Theme
 theme = solarizedTheme
