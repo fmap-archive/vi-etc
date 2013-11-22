@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 print() {
-  echo -n "$@"
+  echo -n "$@ • "
 }
 
 time::hm() {
-  date '+%H:%M '
+  date '+%H:%M'
 }
   
 time::fuzzy()  {
-  ~bin/clock/fuzzy
+  ~/bin/clock/fuzzy
 }
 
 _time() {
@@ -31,7 +31,7 @@ battery::capacity() {
 battery() {
   if ! `battery::charging`; then
     if [ `battery::capacity` -lt 20 ]; then 
-      print '^fg(#dc322f)dying^fg() • '
+      print '^fg(#dc322f)dying^fg()'
     fi
   fi 
 }
@@ -42,7 +42,7 @@ network::connected() {
 
 network() {
   network::connected || 
-    print 'offline • ' # no internet
+    print 'offline' # no internet
 }
 
 audio::volume() { 
@@ -53,10 +53,10 @@ volume(){
   loud=false
   for channel in `audio::volume | sort -u`; do
     [[ ${channel%\%} -gt 50 ]] && loud=true 
-  done; $loud && print '^fg(#dc322f) screaming^fg() • '
+  done; $loud && print '^fg(#dc322f) screaming^fg()'
 }
 
 while true; do
-  volume;network;battery;_time
+  (volume;network;battery) | sed 's/• $/\n/'
   sleep 5
 done
