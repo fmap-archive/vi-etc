@@ -23,8 +23,7 @@ $.ajax({
   url: 'http://monkey.aineko/' + location.hostname.replace(/^www\./,'') + '.js',
   dataType: 'text',
   success: function(d) {
-    $(function() {eval(d)});
-    console.log('evald');
+    document.addEventListener("DOMContentLoaded", function(){eval(d)}, true)
   },
   error: function() {
     console.log('monkey.js: http://monkey.aineko is down');
