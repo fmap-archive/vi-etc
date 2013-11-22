@@ -1,0 +1,8 @@
+[Unit]
+Description=monkey
+After=network.target
+[Service]
+Type=simple
+ExecStart=/usr/bin/ruby /home/vi/root/code/monkey/monkey.rb -p 1968
+[Install]
+WantedBy=monkey.target

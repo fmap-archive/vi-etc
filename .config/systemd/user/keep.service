@@ -2,7 +2,7 @@
 Description=keep
 After=network.target
 [Service]
-Type=forking
-ExecStart=rackup /home/vi/root/code/keep/config.ru -p 2003
+Type=simple
+ExecStart=/usr/bin/rackup /home/vi/root/code/keep/config.ru -p 2003
 [Install]
 WantedBy=keep.target

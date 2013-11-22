@@ -1,0 +1,4 @@
+[Unit]
+Description=monkey
+[Install]
+Alias=default.target
