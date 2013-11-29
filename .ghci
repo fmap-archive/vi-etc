@@ -5,7 +5,7 @@
 import Data.List
 import Data.Char
 import qualified Data.Map as M
-import Data.Set
+import qualified Data.Set as S
 import Data.Monoid
 import Control.Applicative
 import Control.Monad
