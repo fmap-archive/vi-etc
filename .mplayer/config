@@ -4,3 +4,4 @@ af="scaletempo"
 alang="jpn,en,es"
 slang="en,es,jpn"
 input= file=/home/vi/.mplayer/fifo
+cache=8192
