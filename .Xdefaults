@@ -17,7 +17,7 @@ URxvt*perl-lib:      /home/vi/.rxvt/scripts/
 URxvt*perl-ext:      default,url-select,clipboard,select,fontsize
 URxvt*keysym.Mod4-u: perl:url-select:select_next
 URxvt*keysym.Mod4-v: perl:clipboard:paste
-URxvt*keysym.Mod4-plus: perl:fontsize:decrease
-URxvt*keysym.Mod4-underscore: perl:fontsize:increase
+URxvt*keysym.Control-Down: perl:fontsize:d
+URxvt*keysym.Control-Up: perl:fontsize:i
 URxvt*urlLauncher:   /usr/local/bin/surf
 URxvt*underlineURLs: true

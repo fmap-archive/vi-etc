@@ -1,9 +1,8 @@
 #! perl 
 
-sub increase {
-  system("/home/vi/bin/uf +1");
-}
+use utf8;
 
-sub decrease {
-  system("/home/vi/bin/uf -1");
+sub on_user_command {
+  my $Δ=$_[1]=~'d$'?-1:'+1';
+  $_[0]->cmd_parse(`uf $Δ`);
 }
