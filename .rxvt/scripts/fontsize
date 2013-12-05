@@ -3,6 +3,7 @@
 use utf8;
 
 sub on_user_command {
-  my $Δ=$_[1]=~'d$'?-1:'+1';
+  $_[1]=~/ontsize:/||return;
+  my $Δ=$_[1]=~/d$/?-1:'+1';
   $_[0]->cmd_parse(`uf $Δ`);
 }
