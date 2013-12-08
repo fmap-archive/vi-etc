@@ -42,7 +42,7 @@ main = do
   xmonad $ withUrgencyHook NoUrgencyHook $ defaultConfig
     {  terminal           = terminal'
     ,  workspaces         = workspaces'
-    ,  borderWidth        = 4
+    ,  borderWidth        = 2
     ,  normalBorderColor  = base02
     ,  focusedBorderColor = base01
     ,  manageHook         = manageHook'
