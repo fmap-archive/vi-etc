@@ -1,4 +1,6 @@
-var ignoreOn = [];
+var ignoreOn = [
+  /duckduckgo\.com/,
+];
 var distance = 30;
 var keyQueue = [];
 
@@ -8,25 +10,6 @@ function scroll (axis, dt) {
     case 'Y': window.scrollBy(0, dt); break;
   };
 };
-
-function lazyScroll (axis, dt) {
-  return function() {
-    scroll(axis, dt);
-  };
-}
-
-function butBlacklist (blacklist, fn) {
-  var currentURL  = window.location.href;
-  var onBlacklist = false;
-  blacklist.forEach(function(pat){
-    if (pat.test(currentURL)) onBlacklist = true;
-  });
-  if (!onBlacklist) fn();
-};
-
-function butIgnored (fn) {
-  butBlacklist(ignoreOn, fn);
-}
 
 function queueKey(ev) {
   var chr;
@@ -43,11 +26,6 @@ function queueKey(ev) {
   };
 };
 
-function butIgnoredScroll(axis, dt) {
-  var fn = lazyScroll(axis, dt);
-  butIgnored(fn);
-};
-
 function onInput(ev) {
   var target = ev.target || ev.srcElement;
   var name   = target.nodeType==1 ? target.nodeName.toLowerCase() : ''
@@ -58,15 +36,24 @@ function processKey (ev) {
   if (onInput(ev)) return;
   var key = queueKey(ev);
   switch (keyQueue[1]) {
-    case 'h':  butIgnoredScroll('X', -distance);        break;
-    case 'j':  butIgnoredScroll('Y',  distance);        break;
-    case 'k':  butIgnoredScroll('Y', -distance);        break;
-    case 'l':  butIgnoredScroll('X',  distance);        break;
-    case 'G':  butIgnoredScroll('Y',  document.height); break;
-    case 'g':  if (keyQueue[0]=='g') {
-      butIgnoredScroll('Y', -document.height); break; 
-    }
+    case 'h':  scroll('X', -distance);        break;
+    case 'j':  scroll('Y',  distance);        break;
+    case 'k':  scroll('Y', -distance);        break;
+    case 'l':  scroll('X',  distance);        break;
+    case 'G':  scroll('Y',  document.height); break;
+    case 'g':  if (keyQueue[0]=='g') { scroll('Y', -document.height); break; }
   };
 }
 
-document.addEventListener('keydown', processKey, false);
+function butBlacklist (blacklist, fn) {
+  var currentURL  = window.location.href;
+  var onBlacklist = false;
+  blacklist.forEach(function(pat){
+    if (pat.test(currentURL)) onBlacklist = true;
+  });
+  if (!onBlacklist) fn();
+};
+
+butBlacklist(ignoreOn, function() {
+  document.addEventListener('keydown', processKey, false);
+});

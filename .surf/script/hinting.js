@@ -161,9 +161,11 @@ function addKeyBind( key, func, eve ){
     }
 }
 
-document.addEventListener( 'keydown', initKeyBind, false );
-
 ignoreOn = [];
+
+butBlacklist(ignoreOn, function() {
+  document.addEventListener( 'keydown', initKeyBind, false );
+});
 
 function butBlacklist (blacklist, fn) {
   var currentURL  = window.location.href;
@@ -174,10 +176,6 @@ function butBlacklist (blacklist, fn) {
   if (!onBlacklist) fn();
 };
 
-function butIgnored (fn) {
-  butBlacklist(ignoreOn, fn);
-}
-
 function onInput(ev) {
   var target = ev.target || ev.srcElement;
   var name   = target.nodeType==1 ? target.nodeName.toLowerCase() : ''
@@ -187,8 +185,8 @@ function onInput(ev) {
 function initKeyBind(e){
     var t = e.target;
     if (t.nodeType == 1) {
-        butIgnored(function(){addKeyBind('f', 'hintMode()', e)});
-        butIgnored(function(){addKeyBind('F', 'hintMode(true)', e)});
+        addKeyBind('f', 'hintMode()', e);
+        addKeyBind('F', 'hintMode(true)', e);
     }
 }
 
