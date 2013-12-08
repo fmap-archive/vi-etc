@@ -89,7 +89,7 @@ font' :: String
 font' = show XFTSpecification 
   { family = "LetterGothicMono" 
   , style  = Just "Light" 
-  , size   = Just 16
+  , size   = Just 13
   }
 
 dzenStyle :: Dzen2Config
@@ -107,7 +107,7 @@ wsBar = dzen2Config $ dzenStyle
   , h  = Just height
   , xs = Just displayIndex
   } where (width,_) = wsSplitDimensions displayW
-          height = 35
+          height = 29
           index = 0
 
 stBar :: String
@@ -119,7 +119,7 @@ stBar = dzen2Config $ dzenStyle
   , h = Just height
   , xs = Just displayIndex
   } where (_,width) = wsSplitDimensions displayW
-          height = 35
+          height = 29
           index = displayW - width
 
 manageHook' :: ManageHook
@@ -276,12 +276,12 @@ keys' c = mkKeymap c $
 theme :: Theme
 theme = solarizedTheme
   { fontName = "xft:"++font'
-  , decoHeight = 35
+  , decoHeight = 29
   }
 
 promptConfig :: XPConfig
 promptConfig = solarizedXPConfig
-  { height        = 35
+  { height        = 29
   , font          = "xft:"++font'
   , historyFilter = nub
   , position      = Top
