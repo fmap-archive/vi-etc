@@ -155,7 +155,7 @@ function removeHints() {
 
 function addKeyBind( key, func, eve ){
     var pressedKey = get_key(eve);
-    if( pressedKey == key ){
+    if( pressedKey == key && !onInput(eve)){
         eve.preventDefault();  //Stop Default Event 
         eval(func);
     }
@@ -178,9 +178,15 @@ function butIgnored (fn) {
   butBlacklist(ignoreOn, fn);
 }
 
+function onInput(ev) {
+  var target = ev.target || ev.srcElement;
+  var name   = target.nodeType==1 ? target.nodeName.toLowerCase() : ''
+  return /input|select|textarea/.test(name)
+}
+
 function initKeyBind(e){
     var t = e.target;
-    if( t.nodeType == 1){
+    if (t.nodeType == 1) {
         butIgnored(function(){addKeyBind('f', 'hintMode()', e)});
         butIgnored(function(){addKeyBind('F', 'hintMode(true)', e)});
     }

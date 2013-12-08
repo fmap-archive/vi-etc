@@ -48,7 +48,14 @@ function butIgnoredScroll(axis, dt) {
   butIgnored(fn);
 };
 
+function onInput(ev) {
+  var target = ev.target || ev.srcElement;
+  var name   = target.nodeType==1 ? target.nodeName.toLowerCase() : ''
+  return /input|select|textarea/.test(name)
+}
+
 function processKey (ev) {
+  if (onInput(ev)) return;
   var key = queueKey(ev);
   switch (keyQueue[1]) {
     case 'h':  butIgnoredScroll('X', -distance);        break;
