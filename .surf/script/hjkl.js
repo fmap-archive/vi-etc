@@ -38,7 +38,9 @@ function queueKey(ev) {
     case 76: chr = 'l'; break;
   };
   keyQueue[0] = keyQueue[1];
-  keyQueue[1] = ev.shiftKey ? chr.toUpperCase() : chr;
+  if (chr) {
+    keyQueue[1] = ev.shiftKey ? chr.toUpperCase() : chr;
+  };
 };
 
 function butIgnoredScroll(axis, dt) {
