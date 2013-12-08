@@ -37,3 +37,6 @@
 [submodule ".vim/bundle/haskellmode-vim"]
   path = .vim/bundle/haskellmode-vim
   url = https://github.com/lukerandall/haskellmode-vim.git
+[submodule ".vim/bundle/cute-haskell"]
+	path = .vim/bundle/cute-haskell
+	url = /home/vi/root/code/cute-haskell.vim/
