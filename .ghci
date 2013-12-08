@@ -1,6 +1,5 @@
-:set prompt ">> "
+:set prompt "λ: "
 :set +t
-:set +s
 
 import Data.List
 import Data.Char

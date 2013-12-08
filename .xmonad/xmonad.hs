@@ -156,13 +156,13 @@ titleStarts x  = fmap (x `isPrefixOf`) title
 
 scratchpads :: [NamedScratchpad]
 scratchpads = concat $ 
-  [ [ nst "shell" "bash"      ]
-  , [ nst "ghci" "ghci -v0"   ]
-  , [ nst "js" "js17"         ]
-  , [ nst "ruby" "irb"        ]
-  , [ nst "htop" "htop"       ]
-  , [ nst "notes" noteCommand ]
-  , [ nst "dl" "false"        ]
+  [ [ nst "shell" "bash"                 ]
+  , [ nst "ghci" "ghci -v0"              ]
+  , [ nst "js" "node --harmony ~/.inbrc" ]
+  , [ nst "ruby" "irb"                   ]
+  , [ nst "htop" "htop"                  ]
+  , [ nst "notes" noteCommand            ]
+  , [ nst "dl" "false"                   ]
   ] where nst name cmd = NS name (newTerm name cmd) (resource =? name) doSTermLayout
           noteCommand = "vim -c 'cd ~/root/notes' ~/root/notes/scratchpad.txt"
 
