@@ -52,18 +52,6 @@ function setHighlight(elem, is_active) {
 
 }
 
-function setHintRules() {
-    var ss = document.styleSheets[0];
-    ss.insertRule('a[highlight=hint_elem] {background-color: yellow}', 0);
-    ss.insertRule('a[highlight=hint_active] {background-color: lime}', 0);
-}
-
-function deleteHintRules() {
-    var ss = document.styleSheets[0];
-    ss.deleteRule(0);
-    ss.deleteRule(0);
-}
-
 function judgeHintNum(hint_num) {
     var hint_elem = hint_elems[hint_num - 1];
     if (hint_elem != undefined) {
@@ -96,7 +84,6 @@ function execSelect(elem) {
 }
 
 function setHints() {
-    setHintRules();
     var win_top = window.scrollY;
     var win_bottom = win_top + window.innerHeight;
     var win_left = window.scrollX;
@@ -124,10 +111,11 @@ function setHints() {
                 'top: ', elem_top, 'px;',
                 'position: absolute;',
                 'font-size: 13px;',
-                'background-color: ' + (hint_open_in_new_tab ? '#ff6600' : 'red') + ';',
-                'color: white;',
+                'background-color: ' + (hint_open_in_new_tab ? '#ff6600' : '#fdf6e3') + ';',
+                'color: #839496;',
                 'font-weight: bold;',
-                'padding: 0px 1px;',
+                'padding: 4px 6px;',
+                'margin: 0;',
                 'z-index: 100000;'
                     ].join('');
             span.innerHTML = hint_elems.length;
@@ -152,7 +140,6 @@ function removeHints() {
     if (!hint_enabled)
         return;
     hint_enabled = false;
-    deleteHintRules();
     for (var i = 0; i < hint_elems.length; i++) {
         hint_elems[i].removeAttribute('highlight');
     }
