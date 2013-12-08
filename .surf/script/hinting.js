@@ -111,7 +111,7 @@ function setHints() {
                 'top: ', elem_top, 'px;',
                 'position: absolute;',
                 'font-size: 13px;',
-                'background-color: ' + (hint_open_in_new_tab ? '#ff6600' : '#fdf6e3') + ';',
+                'background-color: #fdf6e3;',
                 'color: #839496;',
                 'font-weight: bold;',
                 'padding: 4px 6px;',
@@ -163,12 +163,26 @@ function addKeyBind( key, func, eve ){
 
 document.addEventListener( 'keydown', initKeyBind, false );
 
+ignoreOn = [];
+
+function butBlacklist (blacklist, fn) {
+  var currentURL  = window.location.href;
+  var onBlacklist = false;
+  blacklist.forEach(function(pat){
+    if (pat.test(currentURL)) onBlacklist = true;
+  });
+  if (!onBlacklist) fn();
+};
+
+function butIgnored (fn) {
+  butBlacklist(ignoreOn, fn);
+}
+
 function initKeyBind(e){
     var t = e.target;
     if( t.nodeType == 1){
-        addKeyBind( 'C-f', 'hintMode()', e );
-        addKeyBind( 'C-F', 'hintMode(true)', e );
-        addKeyBind( 'C-c', 'removeHints()', e );
+        butIgnored(function(){addKeyBind('f', 'hintMode()', e)});
+        butIgnored(function(){addKeyBind('F', 'hintMode(true)', e)});
     }
 }
 
