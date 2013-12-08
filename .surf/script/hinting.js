@@ -153,14 +153,6 @@ function removeHints() {
     document.addEventListener('keydown', initKeyBind, false);
 }
 
-function addKeyBind( key, func, eve ){
-    var pressedKey = get_key(eve);
-    if( pressedKey == key && !onInput(eve)){
-        eve.preventDefault();  //Stop Default Event 
-        eval(func);
-    }
-}
-
 ignoreOn = [];
 
 butBlacklist(ignoreOn, function() {
@@ -183,10 +175,12 @@ function onInput(ev) {
 }
 
 function initKeyBind(e){
-    var t = e.target;
-    if (t.nodeType == 1) {
-        addKeyBind('f', 'hintMode()', e);
-        addKeyBind('F', 'hintMode(true)', e);
+    var target = e.target;
+    if (!onInput(e) && target.nodeType==1) {
+      switch (get_key(e)) {
+        case 'f': return hintMode();
+        case 'F': return hintMode(true);
+      }
     }
 }
 
