@@ -4,8 +4,8 @@ var keyQueue = [];
 
 function scroll (axis, dt) {
   switch (axis) {
-    case 'X': window.scrollBy(dt, 0)
-    case 'Y': window.scrollBy(0, dt)
+    case 'X': window.scrollBy(dt, 0); break;
+    case 'Y': window.scrollBy(0, dt); break;
   };
 };
 
