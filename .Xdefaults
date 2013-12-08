@@ -5,9 +5,9 @@ URxvt*loginShell: true
 
 URxvt*scrollBar: false
 
-URxvt*font:xft:LetterGothicMono:size=13:style=Light,9x15
-URxvt*boldFont:xft:LetterGothicMono:size=13:style=LightBold,9x15
-URxvt*italicFont:xft:LetterGothicMono:size=13:style=LightItalic,9x15
+URxvt*font:xft:LetterGothicMono:size=13:style=Light,xft:envy code r:pixelsize=13
+URxvt*boldFont:xft:LetterGothicMono:size=13:style=LightBold,xft:envy code r:pixelsize=13
+URxvt*italicFont:xft:LetterGothicMono:size=13:style=LightItalic,xft:envy code r:pixelsize=13
 
 #include "/home/vi/.rxvt/colours/solarized.Xresources"
 
