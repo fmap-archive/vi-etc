@@ -9,6 +9,7 @@ set shell=bash
 
 " Visual
 set ruler
+set nu
 set rnu
 set showmode
 set nowrap
