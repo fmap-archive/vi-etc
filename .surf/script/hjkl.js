@@ -1,6 +1,4 @@
-var ignoreOn = [
-  /duckduckgo\.com/,
-];
+var ignoreOn = [];
 var distance = 30;
 var keyQueue = [];
 
@@ -21,9 +19,7 @@ function queueKey(ev) {
     case 76: chr = 'l'; break;
   };
   keyQueue[0] = keyQueue[1];
-  if (chr) {
-    keyQueue[1] = ev.shiftKey ? chr.toUpperCase() : chr;
-  };
+  keyQueue[1] = ev.shiftKey ? chr.toUpperCase() : chr;
 };
 
 function onInput(ev) {
