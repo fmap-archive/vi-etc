@@ -105,7 +105,7 @@ function title_git_branch
 { # If we're in a git repository, print the name of the current branch.
   if is_git_repo?; then
     local branch="$(grep '\*' <(git branch) | awk '{ print $2 }')"
-    echo -n " [$branch]"
+    echo -n "$branch"
   fi
 }
 
@@ -113,16 +113,17 @@ function title_git_changes
 { # If we're in a git repository print the number of currently uncommitted files (if any).
   if is_git_repo?; then
     local changes=$(git status -s | wc -l)
-    if [ $changes != "0" ]; then
-      [ $changes -gt 1 ] && s="s"
-      echo -n "[${changes} change$s]"
-    fi
+    echo -n "$changes"
   fi
 }
 
 function set_window_title
 { # Value of X window title
-  update_title "$(title_pwd)$(title_git_branch)$(title_git_changes)"
+  if is_git_repo?; then
+    update_title "$(title_pwd) [$(title_git_branch):$(title_git_changes)]"
+  else
+    update_title "$(title_pwd)"
+  fi
 }
 
 function prompt_delim

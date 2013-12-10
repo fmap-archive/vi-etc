@@ -53,8 +53,8 @@ function! g:git_title(...)
     return ''
   endif
   let branch  = g:git("branch | awk '/*/ {print $2}'")
-  let changes = g:git("status -s | wc -l")
-  return "[" . branch . "][" . changes . " changes] "
+  let changes = g:git("status -s | wc -l | sed 's/^/:/'")
+  return "[" . branch . changes . "]"
 endfunction
 
 function! g:dir_title(...)
