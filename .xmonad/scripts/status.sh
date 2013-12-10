@@ -52,7 +52,7 @@ audio::volume() {
 volume(){
   loud=false
   for channel in `audio::volume | sort -u`; do
-    [[ ${channel%\%} -gt 50 ]] && loud=true 
+    [[ ${channel%\%} -gt 60 ]] && loud=true 
   done; $loud && print '^fg(#dc322f) screaming^fg()'
 }
 
