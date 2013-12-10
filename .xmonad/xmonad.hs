@@ -209,19 +209,13 @@ layoutHook' = fullscreenFull                         $
 
 logHook' bar = dynamicLogWithPP $ defaultPP
   { ppOutput          = hPutStrLn bar
-  , ppCurrent         = (:) ' '
+  , ppCurrent         = const []
   , ppVisible         = const []
   , ppHidden          = const []
   , ppUrgent          = dzenColor "#dc322f" ""
   , ppSep             = []
-  , ppTitle           = pad
-  , ppLayout          = dzenColor base01 [] . 
-                          (\x -> case x of 
-                            "Minimize Tall"            -> dzenXBM "tall.xbm"
-                            "Minimize Full"            -> dzenXBM "full.xbm"
-                            "Minimize Tabbed Simplest" -> dzenXBM "full.xbm"
-                            otherwise                  -> x
-                          )
+  , ppTitle           = (' ':) 
+  , ppLayout          = const []
   }
   where dzenXBM xbm = wrap " ^i(" ")" $ xbmPath xbm
         xbmPath     = (++) "/home/vi/.xmonad/icons/"
