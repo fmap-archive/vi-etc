@@ -165,6 +165,7 @@ ignores = (
   { mask = "xiong"; level = "ALL"; },
   { mask = "pookie"; level = "ALL"; },
   { mask = "galileo"; level = "ALL"; }
+  { mask = "Shishichi"; level = "ALL"; }
 );
 
 logs = { };
