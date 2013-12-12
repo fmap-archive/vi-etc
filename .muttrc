@@ -30,7 +30,8 @@ unset record
 
 set hostname="gmail.com" # Everyone seems to use it. It's a bit sad.
 set use_domain=yes
-set signature="MEAN PEOPLE SUCK."
+set signature=""
+set attribution=""
 
 source ~/.mutt/gpg.rc
 source ~/.mutt/smime.rc
@@ -38,10 +39,8 @@ source ~/.mutt/smime.rc
 # }}}
 # Index View {{{
 
-set sort=threads
-set ascii_chars
-set sort_aux=reverse-last-date-received
-set index_format  = "%3C | %-21.20n %s%* %S | %d"
+set sort=reverse-date-received
+set index_format  = "%04C %-31.30u %s%* %Z"
 set date_format   = "%Y-%m-%d"
 
 lists selfspark@googlegroups.com
@@ -51,6 +50,7 @@ lists openfrog@googlegroups.com
 
 set nomark_old
 set fast_reply
+set abort_nosubject=no
 
 # }}}
 # Pager View {{{
@@ -85,7 +85,7 @@ unset help
 
 set tmpdir = $HOME/.mutt/tmp
 set editor = "vim"
-set edit_headers
+set edit_headers=no
 set include
 
 # }}}
