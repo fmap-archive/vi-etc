@@ -17,6 +17,7 @@ function queueKey(ev) {
     case 74: chr = 'j'; break;
     case 75: chr = 'k'; break;
     case 76: chr = 'l'; break;
+    case 82: chr = 'r'; break;
   };
   keyQueue[0] = keyQueue[1];
   keyQueue[1] = ev.shiftKey ? chr.toUpperCase() : chr;
@@ -32,6 +33,7 @@ function processKey (ev) {
   if (onInput(ev)) return;
   var key = queueKey(ev);
   switch (keyQueue[1]) {
+    case 'r':  location.reload();             break;
     case 'h':  scroll('X', -distance);        break;
     case 'j':  scroll('Y',  distance);        break;
     case 'k':  scroll('Y', -distance);        break;
