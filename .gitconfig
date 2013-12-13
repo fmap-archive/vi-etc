@@ -29,7 +29,7 @@
 	ly      = log --pretty --oneline --abbrev-commit --since='last week'
 	med     = "!git-med"
 	out     = "!git-out"
-	edit    = "!vim `git st|awk '{print $2}'`"
+	edit    = "!vim `git ls-files`"
 	st      = status -s
 	tree    = log --graph --pretty  --format='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
 	undo    = checkout --
