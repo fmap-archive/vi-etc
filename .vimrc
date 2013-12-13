@@ -9,12 +9,10 @@ set shell=bash
 
 " Visual
 set ruler
-set nu
-set rnu
 set showmode
 set nowrap
 set title
-set ls=2
+set ls=0
 
 if &t_Co >= 256 || has("gui_running")
   colorscheme solarized
@@ -168,21 +166,16 @@ nnoremap <Space>    Lz<CR>
 nnoremap <leader>b :ls<CR>:b<space>
 nnoremap <leader>d :ls<CR>:bdelete<space>
 
-"function! SplitRawr()
-"  echohl ErrorMsg | echo "NO SPLITS" | echohl None
-"endfunction
-"
-"" Don't Use Splits
-"cmap sp :call SplitRawr()<CR>
-"cmap vs :call SplitRawr()<CR>
-"
-" Reset
-"nmap <C-l> :!reset<CR><CR>
+function! SplitRawr()
+  echohl ErrorMsg | echo "NO SPLITS" | echohl None
+endfunction
 
-nmap <C-l> <C-w><Right>
-nmap <C-h> <C-w><Left>
-nmap <C-j> <C-w><Down>
-nmap <C-k> <C-w><Up>
+" Don't Use Splits
+cmap sp :call SplitRawr()<CR>
+cmap vs :call SplitRawr()<CR>
+
+" Reset
+nmap <C-l> :!reset<CR><CR>
 
 " Search
 cmap g!! vimgrep
@@ -203,9 +196,6 @@ nmap <silent><leader>p :set paste!<CR>
 " User Functions
 nmap <silent><leader>w :call StripWhitespace()<CR>
 nmap <silent><leader>q :QFix()<CR>
-
-" Plugins
-map <silent><leader>n :NERDTreeToggle<CR>
 
 " Miscellaneous
 nmap <silent><leader>s :shell<CR>
