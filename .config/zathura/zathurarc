@@ -7,3 +7,4 @@ set window-title-basename
 set statusbar-v-padding 7
 set font "letter gothic mono light 13"
 set adjust-open width
+set guioptions ""
