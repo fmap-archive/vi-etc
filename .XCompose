@@ -1,5 +1,5 @@
 include "%L"
-
+<Multi_key> '                                       : "′" U2032   # PRIME
 <Multi_key> <period> <period> <period>              : "…"	U2026		# HORIZONTAL ELLIPSIS
 <Multi_key> <apostrophe> <space>                    : "’"	U2019		# RIGHT SINGLE QUOTATION MARK
 <Multi_key> <apostrophe> <apostrophe>               : "”"	U201D		# RIGHT DOUBLE QUOTATION MARK
