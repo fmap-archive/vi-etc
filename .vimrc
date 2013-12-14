@@ -135,7 +135,7 @@ set ffs=unix,dos,mac
 " Section: Commands {{{
 
 " Toggle the QuickFix Window.
-command -bang -nargs=? QFix call QFixToggle(<bang>0)
+command! -bang -nargs=? QFix call QFixToggle(<bang>0)
 function! QFixToggle(forced)
   if exists("g:qfix_win") && a:forced == 0
     cclose
@@ -143,6 +143,14 @@ function! QFixToggle(forced)
   else
     copen 10
     let g:qfix_win = bufnr("$")
+  endif
+endfunction
+
+function! ToggleSyntax()
+  if exists("g:syntax_on")
+    syntax off
+  else
+    syntax on
   endif
 endfunction
 
@@ -191,7 +199,10 @@ noremap <leader>' :s/^/'''/<CR>
 
 " Mode Toggling
 nmap <silent><leader>l :set rnu!<CR>
+nmap <silent><leader>h :call ToggleSyntax()<CR>
+
 nmap <silent><leader>p :set paste!<CR>
+
 
 " User Functions
 nmap <silent><leader>w :call StripWhitespace()<CR>
