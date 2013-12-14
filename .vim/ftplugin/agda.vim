@@ -142,11 +142,11 @@ imap <buffer> \Chi Χ
 imap <buffer> \Psi Ψ
 imap <buffer> \Omega Ω
 
-function WriteSyntax()
+function! WriteSyntax()
   silent exec "! agda --vim " . bufname("%") . " >/dev/null 2>&1"
 endfunction
 
-function ReadSyntax()
+function! ReadSyntax()
   syntax clear
   runtime syntax/agda.vim
   let f = expand('%:h') . "/." . expand('%:t') . ".vim"
