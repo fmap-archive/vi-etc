@@ -214,7 +214,7 @@ logHook' bar = dynamicLogWithPP $ defaultPP
   , ppHidden          = const []
   , ppUrgent          = dzenColor "#dc322f" ""
   , ppSep             = []
-  , ppTitle           = (' ':) 
+  , ppTitle           = id
   , ppLayout          = const []
   }
   where dzenXBM xbm = wrap " ^i(" ")" $ xbmPath xbm

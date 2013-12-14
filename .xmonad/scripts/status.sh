@@ -57,6 +57,6 @@ volume(){
 }
 
 while true; do
-  (volume;network;battery) | sed 's/• $/\n/'
+  (volume;network;battery) | sed 's/ • $/\n/'
   sleep 5
 done
