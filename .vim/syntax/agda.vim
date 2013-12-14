@@ -1,3 +1,5 @@
+runtime syntax/haskell.vim
+
 hi def link agdaNumber           Number
 hi def link agdaString           String
 hi def link agdaConstructor      Constant
