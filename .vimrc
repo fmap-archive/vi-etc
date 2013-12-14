@@ -171,8 +171,8 @@ nnoremap <leader>x  /TODO<CR>
 nnoremap <Space>    Lz<CR>
 
 " Buffer Navigation
-nnoremap <leader>b :ls<CR>:b<space>
-nnoremap <leader>d :ls<CR>:bdelete<space>
+nnoremap <leader>b :b<space>
+nnoremap <leader>d :bdelete<space>
 
 function! SplitRawr()
   echohl ErrorMsg | echo "NO SPLITS" | echohl None
