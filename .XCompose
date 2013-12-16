@@ -1,10 +1,8 @@
-include "%L"
-<Multi_key> '                                       : "′" U2032   # PRIME
+<Multi_key> <t> <m>                                 : "™" U2122   # TRADE MARK SIGN
+<Multi_key> <o> <r>                                 : "®" U00AE # REGISTERED SIGN
+<Multi_key> <apostrophe>                            : "′" U2032   # PRIME
+<Multi_key> <colon> <colon>                         : "∷" U+2237	# PROPORTION
 <Multi_key> <period> <period> <period>              : "…"	U2026		# HORIZONTAL ELLIPSIS
-<Multi_key> <apostrophe> <space>                    : "’"	U2019		# RIGHT SINGLE QUOTATION MARK
-<Multi_key> <apostrophe> <apostrophe>               : "”"	U201D		# RIGHT DOUBLE QUOTATION MARK
-<Multi_key> <grave> <space>                         : "‘"	U2018		# LEFT SINGLE QUOTATION MARK
-<Multi_key> <grave> <grave>                         : "“"	U201C		# LEFT DOUBLE QUOTATION MARK
 <Multi_key> <less> <bar>                            : "↵"	U21B5		# DOWNWARDS ARROW WITH CORNER LEFTWARDS
 <Multi_key> <o> <period>                            : "•"	U2022		# BULLET
 <Multi_key> <Left> <Left>                           : "←"	leftarrow	# LEFTWARDS ARROW
@@ -88,6 +86,7 @@ include "%L"
 <Multi_key> <R> <e>                                 : "ℜ"	 U211C 	     	# BLACK-LETTER CAPITAL R (Real Part)
 <Multi_key> <I> <m>                                 : "ℑ"	 U2111		# BLACK-LETTER CAPTIAL I (Imaginary Part)
 <Multi_key> <b> <c>                                 : "ℂ"   U2102           # DOUBLE-STRUCK CAPITAL C (set of complex numbers)
+<Multi_key> <b> <b>                                 : "𝔹"   U1D359          # DOUBLE-STRUCK CAPITAL B 
 <Multi_key> <b> <n>                                 : "ℕ"   U2115           # DOUBLE-STRUCK CAPITAL N (natural number)
 <Multi_key> <b> <p>                                 : "ℙ"   U2119           # DOUBLE-STRUCK CAPITAL P
 <Multi_key> <b> <q>                                 : "ℚ"   U211A           # DOUBLE-STRUCK CAPITAL Q (set of rational numbers)
