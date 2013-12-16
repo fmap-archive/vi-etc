@@ -3,7 +3,6 @@ all: install
 install:
 	rsync --exclude ".git" \
 				--exclude ".gitmodules" \
-				--exclude "README.md" \
 				--exclude ".*sw*" \
 				--exclude "Makefile"\
 				-avzb . ~
