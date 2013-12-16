@@ -198,7 +198,7 @@ layoutHook' = fullscreenFull                         $
               avoidStruts                            $
               minimize                               $
               boringWindows                          $
-              smartBorders                           $
+              noBorders                              $
               onWorkspace (findWS "www") tabLayout   $
               onWorkspace (findWS "doc") tabLayout   $
               defaultLayout
