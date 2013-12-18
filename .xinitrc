@@ -4,6 +4,7 @@ systemctl --user start scrutor
 systemctl --user start keep
 aziz --device display --brightness 300
 setxkbmap -option 'ctrl:nocaps,compose:rwin'
+xkbcomp ~/.Xkeymap $DISPLAY
 xrdb -merge .Xdefaults
 xsetroot -cursor_name left_ptr
 urxvtd -q -f -o &

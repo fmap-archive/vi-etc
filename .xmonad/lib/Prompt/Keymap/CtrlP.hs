@@ -25,6 +25,7 @@ ctrlP' p = M.fromList $
   , (xK_w, killWord' p Prev)
   , (xK_g, quit)
   , (xK_bracketleft, quit)
+  , (xK_Escape, quit)
   ] ++
   map (first $ (,) 0)
   [ (xK_Return, setSuccess True >> setDone True)
