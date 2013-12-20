@@ -13,6 +13,8 @@ xsetroot -solid '#fdf6e3'
 xset -b &
 xcompmgr &                    
 redshift -l 1.3667:103.8 &
+restore zathura &
+restore surf &
 bs 
 
 ssh-agent xmonad &>>"$HOME/.xmonad/logs/everything.log"
