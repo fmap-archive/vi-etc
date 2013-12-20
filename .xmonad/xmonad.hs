@@ -60,16 +60,16 @@ browser'  = "surf"   :: String
 
 workspaces' :: [String]
 workspaces' = map (\(n,w) -> mconcat [show n,":",w]) $
-  [ (1, "root")
-  , (2, "work")
-  , (3, "www" )
-  , (4, "mail")
-  , (5, "doc" )
-  , (6, "srs" )
-  , (7, "?"   )
-  , (8, "?"   )
-  , (9, "im"  )
-  , (0, "mu"  )
+  [ (1, "root" )
+  , (2, "work" )
+  , (3, "www"  )
+  , (4, "mail" )
+  , (5, "doc"  )
+  , (6, "srs"  )
+  , (7, "type" )
+  , (8, "???"  )
+  , (9, "im"   )
+  , (0, "mu"   )
   ] 
 
 findWS :: String -> String
@@ -139,6 +139,7 @@ manageHook' = (composeAll . concat $
   , [className =? "Zathura"       --> doShift (findWS "doc")  ]
   , [className =? "FBReader"      --> doShift (findWS "doc")  ]
   , [className =? "Mnemosyne"     --> doShift (findWS "srs")  ]
+  , [className =? "Amphetype"     --> doShift (findWS "type") ]
   , [titleStarts  "load_ssh_keys" --> doSTermLayout           ]
   ]) <+> namedScratchpadManageHook scratchpads
   where name           =  stringProperty "WM_NAME"      :: Query String
