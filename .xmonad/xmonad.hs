@@ -180,7 +180,7 @@ startupHook' :: X ()
 startupHook' = do
   spawn $ "bash -c ~/.xmonad/scripts/status.sh | " ++ stBar
   spawn $ newTerm "load_ssh_keys" "load_ssh_keys"
-  (newTerm "mutt" "mutt") `runIfNot` (title =? "mutt")
+  (newTerm "mutt" "mutt") `runIfNot` titleStarts "mutt"
   "mnemosyne" `runIfNot` (className =? "Mnemosyne")
   "amphetype" `runIfNot` (className =? "Amphetype")
   ("ssh-wait && net-wait &&"++newTerm "irssi" "ssh tau -t tmux a") `shIfNot` titleStarts "irssi"
