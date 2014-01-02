@@ -133,7 +133,7 @@ function prompt_delim
 
 function PS1
 { # Value of primary prompt.
-  [[ ! -n "$DISPLAY" ]] && echo -n '\W'
+  [[ "$TERM" == "Linux" ]] && echo -n '\W'
   prompt_delim
 }
 
