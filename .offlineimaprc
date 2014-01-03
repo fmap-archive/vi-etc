@@ -1,6 +1,22 @@
 [general]
 ui       = ttyui
-accounts = vikramverma, krake
+accounts = vikramverma, krake, cuddlecouncil
+
+[Account cuddlecouncil]
+localrepository = cuddlecouncil-local
+remoterepository = cuddlecouncil-remote
+
+[Repository cuddlecouncil-local]
+type         = Maildir
+localfolders = ~/var/mail/cuddlecouncil
+nametrans    = lambda name: name.upper() # Assumes remote maildirs are all uppercase
+
+[Repository cuddlecouncil-remote]
+type           = IMAP
+remoteuser     = vi
+remotehost     = cuddlecouncil.net
+remotepassfile = ~/.security/offlineimap/vikramverma.pass
+nametrans      = lambda name: name.lower()
 
 [Account vikramverma]
 localrepository  = vikramverma-local

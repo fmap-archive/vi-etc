@@ -1,0 +1,10 @@
+my_hdr X-URL: http://vikramverma.com
+my_hdr X-Alignment: Chaotic Neutral
+my_hdr Cc: vi <vi@cuddlecouncil.net> 
+
+set realname = "vi"
+set from = "vi@cuddlecouncil.net"
+
+set postponed = "+cuddlecouncil/drafts/"
+
+# vim:set ft=muttrc:
