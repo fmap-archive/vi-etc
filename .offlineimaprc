@@ -17,6 +17,7 @@ remoteuser     = vi
 remotehost     = cuddlecouncil.net
 remotepassfile = ~/.security/offlineimap/vikramverma.pass
 nametrans      = lambda name: name.lower()
+sslcacertfile  = /etc/ssl/certs/ca-certificates.crt
 
 [Account vikramverma]
 localrepository  = vikramverma-local
