@@ -15,7 +15,7 @@ nametrans    = lambda name: name.upper() # Assumes remote maildirs are all upper
 type           = IMAP
 remoteuser     = vi
 remotehost     = cuddlecouncil.net
-remotepassfile = ~/.security/offlineimap/vikramverma.pass
+remotepassfile = ~/.security/offlineimap/cuddlecouncil.pass
 nametrans      = lambda name: name.lower()
 sslcacertfile  = /etc/ssl/certs/ca-certificates.crt
 
