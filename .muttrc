@@ -57,13 +57,13 @@ set abort_nosubject=no
 # Pager View {{{
 
 set pager = "builtin"
-set pager_index_lines = 9
+set pager_index_lines = 0
 set pager_context = 5
 set pager_format=%s
 unset markers
 
 ignore *
-unignore To From Cc Date X-RSS-URL
+unignore To From Cc Date X-RSS-URL Subject
 unignore X-Alignment # Let's see if this catches on.
 
 alternative_order text/plain text/html
