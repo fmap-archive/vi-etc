@@ -7,8 +7,9 @@
 # Account {{{
 
 set envelope_from
-folder-hook vikramverma source ~/.mutt/accounts/vikramverma.com.rc
-folder-hook krake       source ~/.mutt/accounts/krake.io.rc
+folder-hook vikramverma   source ~/.mutt/accounts/vikramverma.com.rc
+folder-hook krake         source ~/.mutt/accounts/krake.io.rc
+folder-hook cuddlecouncil source ~/.mutt/accounts/cuddlecouncil.net.rc
 
 # }}}
 # Incoming Mail - OfflineIMAP {{{
