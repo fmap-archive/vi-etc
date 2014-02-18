@@ -10,6 +10,7 @@ set envelope_from
 folder-hook vikramverma   source ~/.mutt/accounts/vikramverma.com.rc
 folder-hook krake         source ~/.mutt/accounts/krake.io.rc
 folder-hook cuddlecouncil source ~/.mutt/accounts/cuddlecouncil.net.rc
+folder-hook zalora        source ~/.mutt/accounts/zalora.net.rc
 
 # }}}
 # Incoming Mail - OfflineIMAP {{{
@@ -22,11 +23,12 @@ set spoolfile = "+vikramverma/inbox"
 
 mailboxes +vikramverma/inbox  
 mailboxes +krake/inbox  
+mailboxes +zalora/inbox
 
 # }}}
 # Outgoing Mail - MSMTP {{{
 
-set sendmail = /usr/bin/msmtp
+set sendmail = msmtp
 unset record
 
 set hostname="gmail.com" # Everyone seems to use it. It's a bit sad.

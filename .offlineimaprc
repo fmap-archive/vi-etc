@@ -1,6 +1,35 @@
 [general]
 ui       = ttyui
-accounts = vikramverma, krake, cuddlecouncil
+accounts = zalora, vikramverma, krake, cuddlecouncil
+
+[Account zalora]
+localrepository  = zalora-local
+remoterepository = zalora-remote
+maxsyncaccounts  = 3
+maxconnections   = 3
+
+[Repository zalora-local]
+type         = Maildir
+localfolders = ~/var/mail/zalora
+nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
+                            'flagged': '[Gmail]/Starred',
+                            'trash':   '[Gmail]/Trash',
+                            'archive': '[Gmail]/All Mail',
+                            'inbox': 'INBOX',
+                            }.get(folder, folder)
+
+[Repository zalora-remote]
+type             = Gmail
+remoteuser       = vikram.verma@zalora.com
+remotepassfile   = ~/.security/offlineimap/zalora.pass
+real_delete = no
+nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
+                            '[Gmail]/Starred':   'flagged',
+                            '[Gmail]/Trash':     'trash',
+                            '[Gmail]/All Mail':  'archive',
+                            'INBOX': 'inbox',
+                            }.get(folder, folder)
+sslcacertfile = /etc/ssl/certs/ca-bundle.crt
 
 [Account cuddlecouncil]
 localrepository = cuddlecouncil-local
@@ -17,7 +46,7 @@ remoteuser     = vi
 remotehost     = cuddlecouncil.net
 remotepassfile = ~/.security/offlineimap/cuddlecouncil.pass
 nametrans      = lambda name: name.lower()
-sslcacertfile  = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile  = /etc/ssl/certs/ca-bundle.crt
 
 [Account vikramverma]
 localrepository  = vikramverma-local
@@ -46,7 +75,7 @@ nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/All Mail':  'archive',
                             'INBOX': 'inbox',
                             }.get(folder, folder)
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /etc/ssl/certs/ca-bundle.crt
 
 [Account krake]
 localrepository  = krake-local
@@ -75,7 +104,7 @@ nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/All Mail':  'archive',
                             'INBOX': 'inbox',
                             }.get(folder, folder)
-sslcacertfile = /etc/ssl/certs/ca-certificates.crt
+sslcacertfile = /etc/ssl/certs/ca-bundle.crt
 
 
 # vim: ft=cfg
