@@ -13,7 +13,8 @@ function loop()
 
 function wc() 
 { # BSD madness.
-  /usr/bin/wc "$@" | sed 's/^ *//'
+  WC=`which wc`
+  $WC "$@" | sed 's/^ *//'
 }
 
 function len()
