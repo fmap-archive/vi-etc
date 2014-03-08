@@ -66,7 +66,7 @@ if has('title') && (has('gui_running') || &title)
 endif
 
 if has('gui_running')
-  set guifont=LetterGothicMono\ Light\\,\ Light\ 13
+  set guifont=LetterGothicMono-Light:h16
   set guicursor+=a:blinkon0
   set guioptions=
 endif
