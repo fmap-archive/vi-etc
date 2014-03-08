@@ -19,5 +19,5 @@ URxvt*keysym.Mod4-u: perl:url-select:select_next
 URxvt*keysym.Mod4-v: perl:clipboard:paste
 URxvt*keysym.Control-Down: perl:fontsize:d
 URxvt*keysym.Control-Up: perl:fontsize:i
-URxvt*urlLauncher:   /usr/local/bin/surf
+URxvt*urlLauncher:   surf 
 URxvt*underlineURLs: true
