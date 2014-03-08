@@ -21,6 +21,7 @@ endif
 if system('echo -n $TERM')=="rxvt-unicode-256color"
   set background=dark
 else
+  let g:solarized_termtrans = 1
   set background=light
 endif
 
