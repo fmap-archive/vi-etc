@@ -32,7 +32,7 @@ function cd()
   # than ten (non-hidden) files.
 
   builtin cd "$@" && FILE_COUNT="$(wc -l <(ls) | awk '{ print $1 }')"
-  [[ "$FILE_COUNT" -lt 10 ]] && ls --color
+  [[ "$FILE_COUNT" -lt 10 ]] && ls 
 }
 
 function mkcd()
