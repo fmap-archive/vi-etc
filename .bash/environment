@@ -16,7 +16,8 @@ CABAL_BIN="$HOME/.cabal/bin"
 PERL_BIN="/usr/bin/vendor_perl"
 [ -d $PERL_BIN ] && PATH="$PERL_BIN:$PATH"
 
-source ~/.nvm/nvm.sh
+NVM_SETUP="$HOME/.nvm/nvm.sh"
+[ -f "$NVM_SETUP" ] && source $NVM_SETUP
 
 # }}}
 # Utilities {{{
