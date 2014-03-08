@@ -14,20 +14,20 @@ set nowrap
 set title
 set ls=0
 
+if &t_Co > 2 || has("gui_running")
+  syntax enable
+endif
+
+if system('echo -n $TERM')=="rxvt-unicode-256color"
+  set background=dark
+else
+  set background=light
+endif
+
 if &t_Co >= 256 || has("gui_running")
   colorscheme solarized
   highlight Folded term=bold cterm=bold
   set cursorline
-endif
-
-if has("gui_running")
-  set background=light
-else
-  set background=dark
-endif
-
-if &t_Co > 2 || has("gui_running")
-  syntax enable
 endif
 
 " Title
