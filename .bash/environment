@@ -6,6 +6,8 @@ export HISTFILE="$HOME/.bash/history"
 shopt -s histappend
 shopt -s autocd
 set -o vi
+
+PATH=/usr/local/bin:$PATH
   
 GEM_BIN="$HOME/.gem/ruby/1.9.1/bin"
 [ -d $GEM_BIN ] && PATH="$PATH:$GEM_BIN"
