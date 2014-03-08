@@ -7,13 +7,13 @@ if [ -n "$PS1" ] ; then
   # Add my personal scripts to the path..
 
   BIN="$HOME/bin"
-  [ -d $BIN                 ] && PATH="$BIN:$PATH"      || echo "Error sourcing user scripts."
+  [ -d $BIN                 ] && PATH="$BIN:$PATH"   
 
   # ..and source my preferred environment, aliases and functions.
 
-  [ -r ~/.bash/environment  ] && . ~/.bash/environment  || echo "Error reading environment file."
-  [ -r ~/.bash/aliases      ] && . ~/.bash/aliases      || echo "Error reading aliases file."
-  [ -r ~/.bash/functions    ] && . ~/.bash/functions    || echo "Error reading functions file."
+  [ -r ~/.bash/environment  ] && . ~/.bash/environment 
+  [ -r ~/.bash/aliases      ] && . ~/.bash/aliases      
+  [ -r ~/.bash/functions    ] && . ~/.bash/functions  
 
   # Then set my preferred prompts..
 
