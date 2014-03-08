@@ -38,11 +38,11 @@ solarizedTheme = defaultTheme
 solarizedXPConfig :: XPConfig
 solarizedXPConfig = defaultXPConfig
   { bgColor       = base03
-  , fgColor       = base01
+  , fgColor       = base0
   }
 
 solarizedDzenConfig :: Dzen2Config
 solarizedDzenConfig = dzen
   { bg = Just base03
-  , fg = Just base00
+  , fg = Just base0
   }
