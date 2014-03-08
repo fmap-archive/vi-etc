@@ -1,3 +1,0 @@
-alias ls="ls -h --file-type --time-style='+%y-%m-%d %H%M%S' --color --group-directories-first"
-
-# vim:ft=sh:
