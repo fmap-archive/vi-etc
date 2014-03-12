@@ -3,7 +3,6 @@
 	email = noreply@example.org
 
 [core]
-	editor = urxvt -name scratchpad -e vim
 	pager  = less
 	excludesfile = /home/vi/.gitignore
 
