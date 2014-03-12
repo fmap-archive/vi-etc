@@ -51,8 +51,8 @@ function! g:git_title(...)
   if !exists('b:git_dir')
     return ''
   endif
-  let branch  = g:git("branch | awk '/*/ {print $2}'")
-  let changes = g:git("status -s | wc -l | sed 's/^/:/'")
+  let branch  = g:git("branch | awk '/\\*/ {print $2}'")
+  let changes = g:git("status -s | wc -l | sed 's/^ \*/:/'")
   return "[" . branch . changes . "]"
 endfunction
 
