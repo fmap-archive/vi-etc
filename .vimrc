@@ -175,16 +175,11 @@ nnoremap <Space>    Lz<CR>
 nnoremap <leader>b :b<space>
 nnoremap <leader>d :bdelete<space>
 
-function! SplitRawr()
-  echohl ErrorMsg | echo "NO SPLITS" | echohl None
-endfunction
-
-" Don't Use Splits
-cmap sp :call SplitRawr()<CR>
-cmap vs :call SplitRawr()<CR>
-
 " Reset
-nmap <C-l> :!reset<CR><CR>
+nmap <C-h> <C-w>h<CR><CR>
+nmap <C-j> <C-w>j<CR><CR>
+nmap <C-k> <C-w>k<CR><CR>
+nmap <C-l> <C-w>l<CR><CR>
 
 " Search
 cmap g!! vimgrep
