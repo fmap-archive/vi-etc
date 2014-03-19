@@ -11,5 +11,5 @@ submodules:
 	git submodule init
 	git submodule update
 
-xmonad:
+xmonad: .xmonad
 	cd .xmonad && ghc -ilib xmonad.hs && cd ..

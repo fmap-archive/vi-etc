@@ -124,23 +124,25 @@ stBar = dzen2Config $ dzenStyle
 
 manageHook' :: ManageHook
 manageHook' = (composeAll . concat $
-  [ [fullscreenManageHook                                     ]
-  , [isFullscreen                 --> doFullFloat             ]
-  , [isDialog                     --> doCenterFloat           ]
-  , [className =? "feh"           --> doCenterFloat           ]
-  , [className =? "MPlayer"       --> doCenterFloat           ]
-  , [titleStarts  "Gnuplot"       --> doCenterFloat           ]
-  , [iconHas      "gplt"          --> doCenterFloat           ]
-  , [className =? "Xmessage"      --> doResizeFloat           ]
-  , [className =? "Surf"          --> doShift (findWS "www")  ]
-  , [titleStarts  "irssi"         --> doShift (findWS "im")   ]
-  , [titleStarts  "mutt"          --> doShift (findWS "mail") ]
-  , [className =? "Okular"        --> doShift (findWS "doc")  ]
-  , [className =? "Zathura"       --> doShift (findWS "doc")  ]
-  , [className =? "FBReader"      --> doShift (findWS "doc")  ]
-  , [className =? "Mnemosyne"     --> doShift (findWS "srs")  ]
-  , [className =? "Amphetype"     --> doShift (findWS "type") ]
-  , [titleStarts  "load_ssh_keys" --> doSTermLayout           ]
+  [ [fullscreenManageHook                                        ]
+  , [isFullscreen                    --> doFullFloat             ]
+  , [isDialog                        --> doCenterFloat           ]
+  , [className =? "feh"              --> doCenterFloat           ]
+  , [className =? "MPlayer"          --> doCenterFloat           ]
+  , [titleStarts  "Gnuplot"          --> doCenterFloat           ]
+  , [iconHas      "gplt"             --> doCenterFloat           ]
+  , [className =? "Xmessage"         --> doResizeFloat           ]
+  , [className =? "Surf"             --> doShift (findWS "www")  ]
+  , [titleStarts  "irssi"            --> doShift (findWS "im")   ]
+  , [titleStarts  "mutt"             --> doShift (findWS "mail") ]
+  , [className =? "Okular"           --> doShift (findWS "doc")  ]
+  , [className =? "Zathura"          --> doShift (findWS "doc")  ]
+  , [className =? "Zathura"          --> doShift (findWS "doc")  ]
+  , [className =? ".zathura-wrapped" --> doShift (findWS "doc")  ]
+  , [className =? "FBReader"         --> doShift (findWS "doc")  ]
+  , [className =? "Mnemosyne"        --> doShift (findWS "srs")  ]
+  , [className =? "Amphetype"        --> doShift (findWS "type") ]
+  , [titleStarts  "load_ssh_keys"    --> doSTermLayout           ]
   ]) <+> namedScratchpadManageHook scratchpads
   where name           =  stringProperty "WM_NAME"      :: Query String
         icon           =  stringProperty "WM_ICON_NAME" :: Query String
@@ -266,8 +268,7 @@ keys' c = mkKeymap c $
     --scrutor = S.searchEngine "ddg" "https://duckduckgo.com/?kp=-1&kz=-1&kf=-1&kg=p&ks=m&kw=s&km=l&ku=1&ko=-1&k4=-1&ke=-1&kk=s&kr=-1&kq=-1&k1=-1&kx=r&q="
     scrutor = S.searchEngine "scrutor" "http://scrutor.aineko/?q="
     toggleScratchpad = (namedScratchpadAction scratchpads)
-    restart = "xmonad --recompile &&"
-           ++ "bs"
+    restart = "bs"
 
 theme :: Theme
 theme = solarizedTheme
