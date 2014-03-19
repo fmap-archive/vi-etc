@@ -27,6 +27,9 @@ NVM_SETUP="$HOME/.nvm/nvm.sh"
 NIX_SETUP="$HOME/.nix-profile/etc/profile.d/nix.sh"
 [ -f "$NIX_SETUP" ] && source "$NIX_SETUP"
 
+ZALORA_NIX_LIB="/usr/src/zalora-nix-lib"
+[ -d "$ZALORA_NIX_LIB" ] && NIX_PATH="$NIX_PATH:zalora-nix-lib=$ZALORA_NIX_LIB"
+
 # }}}
 # Utilities {{{
 
