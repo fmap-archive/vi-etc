@@ -18,4 +18,6 @@ restore zathura &
 net-wait && restore surf &
 bs 
 
-ssh-agent xmonad &>>"$HOME/.xmonad/logs/everything.log"
+ssh-agent $HOME/.xmonad/xmonad &>>"$HOME/.xmonad/logs/everything.log"
+
+exit 0
