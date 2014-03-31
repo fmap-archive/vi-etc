@@ -1,4 +1,3 @@
-set pgp_use_gpg2_agent
 set pgp_autosign
 set pgp_replysignencrypted
 set pgp_timeout=512
