@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-systemctl --user start scrutor
-systemctl --user start keep
 aziz --device display --brightness 300
 setxkbmap -option 'ctrl:nocaps,compose:rwin'
 xkbcomp ~/.Xkeymap $DISPLAY
@@ -16,6 +14,7 @@ xcompmgr &
 redshift -l 1.3667:103.8 &
 restore zathura &
 net-wait && restore surf &
+net-wait && ssh-wait && sshfs -o nonempty tau:/media/ ~/usr/share/ & 
 bs 
 
 ssh-agent $HOME/.xmonad/xmonad &>>"$HOME/.xmonad/logs/everything.log"
