@@ -9,11 +9,11 @@ time::hm() {
 }
   
 time::fuzzy()  {
-  ~/bin/clock/fuzzy
+  fdate
 }
 
 _time() {
-  time::hm
+  time::fuzzy
 }
 
 battery::charging() {
@@ -37,7 +37,7 @@ battery() {
 }
 
 network::connected() {
-  grep -qE 'wlan|eth|ath|wlp' /proc/net/route 
+  grep -qE 'wlan|eth|ath|wlp|enp' /proc/net/route 
 }
 
 network() {
@@ -57,6 +57,6 @@ volume(){
 }
 
 while true; do
-  (volume;network;battery) | sed 's/ • $/\n/'
+  (volume;network;battery;_time) | sed 's/ • $/\n/'
   sleep 5
 done
