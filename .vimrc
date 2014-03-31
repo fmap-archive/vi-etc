@@ -172,8 +172,8 @@ nnoremap <leader>x  /TODO<CR>
 nnoremap <Space>    Lz<CR>
 
 " Buffer Navigation
-nnoremap <leader>b :b<space>
-nnoremap <leader>d :bdelete<space>
+nnoremap <leader>b :ls<CR>:b<space>
+nnoremap <leader>d :ls<CR>:bdelete<space>
 
 " Reset
 nmap <C-h> <C-w>h<CR><CR>
