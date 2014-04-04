@@ -1,15 +1,17 @@
 #! perl
 
+my $bin = (-d '/run/current_system/sw/bin') ? '/run/current-system/sw/bin' : '/usr/bin';
+
 sub on_sel_grab {
     my $query = $_[0]->selection;
-    open (my $pipe,'| /usr/bin/xclip -in') or die;
+    open (my $pipe,"| $bin/xclip -in") or die;
     print $pipe $query;
     close $pipe;
 }
 
 sub paste {
     my ($self) = @_;
-    my $content = `/usr/bin/xclip -o` ;
+    my $content = `$bin/xclip -o` ;
     $self->tt_write ($content);
 }
 
