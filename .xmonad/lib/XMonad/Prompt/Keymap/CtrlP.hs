@@ -1,4 +1,4 @@
-module Prompt.Keymap.CtrlP (ctrlP) where
+module XMonad.Prompt.Keymap.CtrlP (ctrlP) where
 
 import XMonad
 import qualified XMonad.StackSet as W

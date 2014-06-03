@@ -1,9 +1,13 @@
-module Themes.Solarized where
+module XMonad.Themes.Solarized (
+  base01,
+  base02,
+  solarizedTheme,
+  solarizedXPConfig
+) where
 
-import XMonad.Prompt
-import XMonad.Layout.Decoration
-import Data.List
-import Util.Dzen2
+import Graphics.X11.Dzen2 (Dzen2Config(..), dzen)
+import XMonad.Layout.Decoration (Theme(..), defaultTheme)
+import XMonad.Prompt (XPConfig(..), defaultXPConfig)
 
 base3   = "#002b36"
 base2   = "#073642"

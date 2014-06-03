@@ -1,4 +1,4 @@
-module Util.XFT where
+module Graphics.X11.XFT (XFTSpecification(..)) where
 
 import Data.List (intercalate)
 

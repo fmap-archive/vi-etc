@@ -1,6 +1,11 @@
-{-# OPTIONS_GHC -XFlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 
-module Util.Dzen2 where
+module Graphics.X11.Dzen2 (
+  Dzen2Config(..), 
+  Timeout(..),
+  Alignment(..),
+  dzen
+) where
 
 import Data.Monoid (mconcat)
 import Data.List (intercalate)
@@ -131,4 +136,5 @@ dzenOption :: (String, Maybe String) -> String
 dzenOption (_, Nothing)     = ""
 dzenOption (flag, Just arg) = mconcat [space, flag, space, arg]
 
+dzen :: Dzen2Config
 dzen = emptyDzen2Config
