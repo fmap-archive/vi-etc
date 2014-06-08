@@ -3,19 +3,21 @@
 module Graphics.X11.Monitor (
   Monitor(..),
   getMonitors,
-  isRetina
+  isRetina,
+  configureDisplays
 ) where
 
 import Control.Applicative ((<$>), (<*>))
 import Control.Arrow ((&&&))
-import Control.Monad (liftM2)
+import Control.Monad (liftM2, filterM)
 import Data.Function (on)
-import Data.Functor.Extras ((<$$$>))
-import Data.List (nub)
+import Data.Functor.Extras ((<$$>),(<$$$>))
+import Data.List (nub, find)
 import Data.Maybe (catMaybes)
 import Data.Units (Convertible(convert), Inches(..), Millimeters(..))
 import Graphics.X11.Xlib (Display, Window, openDisplay, defaultScreen, rootWindow, createSimpleWindow, blackPixel)
 import Graphics.X11.Xrandr (XRROutputInfo(..), XRRCrtcInfo(..), XRRModeInfo(..), XRRScreenResources(..), xrrGetOutputInfo, xrrGetScreenResources, xrrGetCrtcInfo)
+import Graphics.X11.Types (Rotation, xRR_Rotate_270)
 
 data Monitor = Monitor
   { dimensions :: (Inches, Inches)
@@ -44,6 +46,34 @@ getMonitors = openDisplay [] >>= \display -> getScreenResources display >>= \cas
         resolutions = map maximum <$> getResolutions display resources `mapM` output
     zipWith Monitor dimensions <$> resolutions
   Nothing -> return []
+
+configureDisplays :: IO () -- TODO: abstract and move vi-specific logic to xmonad.hs
+configureDisplays = openDisplay [] >>= \display -> getScreenResources display >>= \case
+  Just resources -> do
+    connected <- filter isConnected . catMaybes <$> xrrGetOutputInfo display resources `mapM` xrr_sr_outputs resources
+    if length connected == 1 then return () {- If there's only one connected display, do nothing. -} else do 
+      -- Disable the primary display, I always clamshell:
+      let internalDisplay = find ((=="eDP1") . xrr_oi_name) connected
+      return () `maybe` disable $ internalDisplay
+      -- Enable all other displays!
+      let externalDisplays = filter ((/=internalDisplay).Just) connected
+      mapM_ enable externalDisplays
+      -- Left-rotate any 1920x1200 displays, assuming they're the U2412s I use at work.
+      externalVerticalDisplays <- filterM (((==(,)1920 1200) . maximum) <$$> getResolutions display resources) externalDisplays
+      flip rotate xRR_Rotate_270 `mapM_` externalVerticalDisplays
+  Nothing -> return () -- ???
+
+rotate :: XRROutputInfo -> Rotation -> IO ()
+rotate = undefined
+
+disable :: XRROutputInfo -> IO ()
+disable = undefined
+
+enable :: XRROutputInfo -> IO ()
+enable = undefined
+
+isConnected :: XRROutputInfo -> Bool
+isConnected = (==0) . xrr_oi_connection
 
 isActive :: XRROutputInfo -> Bool
 isActive XRROutputInfo{..} = and

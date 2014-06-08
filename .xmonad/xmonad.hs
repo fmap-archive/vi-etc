@@ -10,7 +10,7 @@ import Data.Monoid (Monoid(mconcat), All)
 import Data.String.Interpolate (i)
 import GHC.Word (Word64)
 import Graphics.X11.Dzen2 ()
-import Graphics.X11.Monitor (Monitor(..), getMonitors, isRetina)
+import Graphics.X11.Monitor (Monitor(..), getMonitors, isRetina, configureDisplays)
 import Graphics.X11.Types (Window, KeyMask, KeySym, mod4Mask)
 import Graphics.X11.XFT (XFTSpecification(..))
 import Graphics.X11.Xlib.Extras (Event)
@@ -169,5 +169,6 @@ setFont (fontFromMonitor -> font) = sequence_ $
   ] ?? (setResource . uncurry Resource)
 
 main :: IO ()
-main = getMonitors ?? maximum 
+main = return () --configureDisplays 
+    >> getMonitors ?? maximum 
    >>= liftM2 (>>) setFont (xmonad . configuration)
