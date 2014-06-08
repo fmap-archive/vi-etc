@@ -11,7 +11,7 @@ data XFTSpecification = XFTSpecification
 instance Show XFTSpecification where
   show (XFTSpecification family style size) = 
     intercalate ":".filter (not.null) $ 
-      [family, showStyle style, showSize size]
+      ["xft", family, showStyle style, showSize size]
     
 
 showStyle :: Maybe String -> String

@@ -1,4 +1,4 @@
-{-# LANGUAGE RecordWildCards, FlexibleContexts, Rank2Types, QuasiQuotes #-}
+{-# LANGUAGE RecordWildCards, FlexibleContexts, Rank2Types, ViewPatterns, QuasiQuotes #-}
 
 import Data.Functor.Extras ((??))
 import Data.List (isInfixOf, isPrefixOf, isSuffixOf, find, nub)
@@ -13,6 +13,7 @@ import Graphics.X11.Monitor (Monitor(..), getMonitors, isRetina)
 import Graphics.X11.Types (Window, KeyMask, KeySym, mod4Mask)
 import Graphics.X11.XFT (XFTSpecification(..))
 import Graphics.X11.Xlib.Extras (Event)
+import Graphics.X11.Xrdb (Resource(..), setResource)
 import XMonad.Actions.CopyWindow (copy, kill1)
 import XMonad.Actions.CycleWS (toggleWS)
 import XMonad.Actions.Search (promptSearchBrowser, selectSearchBrowser, searchEngine, SearchEngine)
@@ -105,14 +106,14 @@ layoutHook' = minimize . tabbed shrinkText . themeFromMonitor
 
 themeFromMonitor :: Monitor -> Theme
 themeFromMonitor monitor = solarizedTheme
-  { fontName   = [i|xft:#{fontFromMonitor monitor}|]
+  { fontName   = fontFromMonitor monitor "light"
   , decoHeight = if isRetina monitor then 40 else 29
   }
 
-fontFromMonitor :: Monitor -> String
-fontFromMonitor monitor = show XFTSpecification
+fontFromMonitor :: Monitor -> String -> String
+fontFromMonitor monitor style = show XFTSpecification
   { family = "LetterGothicMono"
-  , style  = Just "light"
+  , style  = Just style
   , size   = Just $ if isRetina monitor then 20 else 13
   }
 
@@ -129,7 +130,7 @@ prompt = solarizedXPConfig
 promptFromMonitor :: Monitor -> XPConfig
 promptFromMonitor monitor = prompt
   { height = if isRetina monitor then 40 else 29
-  , font   = [i|xft:#{fontFromMonitor monitor}|]
+  , font   = fontFromMonitor monitor "light"
   }
 
 ddg :: SearchEngine
@@ -159,5 +160,15 @@ keys' monitor = flip mkKeymap $
       , (f, m) <- [(view, "M-"), (shift, "M-S-")]
   ]
 
+setX11Font :: Monitor -> IO ()
+setX11Font (fontFromMonitor -> font) = sequence_ . map (setResource . uncurry Resource) $
+  [ ("URxvt*font"       , font "light"       )
+  , ("URxvt*boldFont"   , font "lightbold"   )
+  , ("URxvt*italicFont" , font "lightitalic" )
+  ]
+
 main :: IO ()
-main = getMonitors >>= xmonad . configuration . maximum
+main = do
+  largestMonitor <- getMonitors ?? maximum
+  setX11Font largestMonitor 
+  xmonad $ configuration largestMonitor
