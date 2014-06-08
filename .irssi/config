@@ -21,7 +21,7 @@ servers = (
 
 chatnets = {
   freenode = {
-    autosendcmd = "/password send; wait 2000; /q PatrickRobotham;";
+    autosendcmd = "/password send; wait 2000";
     type = "IRC";
   };
   foonetic = {
@@ -31,10 +31,8 @@ chatnets = {
 };
 
 channels = (
-  { name = "##hplusroadmap";  chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#haskell";        chatnet = "freenode"; autojoin = "Yes"; }
   { name = "##megaharem";     chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#lw-prog";        chatnet = "freenode"; autojoin = "Yes"; },
-  { name = "#phlegethos";     chatnet = "foonetic"; autojoin = "Yes"; }
 );
 
 aliases = {
