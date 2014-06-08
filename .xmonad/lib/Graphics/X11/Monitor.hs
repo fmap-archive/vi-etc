@@ -29,9 +29,9 @@ withPreferredUnits :: Convertible a b => (c -> a) -> (c -> a) -> c -> (b, b)
 withPreferredUnits = (&&&) `on` fmap convert
 
 ppi :: Monitor -> Double
-ppi Monitor{..} = pixels / inches
-  where inches = on (*) getInches `uncurry` dimensions
-        pixels = uncurry (*) resolution
+ppi Monitor{..} = dp / di
+  where di = sqrt $ on (+) ((**2) . getInches) `uncurry` dimensions
+        dp = sqrt $ on (+) (**2) `uncurry` resolution
 
 isRetina :: Monitor -> Bool
 isRetina = (>= 220) . ppi
