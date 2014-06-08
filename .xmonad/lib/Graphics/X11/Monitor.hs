@@ -39,11 +39,17 @@ isRetina = (>= 220) . ppi
 getMonitors :: IO [Monitor]
 getMonitors = openDisplay [] >>= \display -> getScreenResources display >>= \case
   Just resources -> do
-    output <- catMaybes <$> xrrGetOutputInfo display resources `mapM` xrr_sr_outputs resources
-    let dimensions  = filter offAxis $ getDimensions `map` output
-        resolutions = concat <$> getResolutions display resources `mapM` output
+    output <- filter isActive . catMaybes <$> xrrGetOutputInfo display resources `mapM` xrr_sr_outputs resources
+    let dimensions  = getDimensions `map` output
+        resolutions = map maximum <$> getResolutions display resources `mapM` output
     zipWith Monitor dimensions <$> resolutions
   Nothing -> return []
+
+isActive :: XRROutputInfo -> Bool
+isActive XRROutputInfo{..} = and
+  [ not $ null xrr_oi_clones
+  , xrr_oi_connection == 0 
+  ]
 
 getDimensions :: XRROutputInfo -> (Inches, Inches)
 getDimensions = withPreferredUnits xrr_oi_mm_width xrr_oi_mm_height
