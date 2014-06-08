@@ -1,4 +1,4 @@
-{-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE MultiParamTypeClasses, GeneralizedNewtypeDeriving, FlexibleInstances #-}
 
 module Data.Units (
   Convertible(..),
@@ -8,8 +8,10 @@ module Data.Units (
 
 import Foreign.C.Types (CULong(..), CUInt(..))
 
-newtype Millimeters = Millimeters { getMillimeters :: Double } deriving (Show, Eq, Ord)
-newtype Inches      = Inches      { getInches      :: Double } deriving (Show, Eq, Ord)
+newtype Millimeters = Millimeters { getMillimeters :: Double } 
+  deriving (Show, Eq, Ord, Num)
+newtype Inches = Inches { getInches :: Double } 
+  deriving (Show, Eq, Ord, Num)
 
 class Convertible a b where
   convert :: a -> b

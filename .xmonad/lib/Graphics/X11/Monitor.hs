@@ -40,8 +40,8 @@ getMonitors :: IO [Monitor]
 getMonitors = openDisplay [] >>= \display -> getScreenResources display >>= \case
   Just resources -> do
     output <- catMaybes <$> xrrGetOutputInfo display resources `mapM` xrr_sr_outputs resources
-    let dimensions  = getDimensions `map` output
-        resolutions = nub . concat <$> getResolutions display resources `mapM` output
+    let dimensions  = filter offAxis $ getDimensions `map` output
+        resolutions = concat <$> getResolutions display resources `mapM` output
     zipWith Monitor dimensions <$> resolutions
   Nothing -> return []
 
@@ -49,13 +49,13 @@ getDimensions :: XRROutputInfo -> (Inches, Inches)
 getDimensions = withPreferredUnits xrr_oi_mm_width xrr_oi_mm_height
 
 getResolutions :: Display -> XRRScreenResources -> XRROutputInfo -> IO [(Double, Double)]
-getResolutions display resources output = fmap (filter hasResolution . catMaybes)
+getResolutions display resources output = fmap (filter offAxis . catMaybes)
                                         $ withPreferredUnits xrr_ci_width xrr_ci_height 
                                     <$$$> xrrGetCrtcInfo display resources 
                                     `mapM` xrr_oi_crtcs output
 
-hasResolution :: Num a => Ord a => (a, a) -> Bool
-hasResolution = flip (>) 0 . fst
+offAxis :: Num a => Ord a => (a, a) -> Bool
+offAxis = flip (>) 0 . fst
 
 getScreenResources :: Display -> IO (Maybe XRRScreenResources)
 getScreenResources = liftM2 (>>=) emptyWindow xrrGetScreenResources
