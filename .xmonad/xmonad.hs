@@ -1,5 +1,6 @@
 {-# LANGUAGE RecordWildCards, FlexibleContexts, Rank2Types, ViewPatterns, QuasiQuotes #-}
 
+import Control.Monad (liftM2)
 import Data.Functor.Extras ((??))
 import Data.List (isInfixOf, isPrefixOf, isSuffixOf, find, nub)
 import Data.List.Extras ((-:))
@@ -160,15 +161,13 @@ keys' monitor = flip mkKeymap $
       , (f, m) <- [(view, "M-"), (shift, "M-S-")]
   ]
 
-setX11Font :: Monitor -> IO ()
-setX11Font (fontFromMonitor -> font) = sequence_ . map (setResource . uncurry Resource) $
+setFont :: Monitor -> IO ()
+setFont (fontFromMonitor -> font) = sequence_ $ 
   [ ("URxvt*font"       , font "light"       )
   , ("URxvt*boldFont"   , font "lightbold"   )
   , ("URxvt*italicFont" , font "lightitalic" )
-  ]
+  ] ?? (setResource . uncurry Resource)
 
 main :: IO ()
-main = do
-  largestMonitor <- getMonitors ?? maximum
-  setX11Font largestMonitor 
-  xmonad $ configuration largestMonitor
+main = getMonitors ?? maximum 
+   >>= liftM2 (>>) setFont (xmonad . configuration)
