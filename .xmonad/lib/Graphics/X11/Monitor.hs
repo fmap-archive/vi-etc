@@ -76,10 +76,7 @@ isConnected :: XRROutputInfo -> Bool
 isConnected = (==0) . xrr_oi_connection
 
 isActive :: XRROutputInfo -> Bool
-isActive XRROutputInfo{..} = and
-  [ not $ null xrr_oi_clones
-  , xrr_oi_connection == 0 
-  ]
+isActive = (/=0) . xrr_oi_crtc 
 
 getDimensions :: XRROutputInfo -> (Inches, Inches)
 getDimensions = withPreferredUnits xrr_oi_mm_width xrr_oi_mm_height
