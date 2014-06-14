@@ -1,6 +1,6 @@
 [general]
 ui       = ttyui
-accounts = zalora, vikramverma, krake, cuddlecouncil
+accounts = zalora, vikramverma, cuddlecouncil
 
 [Account zalora]
 localrepository  = zalora-local
@@ -21,7 +21,7 @@ nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
 [Repository zalora-remote]
 type             = Gmail
 remoteuser       = vikram.verma@zalora.com
-remotepassfile   = ~/.security/offlineimap/zalora.pass
+remotepassfile   = ~/.security/mail/zalora.pass
 real_delete = no
 nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/Starred':   'flagged',
@@ -44,7 +44,7 @@ nametrans    = lambda name: name.upper() # Assumes remote maildirs are all upper
 type           = IMAP
 remoteuser     = vi
 remotehost     = cuddlecouncil.net
-remotepassfile = ~/.security/offlineimap/cuddlecouncil.pass
+remotepassfile = ~/.security/mail/cuddlecouncil.pass
 nametrans      = lambda name: name.lower()
 sslcacertfile  = /etc/ssl/certs/ca-bundle.crt
 
@@ -67,7 +67,7 @@ nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
 [Repository vikramverma-remote]
 type             = Gmail
 remoteuser       = me@vikramverma.com
-remotepassfile   = ~/.security/offlineimap/vikramverma.pass
+remotepassfile   = ~/.security/mail/vikramverma.pass
 real_delete = no
 nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             '[Gmail]/Starred':   'flagged',
@@ -76,35 +76,5 @@ nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
                             'INBOX': 'inbox',
                             }.get(folder, folder)
 sslcacertfile = /etc/ssl/certs/ca-bundle.crt
-
-[Account krake]
-localrepository  = krake-local
-remoterepository = krake-remote
-maxsyncaccounts  = 3
-maxconnections   = 3
-
-[Repository krake-local]
-type         = Maildir
-localfolders = ~/var/mail/krake
-nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
-                            'flagged': '[Gmail]/Starred',
-                            'trash':   '[Gmail]/Trash',
-                            'archive': '[Gmail]/All Mail',
-                            'inbox': 'INBOX',
-                            }.get(folder, folder)
-
-[Repository krake-remote]
-type             = Gmail
-remoteuser       = vi@krake.io
-remotepassfile   = ~/.security/offlineimap/krake.pass
-real_delete = no
-nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
-                            '[Gmail]/Starred':   'flagged',
-                            '[Gmail]/Trash':     'trash',
-                            '[Gmail]/All Mail':  'archive',
-                            'INBOX': 'inbox',
-                            }.get(folder, folder)
-sslcacertfile = /etc/ssl/certs/ca-bundle.crt
-
 
 # vim: ft=cfg
