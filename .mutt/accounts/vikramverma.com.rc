@@ -5,6 +5,6 @@ my_hdr Cc: Vikram Verma <me@vikramverma.com> # :X
 set realname = "Vikram Verma"
 set from = "me@vikramverma.com"
 
-set postponed = "+vikramverma/[Gmail].Drafts/"
+set postponed = "+vikramverma/drafts/"
 
 # vim:set ft=muttrc:

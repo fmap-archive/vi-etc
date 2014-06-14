@@ -1,6 +1,6 @@
 set realname = "Vikram Verma"
 set from = "vi@zalora.sg"
 
-set postponed = "+zalora/[Gmail].Drafts/"
+set postponed = "+zalora/drafts/"
 
 # vim:set ft=muttrc:
