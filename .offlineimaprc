@@ -11,25 +11,15 @@ maxconnections   = 3
 [Repository zalora-local]
 type         = Maildir
 localfolders = ~/var/mail/zalora
-nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
-                            'flagged': '[Gmail]/Starred',
-                            'trash':   '[Gmail]/Trash',
-                            'archive': '[Gmail]/All Mail',
-                            'inbox': 'INBOX',
-                            }.get(folder, folder)
 
 [Repository zalora-remote]
 type             = Gmail
 remoteuser       = vikram.verma@zalora.com
 remotepassfile   = ~/.security/mail/zalora.pass
-real_delete = no
-nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
-                            '[Gmail]/Starred':   'flagged',
-                            '[Gmail]/Trash':     'trash',
-                            '[Gmail]/All Mail':  'archive',
-                            'INBOX': 'inbox',
-                            }.get(folder, folder)
-sslcacertfile = /etc/ssl/certs/ca-bundle.crt
+real_delete      = no
+create_folders   = False 
+nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
+sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
 [Account cuddlecouncil]
 localrepository = cuddlecouncil-local
@@ -38,13 +28,13 @@ remoterepository = cuddlecouncil-remote
 [Repository cuddlecouncil-local]
 type         = Maildir
 localfolders = ~/var/mail/cuddlecouncil
-nametrans    = lambda name: name.upper() # Assumes remote maildirs are all uppercase
 
 [Repository cuddlecouncil-remote]
 type           = IMAP
 remoteuser     = vi
 remotehost     = cuddlecouncil.net
 remotepassfile = ~/.security/mail/cuddlecouncil.pass
+create_folders = False
 nametrans      = lambda name: name.lower()
 sslcacertfile  = /etc/ssl/certs/ca-bundle.crt
 
@@ -57,24 +47,14 @@ maxconnections   = 3
 [Repository vikramverma-local]
 type         = Maildir
 localfolders = ~/var/mail/vikramverma
-nametrans = lambda folder: {'sent':    '[Gmail]/Sent Mail',
-                            'flagged': '[Gmail]/Starred',
-                            'trash':   '[Gmail]/Trash',
-                            'archive': '[Gmail]/All Mail',
-                            'inbox': 'INBOX',
-                            }.get(folder, folder)
 
 [Repository vikramverma-remote]
 type             = Gmail
 remoteuser       = me@vikramverma.com
 remotepassfile   = ~/.security/mail/vikramverma.pass
-real_delete = no
-nametrans = lambda folder: {'[Gmail]/Sent Mail': 'sent',
-                            '[Gmail]/Starred':   'flagged',
-                            '[Gmail]/Trash':     'trash',
-                            '[Gmail]/All Mail':  'archive',
-                            'INBOX': 'inbox',
-                            }.get(folder, folder)
-sslcacertfile = /etc/ssl/certs/ca-bundle.crt
+real_delete      = no
+create_folders   = false
+nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
+sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
 # vim: ft=cfg
