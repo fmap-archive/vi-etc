@@ -1,7 +1,0 @@
-set realname = "vi"
-set from = "vi@krake.io"
-my_hdr Cc: vi <vi@krake.io>
-
-set postponed = "+krake/[Gmail].Drafts/"
-
-# vim:set ft=muttrc:
