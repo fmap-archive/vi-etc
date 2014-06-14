@@ -169,6 +169,6 @@ setFont (fontFromMonitor -> font) = sequence_ $
   ] ?? (setResource . uncurry Resource)
 
 main :: IO ()
-main = return () --configureDisplays 
+main = configureDisplays 
     >> getMonitors ?? maximum 
    >>= liftM2 (>>) setFont (xmonad . configuration)

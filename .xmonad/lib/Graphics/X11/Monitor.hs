@@ -1,4 +1,4 @@
-{-# LANGUAGE RecordWildCards, LambdaCase #-}
+{-# LANGUAGE RecordWildCards, ViewPatterns, LambdaCase #-}
 
 module Graphics.X11.Monitor (
   Monitor(..),
@@ -9,15 +9,19 @@ module Graphics.X11.Monitor (
 
 import Control.Applicative ((<$>), (<*>))
 import Control.Arrow ((&&&))
-import Control.Monad (liftM2, filterM)
+import Control.Monad (liftM2, filterM, void, forM_)
 import Data.Function (on)
 import Data.Functor.Extras ((<$$>),(<$$$>))
 import Data.List (nub, find)
 import Data.Maybe (catMaybes)
+import Data.Maybe (fromJust)
 import Data.Units (Convertible(convert), Inches(..), Millimeters(..))
-import Graphics.X11.Xlib (Display, Window, openDisplay, defaultScreen, rootWindow, createSimpleWindow, blackPixel)
-import Graphics.X11.Xrandr (XRROutputInfo(..), XRRCrtcInfo(..), XRRModeInfo(..), XRRScreenResources(..), xrrGetOutputInfo, xrrGetScreenResources, xrrGetCrtcInfo)
 import Graphics.X11.Types (Rotation, xRR_Rotate_270)
+import Graphics.X11.Xlib (Display, Window, openDisplay, defaultScreen, rootWindow, createSimpleWindow, blackPixel)
+import Graphics.X11.Xlib.Display (defaultRootWindow)
+import Graphics.X11.Xlib.Extras (currentTime)
+import Graphics.X11.Xrandr (XRROutputInfo(..), XRRCrtcInfo(..), XRRModeInfo(..), XRRScreenResources(..), xrrGetOutputInfo, xrrGetScreenResources, xrrGetCrtcInfo, xrrGetScreenInfo, xrrSetScreenConfig, xrrConfigCurrentConfiguration)
+import System.Process (readProcess)
 
 data Monitor = Monitor
   { dimensions :: (Inches, Inches)
@@ -52,25 +56,61 @@ configureDisplays = openDisplay [] >>= \display -> getScreenResources display >>
   Just resources -> do
     connected <- filter isConnected . catMaybes <$> xrrGetOutputInfo display resources `mapM` xrr_sr_outputs resources
     if length connected == 1 then return () {- If there's only one connected display, do nothing. -} else do 
-      -- Disable the primary display, I always clamshell:
-      let internalDisplay = find ((=="eDP1") . xrr_oi_name) connected
-      return () `maybe` disable $ internalDisplay
-      -- Enable all other displays!
-      let externalDisplays = filter ((/=internalDisplay).Just) connected
-      mapM_ enable externalDisplays
-      -- Left-rotate any 1920x1200 displays, assuming they're the U2412s I use at work.
-      externalVerticalDisplays <- filterM (((==(,)1920 1200) . maximum) <$$> getResolutions display resources) externalDisplays
-      flip rotate xRR_Rotate_270 `mapM_` externalVerticalDisplays
+      forM_ connected $ \output-> do
+        -- Disable the primary display, I always clamshell:
+        if xrr_oi_name output == "eDP1" then disable output else do
+          -- Enable all other displays!
+          enable output
+          -- Left-rotate any 1920x1200 displays, assuming they're the U2412s I use at work.
+          maximum <$> getResolutions display resources output >>= \case
+            (1920,1200) -> rotateLeft output
+            otherwise   -> return ()
+    pairWise rightOf $ filter isActive connected
   Nothing -> return () -- ???
 
-rotate :: XRROutputInfo -> Rotation -> IO ()
-rotate = undefined
+pairWise :: Monad m => (a -> a -> m b) -> [a] -> m ()
+pairWise _ []       = return ()
+pairWise _ (a:[])   = return ()
+pairWise f (a:b:xs) = f a b >> pairWise f (b:xs)
+
+-- Some day I will rewrite these functions to use the <X11/extensions/Xrandr.h>
+-- more directly. Today is not that day. 
+-- <<EOAAAAAAAAGH
+
+rotateLeft :: XRROutputInfo -> IO ()
+rotateLeft (xrr_oi_name -> screenName) = withXrandr
+  [ "--output"
+  , screenName
+  , "--rotation"
+  , "left"
+  ]
+
+rightOf :: XRROutputInfo -> XRROutputInfo -> IO ()
+rightOf (xrr_oi_name -> left) (xrr_oi_name -> right) = withXrandr
+  [ "--output"
+  , right
+  , "--right-of"
+  , left
+  ]
 
 disable :: XRROutputInfo -> IO ()
-disable = undefined
+disable (xrr_oi_name -> screenName) = withXrandr
+  [ "--output"
+  , screenName
+  , "--off"
+  ]
 
 enable :: XRROutputInfo -> IO ()
-enable = undefined
+enable (xrr_oi_name -> screenName) = withXrandr
+  [ "--output"
+  , screenName
+  , "--auto"
+  ]
+
+withXrandr :: [String] -> IO ()
+withXrandr = void . flip (readProcess "xrandr") []
+
+--EOAAAAAAAAGH
 
 isConnected :: XRROutputInfo -> Bool
 isConnected = (==0) . xrr_oi_connection
