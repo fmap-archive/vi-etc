@@ -21,7 +21,6 @@ import XMonad.Actions.Search (promptSearchBrowser, selectSearchBrowser, searchEn
 import XMonad.Core (X(..), XConfig(..), LayoutClass, ManageHook, spawn, whenJust)
 import XMonad.Hooks.ManageHelpers (doFullFloat, isFullscreen, isDialog, doCenterFloat)
 import XMonad.Hooks.Minimize (minimizeEventHook)
-import XMonad.Hooks.SetWMName (setWMName)
 import XMonad.Layout (Full(..))
 import XMonad.Layout.Decoration (Decoration, DefaultShrinker)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook)
@@ -49,7 +48,7 @@ configuration monitor = XConfig
   , focusedBorderColor = base01
   , manageHook         = mconcat manageHooks
   , handleEventHook    = mconcat eventHooks
-  , startupHook        = setWMName "LG3D"
+  , startupHook        = mconcat startupHooks
   , logHook            = return ()
   , focusFollowsMouse  = False
   , layoutHook         = layoutHook' monitor
@@ -98,6 +97,14 @@ eventHooks :: [EventHook]
 eventHooks = 
   [ fullscreenEventHook
   , minimizeEventHook
+  ]
+
+startupHooks :: [X ()]
+startupHooks =
+  [ spawn "mnemosyne"
+  , spawn "urxvt -e mutt -f var/mail/zalora/inbox"
+  , spawn "urxvt -e mutt -f var/mail/vikramverma/inbox"
+  , spawn "urxvt -e mutt -f var/mail/cuddlecouncil/inbox"
   ]
 
 type Layout = ModifiedLayout Minimize (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest)
