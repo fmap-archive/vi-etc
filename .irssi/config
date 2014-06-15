@@ -32,6 +32,7 @@ chatnets = {
 channels = (
   { name = "#haskell";        chatnet = "freenode"; autojoin = "Yes"; }
   { name = "##megaharem";     chatnet = "freenode"; autojoin = "Yes"; },
+  { name = "#zalora";         chatnet = "freenode"; autojoin = "Yes"; },
 );
 
 aliases = {
