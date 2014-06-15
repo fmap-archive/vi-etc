@@ -22,6 +22,7 @@ import XMonad.Core (X(..), XConfig(..), LayoutClass, ManageHook, spawn, whenJust
 import XMonad.Hooks.ManageHelpers (doFullFloat, isFullscreen, isDialog, doCenterFloat)
 import XMonad.Hooks.Minimize (minimizeEventHook)
 import XMonad.Layout (Full(..))
+import XMonad.Layout.BoringWindows (BoringWindows, boringWindows, focusUp, focusDown)
 import XMonad.Layout.Decoration (Decoration, DefaultShrinker)
 import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook)
 import XMonad.Layout.LayoutModifier (ModifiedLayout)
@@ -35,7 +36,7 @@ import XMonad.Operations (withFocused, windows, sendMessage, screenWorkspace)
 import XMonad.Prompt (XPConfig(..), XPPosition(..))
 import XMonad.Prompt.Keymap.CtrlP (ctrlP)
 import XMonad.Prompt.Shell (shellPrompt)
-import XMonad.StackSet (sink, shift, view, greedyView, focusUp, focusDown)
+import XMonad.StackSet (sink, shift, view, greedyView)
 import XMonad.Themes.Solarized (base02, base01, solarizedTheme, solarizedXPConfig)
 import XMonad.Util.EZConfig (mkKeymap)
       
@@ -107,10 +108,10 @@ startupHooks =
   , spawn "urxvt -e mutt -f var/mail/cuddlecouncil/inbox"
   ]
 
-type Layout = ModifiedLayout Minimize (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest)
+type Layout = ModifiedLayout Minimize (ModifiedLayout BoringWindows (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest))
 
 layoutHook' :: Monitor -> Layout Word64
-layoutHook' = minimize . tabbed shrinkText . themeFromMonitor
+layoutHook' = minimize . boringWindows . tabbed shrinkText . themeFromMonitor
 
 themeFromMonitor :: Monitor -> Theme
 themeFromMonitor monitor = solarizedTheme
@@ -156,8 +157,8 @@ keys' monitor = flip mkKeymap $
   , ( "M-S-c",         kill1                                                        )
   , ( "M-m",           withFocused minimizeWindow                                   )
   , ( "M-S-m",         sendMessage RestoreNextMinimizedWin                          )
-  , ( "M-j",           windows focusDown                                            )
-  , ( "M-k",           windows focusUp                                              )
+  , ( "M-j",           focusDown                                                    )
+  , ( "M-k",           focusUp                                                      )
   ] ++
   [ (m++k, windows $ f w) 
       | (w, k) <- zip workspaces' ("1234567890"??return)
