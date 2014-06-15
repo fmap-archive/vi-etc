@@ -17,7 +17,7 @@ type             = Gmail
 remoteuser       = vikram.verma@zalora.com
 remotepassfile   = ~/.security/mail/zalora.pass
 real_delete      = no
-create_folders   = False 
+createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
@@ -34,7 +34,7 @@ type           = IMAP
 remoteuser     = vi
 remotehost     = cuddlecouncil.net
 remotepassfile = ~/.security/mail/cuddlecouncil.pass
-create_folders = False
+createfolders  = False
 nametrans      = lambda name: name.lower()
 sslcacertfile  = /etc/ssl/certs/ca-bundle.crt
 
@@ -53,7 +53,7 @@ type             = Gmail
 remoteuser       = me@vikramverma.com
 remotepassfile   = ~/.security/mail/vikramverma.pass
 real_delete      = no
-create_folders   = false
+createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
