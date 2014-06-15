@@ -59,11 +59,9 @@ configuration monitor = XConfig
   , clickJustFocuses   = False
   }
 
-terminal' :: String
+terminal', browser' :: String
 terminal' = "urxvt"
-
-browser' :: Monitor -> String
-browser' monitor = if isRetina monitor then "surf -z 2" else "surf"
+browser'  = "surf"
 
 workspaces' :: [String]
 workspaces' = zipWith template ([1..9]-:0) $
@@ -141,18 +139,18 @@ ddg = searchEngine "ddg" "http://duckduckgo.com?q="
 
 keys' :: Monitor -> XConfig layout -> Map (KeyMask, KeySym) (X ())
 keys' monitor = flip mkKeymap $ 
-  [ ( "M-S-l",         spawn "slock"                                                          )
-  , ( "M-<Tab>",       toggleWS                                                               )
-  , ( "M-S-<Return>",  spawn terminal'                                                        )
-  , ( "M-o",           promptSearchBrowser (promptFromMonitor monitor) (browser' monitor) ddg )
-  , ( "M-S-o",         selectSearchBrowser (browser' monitor) ddg                             )
-  , ( "M-p",           shellPrompt $ promptFromMonitor monitor                                )
-  , ( "M-t",           withFocused $ windows . sink                                           )
-  , ( "M-S-c",         kill1                                                                  )
-  , ( "M-m",           withFocused minimizeWindow                                             )
-  , ( "M-S-m",         sendMessage RestoreNextMinimizedWin                                    )
-  , ( "M-j",           windows focusDown                                                      )
-  , ( "M-k",           windows focusUp                                                        )
+  [ ( "M-S-l",         spawn "slock"                                                )
+  , ( "M-<Tab>",       toggleWS                                                     )
+  , ( "M-S-<Return>",  spawn terminal'                                              )
+  , ( "M-o",           promptSearchBrowser (promptFromMonitor monitor) browser' ddg )
+  , ( "M-S-o",         selectSearchBrowser browser' ddg                             )
+  , ( "M-p",           shellPrompt $ promptFromMonitor monitor                      )
+  , ( "M-t",           withFocused $ windows . sink                                 )
+  , ( "M-S-c",         kill1                                                        )
+  , ( "M-m",           withFocused minimizeWindow                                   )
+  , ( "M-S-m",         sendMessage RestoreNextMinimizedWin                          )
+  , ( "M-j",           windows focusDown                                            )
+  , ( "M-k",           windows focusUp                                              )
   ] ++
   [ (m++k, windows $ f w) 
       | (w, k) <- zip workspaces' ("1234567890"??return)
