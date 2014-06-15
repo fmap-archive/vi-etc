@@ -17,7 +17,7 @@ import Graphics.X11.Xlib.Extras (Event)
 import Graphics.X11.Xrdb (Resource(..), setResource)
 import XMonad.Actions.CopyWindow (copy, kill1)
 import XMonad.Actions.CycleWS (toggleWS)
-import XMonad.Actions.Search (promptSearchBrowser, selectSearchBrowser, searchEngine, SearchEngine)
+import XMonad.Actions.Search.Extras (Browser(..), promptSearchBrowser', selectSearchBrowser', ddg)
 import XMonad.Core (X(..), XConfig(..), LayoutClass, ManageHook, spawn, whenJust)
 import XMonad.Hooks.ManageHelpers (doFullFloat, isFullscreen, isDialog, doCenterFloat)
 import XMonad.Hooks.Minimize (minimizeEventHook)
@@ -49,7 +49,7 @@ configuration monitor = XConfig
   , focusedBorderColor = base01
   , manageHook         = mconcat manageHooks
   , handleEventHook    = mconcat eventHooks
-  , startupHook        = mconcat startupHooks
+  , startupHook        = mconcat $ startupHooks monitor
   , logHook            = return ()
   , focusFollowsMouse  = False
   , layoutHook         = layoutHook' monitor
@@ -59,9 +59,14 @@ configuration monitor = XConfig
   , clickJustFocuses   = False
   }
 
-terminal', browser' :: String
+terminal' :: String
 terminal' = "urxvt"
-browser'  = "surf"
+
+browser' :: Monitor -> Browser
+browser' monitor = Browser
+  { executable = "surf"
+  , options    = if isRetina monitor then ["-z","1.8"] else []
+  }
 
 workspaces' :: [String]
 workspaces' = zipWith template ([1..9]-:0) $
@@ -100,12 +105,14 @@ eventHooks =
   , minimizeEventHook
   ]
 
-startupHooks :: [X ()]
-startupHooks =
+startupHooks :: Monitor -> [X ()]
+startupHooks (show.browser'->browser) =
   [ spawn "mnemosyne"
   , spawn "urxvt -e mutt -f var/mail/zalora/inbox"
   , spawn "urxvt -e mutt -f var/mail/vikramverma/inbox"
   , spawn "urxvt -e mutt -f var/mail/cuddlecouncil/inbox"
+  , spawn [i|net-wait && BROWSER="#{browser}" restore surf|]
+  , spawn "restore zathura"
   ]
 
 type Layout = ModifiedLayout Minimize (ModifiedLayout BoringWindows (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest))
@@ -142,23 +149,20 @@ promptFromMonitor monitor = prompt
   , font   = fontFromMonitor monitor "light"
   }
 
-ddg :: SearchEngine
-ddg = searchEngine "ddg" "http://duckduckgo.com?q="
-
 keys' :: Monitor -> XConfig layout -> Map (KeyMask, KeySym) (X ())
 keys' monitor = flip mkKeymap $ 
-  [ ( "M-S-l",         spawn "slock"                                                )
-  , ( "M-<Tab>",       toggleWS                                                     )
-  , ( "M-S-<Return>",  spawn terminal'                                              )
-  , ( "M-o",           promptSearchBrowser (promptFromMonitor monitor) browser' ddg )
-  , ( "M-S-o",         selectSearchBrowser browser' ddg                             )
-  , ( "M-p",           shellPrompt $ promptFromMonitor monitor                      )
-  , ( "M-t",           withFocused $ windows . sink                                 )
-  , ( "M-S-c",         kill1                                                        )
-  , ( "M-m",           withFocused minimizeWindow                                   )
-  , ( "M-S-m",         sendMessage RestoreNextMinimizedWin                          )
-  , ( "M-j",           focusDown                                                    )
-  , ( "M-k",           focusUp                                                      )
+  [ ( "M-S-l",         spawn "slock"                            )
+  , ( "M-<Tab>",       toggleWS                                 )
+  , ( "M-S-<Return>",  spawn terminal'                          )
+  , ( "M-o",           promptSearchBrowser' prompt browser ddg  )
+  , ( "M-S-o",         selectSearchBrowser' browser ddg         )
+  , ( "M-p",           shellPrompt $ promptFromMonitor monitor  )
+  , ( "M-t",           withFocused $ windows . sink             )
+  , ( "M-S-c",         kill1                                    )
+  , ( "M-m",           withFocused minimizeWindow               )
+  , ( "M-S-m",         sendMessage RestoreNextMinimizedWin      )
+  , ( "M-j",           focusDown                                )
+  , ( "M-k",           focusUp                                  )
   ] ++
   [ (m++k, windows $ f w) 
       | (w, k) <- zip workspaces' ("1234567890"??return)
@@ -167,7 +171,7 @@ keys' monitor = flip mkKeymap $
   [ (m++k, screenWorkspace s >>= flip whenJust (windows . f))
       | (k, s) <- zip ("qwer"??return) [0..]
       , (f, m) <- [(view, "M-"), (shift, "M-S-")]
-  ]
+  ] where (prompt, browser) = (promptFromMonitor monitor, browser' monitor)
 
 setFont :: Monitor -> IO ()
 setFont (fontFromMonitor -> font) = sequence_ $ 

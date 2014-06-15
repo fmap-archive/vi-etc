@@ -7,9 +7,6 @@ xsetroot -cursor_name left_ptr
 unclutter -root -idle 1 &
 xsetroot -solid '#fdf6e3'
 xset -b &
-xcompmgr &                    
-sleep 2 && restore zathura &
-sleep 2 && net-wait && restore surf &
 ssh-agent $HOME/.xmonad/xmonad
 
 exit 0
