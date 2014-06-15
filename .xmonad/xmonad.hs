@@ -62,8 +62,8 @@ configuration monitor = XConfig
 terminal' :: String
 terminal' = "urxvt"
 
-browser' :: Monitor -> Browser
-browser' monitor = Browser
+browserFromMonitor :: Monitor -> Browser
+browserFromMonitor monitor = Browser
   { executable = "surf"
   , options    = if isRetina monitor then ["-z","1.8"] else []
   }
@@ -106,7 +106,7 @@ eventHooks =
   ]
 
 startupHooks :: Monitor -> [X ()]
-startupHooks (show.browser'->browser) =
+startupHooks (show.browserFromMonitor->browser) =
   [ spawn "mnemosyne"
   , spawn "urxvt -e mutt -f var/mail/zalora/inbox"
   , spawn "urxvt -e mutt -f var/mail/vikramverma/inbox"
@@ -171,13 +171,14 @@ keys' monitor = flip mkKeymap $
   [ (m++k, screenWorkspace s >>= flip whenJust (windows . f))
       | (k, s) <- zip ("qwer"??return) [0..]
       , (f, m) <- [(view, "M-"), (shift, "M-S-")]
-  ] where (prompt, browser) = (promptFromMonitor monitor, browser' monitor)
+  ] where (prompt, browser) = (promptFromMonitor monitor, browserFromMonitor monitor)
 
 setFont :: Monitor -> IO ()
-setFont (fontFromMonitor -> font) = sequence_ $ 
-  [ ("URxvt*font"       , font "light"       )
-  , ("URxvt*boldFont"   , font "lightbold"   )
-  , ("URxvt*italicFont" , font "lightitalic" )
+setFont monitor = sequence_ $ 
+  [ ("URxvt*font"        , fontFromMonitor monitor "light"       )
+  , ("URxvt*boldFont"    , fontFromMonitor monitor "lightbold"   )
+  , ("URxvt*italicFont"  , fontFromMonitor monitor "lightitalic" )
+  , ("URxvt*urlLauncher" , show $ browserFromMonitor monitor     )
   ] ?? (setResource . uncurry Resource)
 
 main :: IO ()
