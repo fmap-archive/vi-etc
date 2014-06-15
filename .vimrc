@@ -32,38 +32,38 @@ if &t_Co >= 256 || has("gui_running")
 endif
 
 " Title
-function! g:chomp(string)
+function! Chomp(string)
   return substitute(a:string, "\n*$", "", "")
 endfunction
 
-function! g:run(command)
-  return g:chomp(system(a:command))
+function! Run(command)
+  return Chomp(system(a:command))
 endfunction
 
-function! g:git(cmd)
+function! Git(cmd)
   let gd = b:git_dir
   let wt = substitute(b:git_dir, ".git$", "", "")
   let pr = "git --git-dir=" . gd . " --work-tree=" . wt . " "
-  return g:run(pr . a:cmd)
+  return Run(pr . a:cmd)
 endfunction
 
-function! g:git_title(...) 
+function! GitTitle(...) 
   if !exists('b:git_dir')
     return ''
   endif
-  let branch  = g:git("branch | awk '/\\*/ {print $2}'")
-  let changes = g:git("status -s | wc -l | sed 's/^ \*/:/'")
+  let branch  = Git("branch | awk '/\\*/ {print $2}'")
+  let changes = Git("status -s | wc -l | sed 's/^ \*/:/'")
   return "[" . branch . changes . "]"
 endfunction
 
-function! g:dir_title(...)
+function! DirTitle(...)
   let dir = substitute(getcwd(),$HOME,'~','')
   return dir . " "
 endfunction
 
 if has('title') && (has('gui_running') || &title)
-  set titlestring=%{g:dir_title()}
-  set titlestring+=%{g:git_title()}
+  set titlestring=%{DirTitle()}
+  set titlestring+=%{GitTitle()}
 endif
 
 if has('gui_running')
