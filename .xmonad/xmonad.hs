@@ -74,21 +74,21 @@ findWS = fromMaybe "NSP" . flip find workspaces' . isSuffixOf
 manageHooks :: [ManageHook]
 manageHooks =
   [ fullscreenManageHook
-  , isFullscreen                          --> doFullFloat
-  , isDialog                              --> doCenterFloat
-  , className     =? "feh"                --> doCenterFloat
-  , className     =? "MPlayer"            --> doCenterFloat
-  , title         ?? isPrefixOf "Gnuplot" --> doCenterFloat
-  , icon          ?? isInfixOf "gplt"     --> doCenterFloat
-  , className     =? "Surf"               --> shiftWS "www"
-  , title         ?? isPrefixOf "irssi"   --> shiftWS "im"
-  , title         ?? isPrefixOf "mutt"    --> shiftWS "mail"
-  , className     =? "Okular"             --> shiftWS "doc"
-  , className     =? "Zathura"            --> shiftWS "doc"
-  , className     =? ".zathura-wrapped"   --> shiftWS "doc"
-  , className     =? "FBReader"           --> shiftWS "doc"
-  , name          =? "Mnemosyne"          --> shiftWS "srs"
-  , className     =? "Amphetype"          --> shiftWS "type"
+  , isFullscreen                            --> doFullFloat
+  , isDialog                                --> doCenterFloat
+  , className     =? "feh"                  --> doCenterFloat
+  , className     =? "MPlayer"              --> doCenterFloat
+  , title         ?? isPrefixOf "Gnuplot"   --> doCenterFloat
+  , icon          ?? isInfixOf "gplt"       --> doCenterFloat
+  , className     =? "Surf"                 --> shiftWS "www"
+  , title         ?? isPrefixOf "irssi"     --> shiftWS "im"
+  , title         ?? isPrefixOf "mutt"      --> shiftWS "mail"
+  , className     =? "Okular"               --> shiftWS "doc"
+  , className     =? "Zathura"              --> shiftWS "doc"
+  , className     =? ".zathura-wrapped"     --> shiftWS "doc"
+  , className     =? "FBReader"             --> shiftWS "doc"
+  , name          ?? isPrefixOf "Mnemosyne" --> shiftWS "srs"
+  , className     =? "Amphetype"            --> shiftWS "type"
   ] where shiftWS = doShift . findWS 
 
 type EventHook = Event -> X All
