@@ -5,7 +5,7 @@ servers = (
     port = "7000";
     use_ssl = "yes";
     ssl_verify = "yes";
-    ssl_cafile = "/etc/ssl/certs/ca-bundle.crt"
+    ssl_cafile = "/etc/ssl/certs/ca-certificates.crt"
     autoconnect = "yes";
     skip_motd = "on";
   },{
@@ -21,7 +21,6 @@ servers = (
 
 chatnets = {
   freenode = {
-    autosendcmd = "/password send; wait 2000";
     type = "IRC";
   };
   foonetic = {
