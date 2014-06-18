@@ -8,23 +8,11 @@ servers = (
     ssl_cafile = "/etc/ssl/certs/ca-certificates.crt"
     autoconnect = "yes";
     skip_motd = "on";
-  },{
-    chatnet = "foonetic";
-    address = "irc.foonetic.net";
-    port = "6697";
-    use_ssl = "yes";
-    ssl_verify = "no"; # self-signed
-    autoconnect = "yes";
-    skip_motd = "on";
   }
 );
 
 chatnets = {
   freenode = {
-    type = "IRC";
-  };
-  foonetic = {
-    autosendcmd = "/password send; wait 2000";
     type = "IRC";
   };
 };
