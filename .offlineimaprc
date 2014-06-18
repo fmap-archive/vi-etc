@@ -19,6 +19,7 @@ remotepassfile   = ~/.security/mail/zalora.pass
 real_delete      = no
 createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
+folderfilter     = lambda f: f not in ['[Gmail]/All Mail']
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
 [Account cuddlecouncil]
@@ -55,6 +56,7 @@ remotepassfile   = ~/.security/mail/vikramverma.pass
 real_delete      = no
 createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
+folderfilter     = lambda f: f not in ['[Gmail]/All Mail']
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
 
 # vim: ft=cfg
