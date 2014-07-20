@@ -5,7 +5,7 @@ servers = (
     port = "7000";
     use_ssl = "yes";
     ssl_verify = "yes";
-    ssl_cafile = "/etc/ssl/certs/ca-certificates.crt"
+    ssl_cafile = "/etc/ssl/certs/ca-certificates.crt";
     autoconnect = "yes";
     skip_motd = "on";
   }
