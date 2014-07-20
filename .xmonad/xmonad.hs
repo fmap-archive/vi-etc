@@ -28,7 +28,7 @@ import XMonad.Layout.Fullscreen (fullscreenEventHook, fullscreenManageHook)
 import XMonad.Layout.LayoutModifier (ModifiedLayout)
 import XMonad.Layout.Minimize (Minimize, minimize, minimizeWindow, MinimizeMsg(RestoreNextMinimizedWin))
 import XMonad.Layout.Simplest (Simplest)
-import XMonad.Layout.Tabbed (tabbed, TabbedDecoration, Theme(..), shrinkText)
+import XMonad.Layout.Tabbed (tabbedAlways, TabbedDecoration, Theme(..), shrinkText)
 import XMonad.Main (xmonad)
 import XMonad.ManageHook ((-->), (=?), className, title, doShift)
 import XMonad.ManageHook.Query (icon, name)
@@ -44,7 +44,7 @@ configuration :: Monitor -> XConfig Layout
 configuration monitor = XConfig
   { terminal           = terminal'
   , workspaces         = workspaces'
-  , borderWidth        = 2
+  , borderWidth        = 0
   , normalBorderColor  = base02
   , focusedBorderColor = base01
   , manageHook         = mconcat manageHooks
@@ -118,12 +118,12 @@ startupHooks (show.browserFromMonitor->browser) =
 type Layout = ModifiedLayout Minimize (ModifiedLayout BoringWindows (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest))
 
 layoutHook' :: Monitor -> Layout Word64
-layoutHook' = minimize . boringWindows . tabbed shrinkText . themeFromMonitor
+layoutHook' = minimize . boringWindows . tabbedAlways shrinkText . themeFromMonitor
 
 themeFromMonitor :: Monitor -> Theme
 themeFromMonitor monitor = solarizedTheme
   { fontName   = fontFromMonitor monitor "light"
-  , decoHeight = if isRetina monitor then 40 else 29
+  , decoHeight = if isRetina monitor then 40 else 30
   }
 
 fontFromMonitor :: Monitor -> String -> String
@@ -145,7 +145,7 @@ prompt = solarizedXPConfig
 
 promptFromMonitor :: Monitor -> XPConfig
 promptFromMonitor monitor = prompt
-  { height = if isRetina monitor then 40 else 29
+  { height = if isRetina monitor then 40 else 30
   , font   = fontFromMonitor monitor "light"
   }
 
