@@ -37,3 +37,6 @@
 [submodule ".vim/bundle/nix"]
   path = .vim/bundle/nix
   url = https://github.com/MarcWeber/vim-addon-nix.git
+[submodule ".vim/bundle/idris-vim"]
+	path = .vim/bundle/idris-vim
+	url = git@github.com:idris-hackers/idris-vim.git
