@@ -1,4 +1,5 @@
 :set prompt "λ: "
+let asAppliedTo = const :: (a -> b) -> a -> (a -> b)
 :set +t
 
 import Data.List
