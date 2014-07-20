@@ -78,6 +78,7 @@ set alias_format  = "%4n %t %-20a %r"
 # }}}
 # Status Bar {{{
 
+unset status
 set xterm_set_titles 
 set xterm_title = "mutt: %f"
 set status_format = "%f(%n)%> %?p?drafts(%p)?"
