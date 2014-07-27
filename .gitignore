@@ -10,3 +10,5 @@ Session.vim
 .scrap
 .xmonad/xmonad
 *.otf
+*.dyn_o
+*.dyn_hi
