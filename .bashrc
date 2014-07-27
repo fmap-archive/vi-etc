@@ -22,7 +22,9 @@ if [ -n "$PS1" ] ; then
   PS3="? "       # Select Prompt
   PS4="+ "       # Debugging Prompt
 
-  # ..and the title, in being allowed to exist, should be informative.
+  # ..and the title, in being visible, should be informative.
+
+  trap 'echo -ne "\e]0;"; echo -n $BASH_COMMAND; echo -ne "\007"' DEBUG
 
   PROMPT_COMMAND="set_window_title"
 
