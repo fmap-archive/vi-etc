@@ -27,7 +27,7 @@ instance Show Browser where
   show Browser{..} = [i|#{executable} #{intercalate " " options}|]
 
 ddg :: Site
-ddg = ("http://duckduckgo.com?q="++)
+ddg = ("https://duckduckgo.com?q="++)
 
 search :: Browser -> Site -> Query -> X ()
 search Browser{..} site query = safeSpawn executable $ options ++ [site query]
