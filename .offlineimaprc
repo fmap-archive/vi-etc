@@ -21,6 +21,7 @@ createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
 folderfilter     = lambda f: f not in ['[Gmail]/All Mail']
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
+ssl              = yes
 
 [Account cuddlecouncil]
 localrepository = cuddlecouncil-local
@@ -38,6 +39,7 @@ remotepassfile = ~/.security/mail/cuddlecouncil.pass
 createfolders  = False
 nametrans      = lambda name: name.lower()
 sslcacertfile  = /etc/ssl/certs/ca-bundle.crt
+ssl              = yes
 
 [Account vikramverma]
 localrepository  = vikramverma-local
@@ -58,5 +60,6 @@ createfolders    = False
 nametrans        = lambda f: (f[8:] if 'Gmail' in f else f).lower()
 folderfilter     = lambda f: f not in ['[Gmail]/All Mail']
 sslcacertfile    = /etc/ssl/certs/ca-bundle.crt
+ssl              = yes
 
 # vim: ft=cfg
