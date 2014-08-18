@@ -1,4 +1,4 @@
-{-# LANGUAGE RecordWildCards, FlexibleContexts, Rank2Types, ViewPatterns, QuasiQuotes #-}
+{-# LANGUAGE RecordWildCards, FlexibleContexts, Rank2Types, ViewPatterns, QuasiQuotes, CPP #-}
 
 import Control.Monad (liftM2)
 import Data.Functor.Extras ((??))
@@ -8,7 +8,7 @@ import Data.Map (Map, empty)
 import Data.Maybe (fromMaybe)
 import Data.Monoid (Monoid(mconcat), All)
 import Data.String.Interpolate (i)
-import GHC.Word (Word64)
+import GHC.Word (Word64, Word32)
 import Graphics.X11.Dzen2 ()
 import Graphics.X11.Monitor (Monitor(..), getMonitors, isRetina, configureDisplays)
 import Graphics.X11.Types (Window, KeyMask, KeySym, mod4Mask)
@@ -118,7 +118,11 @@ startupHooks (show.browserFromMonitor->browser) =
 
 type Layout = ModifiedLayout Minimize (ModifiedLayout BoringWindows (ModifiedLayout (Decoration TabbedDecoration DefaultShrinker) Simplest))
 
+#ifdef i386_HOST_ARCH
+layoutHook' :: Monitor -> Layout Word32
+#else
 layoutHook' :: Monitor -> Layout Word64
+#endif
 layoutHook' = minimize . boringWindows . tabbedAlways shrinkText . themeFromMonitor
 
 themeFromMonitor :: Monitor -> Theme
