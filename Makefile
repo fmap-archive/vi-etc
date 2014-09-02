@@ -1,6 +1,6 @@
 all: install 
 
-install: submodules xmonad
+install: submodules
 	rsync --exclude ".git" \
 				--exclude ".gitmodules" \
 				--exclude ".*sw*" \
@@ -10,6 +10,3 @@ install: submodules xmonad
 submodules:
 	git submodule init
 	git submodule update
-
-xmonad: .xmonad
-	cd .xmonad && ghc -ilib xmonad.hs && cd ..
