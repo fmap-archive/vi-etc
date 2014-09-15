@@ -75,13 +75,13 @@ function rrm()
 
 # }}}
 # Terminal {{{
+function tty?() {
+  [[ $TERM == "linux" ]]
+}
 
 function update_title()
 { # Update X window title at runtime.
-  case $TERM in
-    xterm*|rxvt*|screen*)
-      echo -ne "\033]0;${*}\007" ;;
-  esac
+  tty? || echo -ne "\033]0;${*}\007"
 }
 
 # }}}

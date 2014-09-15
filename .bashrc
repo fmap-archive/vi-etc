@@ -24,7 +24,7 @@ if [ -n "$PS1" ] ; then
 
   # ..and the title, in being visible, should be informative.
 
-  trap 'echo -ne "\e]0;"; echo -n $BASH_COMMAND; echo -ne "\007"' DEBUG
+  tty? || trap 'echo -ne "\e]0;"; echo -n $BASH_COMMAND; echo -ne "\007"' DEBUG
 
   PROMPT_COMMAND="set_window_title"
 
