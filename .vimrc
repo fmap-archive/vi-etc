@@ -16,19 +16,19 @@ set ls=0
 
 if &t_Co > 2 || has("gui_running")
   syntax enable
-endif
-
-if system('echo -n $TERM')=="rxvt-unicode-256color"
-  set background=dark
-else
-  let g:solarized_termtrans = 1
-  set background=light
+  colorscheme industry
 endif
 
 if &t_Co >= 256 || has("gui_running")
   colorscheme solarized
   highlight Folded term=bold cterm=bold
   set cursorline
+  if system('echo -n $TERM')=="rxvt-unicode-256color"
+    set background=dark
+  else
+    let g:solarized_termtrans = 1
+    set background=light
+  endif
 endif
 
 " Title
