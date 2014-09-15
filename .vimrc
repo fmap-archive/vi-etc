@@ -23,7 +23,7 @@ if &t_Co >= 256 || has("gui_running")
   colorscheme solarized
   highlight Folded term=bold cterm=bold
   set cursorline
-  if system('echo -n $TERM')=="rxvt-unicode-256color"
+  if system('echo -n $TERM')=="rxvt-unicode-256color" || system("echo -n $TERM")=="screen-256color"
     set background=dark
   else
     let g:solarized_termtrans = 1
