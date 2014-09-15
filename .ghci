@@ -9,5 +9,4 @@ import qualified Data.Set as S
 import Data.Monoid
 import Control.Applicative
 import Control.Monad
-import Control.Lens
 import Data.Function
