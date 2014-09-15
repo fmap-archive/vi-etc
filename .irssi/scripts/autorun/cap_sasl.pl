@@ -54,7 +54,7 @@ sub event_cap {
 				$sasl_auth{$server->{tag}}{buffer} = '';
 				if($mech{$sasl_auth{$server->{tag}}{mech}}) {
 					$server->send_raw_now("AUTHENTICATE " . $sasl_auth{$server->{tag}}{mech});
-					Irssi::timeout_add_once(5000, \&timeout, $server->{tag});
+					Irssi::timeout_add_once(20000, \&timeout, $server->{tag});
 				}else{
 					$server->print('', 'SASL: attempted to start unknown mechanism "' . $sasl_auth{$server->{tag}}{mech} . '"');
 				}
