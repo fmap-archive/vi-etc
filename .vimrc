@@ -9,7 +9,7 @@ set shell=bash
 
 " Visual
 set noshowmode
-set nowrap
+set wrap
 set title
 set ls=0
 set shortmess+=I
