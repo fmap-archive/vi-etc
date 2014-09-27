@@ -8,11 +8,12 @@ set nocompatible
 set shell=bash
 
 " Visual
-set ruler
-set showmode
+set noshowmode
 set nowrap
 set title
 set ls=0
+set shortmess+=I
+set report=9999999999999999999999999999999999999999999
 
 if &t_Co > 2 || has("gui_running")
   syntax enable
@@ -21,8 +22,6 @@ endif
 
 if &t_Co >= 256 || has("gui_running")
   colorscheme solarized
-  highlight Folded term=bold cterm=bold
-  set cursorline
   if system('echo -n $TERM')=="rxvt-unicode-256color" || system("echo -n $TERM")=="screen-256color"
     set background=dark
   else
@@ -30,6 +29,8 @@ if &t_Co >= 256 || has("gui_running")
     set background=light
   endif
 endif
+  
+highlight NonText ctermfg=8 ctermbg=8
 
 " Title
 function! Chomp(string)
