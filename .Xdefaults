@@ -1,6 +1,7 @@
+#include "/home/vi/.rxvt/colours/solarized.Xresources"
+
 URxvt*buffered: true
-URxvt*cursorBlink: false
-URxvt*cursorUnderline: true
+URxvt*cursorBlink: true
 URxvt*loginShell: true
 
 URxvt*scrollBar: false
@@ -8,8 +9,6 @@ URxvt*scrollBar: false
 URxvt*font:xft:LetterGothicMono:size=13:style=Light,xft:envy code r:pixelsize=13
 URxvt*boldFont:xft:LetterGothicMono:size=13:style=LightBold,xft:envy code r:pixelsize=13
 URxvt*italicFont:xft:LetterGothicMono:size=13:style=LightItalic,xft:envy code r:pixelsize=13
-
-#include "/home/vi/.rxvt/colours/solarized.Xresources"
 
 URxvt*urgentOnBell: true
 
