@@ -61,4 +61,8 @@ export LESS_TERMCAP_us=$'\E[04;38;5;146m'
 
 #}}}
 
+if [[ -d /run/current-system/sw/bin ]]; then
+  man() { /run/current-system/sw/bin/man $* | less -R; };
+fi
+
 # vim:ft=sh
