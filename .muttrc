@@ -66,6 +66,7 @@ ignore *
 unignore To From Cc Date X-RSS-URL Subject
 unignore X-Alignment # Let's see if this catches on.
 
+auto_view text/html
 alternative_order text/plain text/html
 
 # }}}

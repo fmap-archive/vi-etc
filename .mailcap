@@ -1,5 +1,4 @@
-text/html; surf file://%s; test=test -n "$DISPLAY";
-text/html; links -html-numbered-links 1 -dump %s; copiousoutput;
+text/html; w3m -T text/html -dump %s; copiousoutput;
 application/pdf; zathura '%s'; test=test -n "$DISPLAY";
 application/pdf; pdftotext '%s' | less;
 application/x-mobipocket-ebook; FBReader '%s' | less;
