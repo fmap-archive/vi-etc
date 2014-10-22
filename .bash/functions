@@ -118,13 +118,21 @@ function title_git_changes
   fi
 }
 
+function title_git
+{ if is_git_repo?; then
+    echo -n "[$(title_git_branch):$(title_git_changes)]"
+  fi
+}
+
+function title_nix
+{ if [[ $IN_NIX_SHELL == 1 ]]; then
+    echo -n '[nix-shell]'
+  fi
+}
+
 function set_window_title
 { # Value of X window title
-  if is_git_repo?; then
-    update_title "$(title_pwd) [$(title_git_branch):$(title_git_changes)]"
-  else
-    update_title "$(title_pwd)"
-  fi
+  update_title "$(title_pwd) $(title_git)$(title_nix)"
 }
 
 function prompt_delim
