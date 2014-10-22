@@ -13,10 +13,11 @@ URxvt*italicFont:xft:LetterGothicMono:size=13:style=LightItalic,xft:envy code r:
 URxvt*urgentOnBell: true
 
 URxvt*perl-lib:      /home/vi/.rxvt/scripts/
-URxvt*perl-ext:      default,url-select,clipboard,select,fontsize
+URxvt*perl-ext:      default,url-select,clipboard,selection-to-clipboard,select,fontsize
 URxvt*keysym.Mod4-u: perl:url-select:select_next
-URxvt*keysym.Mod4-v: perl:clipboard:paste
 URxvt*keysym.Control-Down: perl:fontsize:d
 URxvt*keysym.Control-Up: perl:fontsize:i
 URxvt*urlLauncher:   surf 
 URxvt*underlineURLs: true
+URxvt.keysym.M-v: perl:clipboard:paste
+URxvt.clipboard.pastecmd: xclip -o -selection clipboard
