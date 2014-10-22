@@ -6,7 +6,6 @@
 
 # Account {{{
 
-set envelope_from
 folder-hook vikramverma   source ~/.mutt/accounts/vikramverma.com.rc
 folder-hook cuddlecouncil source ~/.mutt/accounts/cuddlecouncil.net.rc
 folder-hook zalora        source ~/.mutt/accounts/zalora.com.rc
@@ -28,6 +27,7 @@ mailboxes +zalora/inbox
 
 set sendmail = msmtp
 unset record
+set envelope_from
 
 set hostname="gmail.com" # Everyone seems to use it. It's a bit sad.
 set use_domain=yes
