@@ -3,13 +3,7 @@
 # First, make sure we're running interactively:
 
 if [ -n "$PS1" ] ; then
-  
-  # Add my personal scripts to the path..
-
-  BIN="$HOME/bin"
-  [ -d $BIN                 ] && PATH="$BIN:$PATH"   
-
-  # ..and source my preferred environment, aliases and functions.
+  # Source my preferred environment, aliases and functions.
 
   [ -r ~/.bash/environment  ] && . ~/.bash/environment 
   [ -r ~/.bash/aliases      ] && . ~/.bash/aliases      
