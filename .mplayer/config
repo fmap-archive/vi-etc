@@ -1,5 +1,5 @@
 fs="yes"
-vo="xv"
+vo="gl"
 af="scaletempo"
 alang="jpn,en,es"
 slang="en,es,jpn"
