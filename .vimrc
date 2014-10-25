@@ -57,6 +57,13 @@ function! GitTitle(...)
   return "[" . branch . changes . "]"
 endfunction
 
+function! NixTitle(...)
+  if $IN_NIX_SHELL == '1'
+    return '[nix-shell]'
+  endif
+  return ''
+endfunction
+
 function! DirTitle(...)
   let dir = substitute(getcwd(),$HOME,'~','')
   return dir . " "
@@ -65,6 +72,7 @@ endfunction
 if has('title') && (has('gui_running') || &title)
   set titlestring=%{DirTitle()}
   set titlestring+=%{GitTitle()}
+  set titlestring+=%{NixTitle()}
 endif
 
 if has('gui_running')
