@@ -1,16 +1,21 @@
 /* based on chromium plugin code, adapted by Nibble<.gs@gmail.com> */
 var hint_num_str = '';
 var hint_elems = [];
-var hint_open_in_new_tab = false;
+var hint_open = '';
 var hint_enabled = false;
+
+function yank(text) {
+  var element = document.createElement("textarea");
+  element.setAttribute("style", "position:fixed;left:0px;top:0px;width:0px;height:0px;overflow:hidden;border:0px;resize:none;");
+  element.innerText = text;
+  document.body.appendChild(element);
+  element.select();
+  document.activeElement.blur();
+};
 
 function hintMode(newtab){
     hint_enabled = true;
-    if (newtab) {
-        hint_open_in_new_tab = true;
-    } else {
-        hint_open_in_new_tab = false;
-    }
+    hint_open = newtab;
     setHints();
     document.removeEventListener('keydown', initKeyBind, false);
     document.addEventListener('keydown', hintHandler, false);
@@ -66,11 +71,13 @@ function execSelect(elem) {
     var type = elem.type ? elem.type.toLowerCase() : "";
     if (tag_name == 'a' && elem.href != '') {
         setHighlight(elem, true);
-        // TODO: ajax, <select>
-        if (hint_open_in_new_tab)
-            window.open(elem.href);
-        else location.href=elem.href;
-
+        if (hint_open == 'here') {
+          location.href = elem.href;
+        } else if (hint_open == 'tab') {
+          window.open(elem.href);
+        } else if (hint_open == 'yank') {
+          yank(elem.href);
+        }
     } else if (tag_name == 'input' && (type == "submit" || type == "button" || type == "reset")) {
         elem.click();
     } else if (tag_name == 'input' && (type == "radio" || type == "checkbox")) {
@@ -178,8 +185,9 @@ function initKeyBind(e){
     var target = e.target;
     if (!onInput(e) && target.nodeType==1) {
       switch (get_key(e)) {
-        case 'f': return hintMode();
-        case 'F': return hintMode(true);
+        case 'f': return hintMode('here');
+        case 'F': return hintMode('tab');
+        case 'y': return hintMode('yank');
       }
     }
 }
