@@ -5,6 +5,7 @@ install: submodules
 				--exclude ".gitmodules" \
 				--exclude ".*sw*" \
 				--exclude "Makefile"\
+				--exclude "default.nix"\
 				-avzb . ~
 
 submodules:
