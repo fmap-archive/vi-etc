@@ -128,7 +128,7 @@ layoutHook' = minimize . boringWindows . tabbedAlways shrinkText . themeFromMoni
 themeFromMonitor :: Monitor -> Theme
 themeFromMonitor monitor = solarizedTheme
   { fontName   = fontFromMonitor monitor "light"
-  , decoHeight = if isRetina monitor then 40 else 30
+  , decoHeight = if isRetina monitor then 40 else 28
   }
 
 fontFromMonitor :: Monitor -> String -> String
@@ -150,7 +150,7 @@ prompt = solarizedXPConfig
 
 promptFromMonitor :: Monitor -> XPConfig
 promptFromMonitor monitor = prompt
-  { height = if isRetina monitor then 40 else 30
+  { height = if isRetina monitor then 40 else 28
   , font   = fontFromMonitor monitor "light"
   }
 
