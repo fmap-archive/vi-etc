@@ -31,8 +31,10 @@ function cd()
   # Print a listing of files when entering a new directory if it contains less
   # than ten (non-hidden) files.
 
-  builtin cd "$@" && FILE_COUNT="$(wc -l <(ls) | awk '{ print $1 }')"
-  [[ "$FILE_COUNT" -lt 10 ]] && ls 
+  builtin cd "$@" && { 
+    FILE_COUNT="$(wc -l <(ls) | awk '{ print $1 }')"
+    [[ "$FILE_COUNT" -lt 10 ]] && ls 
+  }
 }
 
 function mkcd()
